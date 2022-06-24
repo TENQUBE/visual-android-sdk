@@ -7,9 +7,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.tenqube.webui.R
 import com.tenqube.webui.component.bottomsheet.model.OpenSelectBoxRequest
 
-class BottomSheetAdapter internal constructor(selectBoxRequests: OpenSelectBoxRequest,
-                                         private val bottomListener: CustomBottomSheet.OnBottomListener?)
-    : RecyclerView.Adapter<RecyclerView.ViewHolder>(), BottomSheetListener {
+class BottomSheetAdapter internal constructor(
+    selectBoxRequests: OpenSelectBoxRequest,
+    private val bottomListener: CustomBottomSheet.OnBottomListener?
+) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>(), BottomSheetListener {
     private val selectBoxInfos = selectBoxRequests.list
     private var selectedPos = -1
     private var selectedColor = 0

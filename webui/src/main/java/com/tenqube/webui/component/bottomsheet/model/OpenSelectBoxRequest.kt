@@ -3,9 +3,11 @@ package com.tenqube.webui.component.bottomsheet.model
 import com.tenqube.webui.component.utils.Validator
 import com.tenqube.webui.dto.common.RequestBody
 
-data class OpenSelectBoxRequest(val title: String,
-                                val selectColor: String,
-                                val list: List<OpenSelectBoxItem>): RequestBody {
+data class OpenSelectBoxRequest(
+    val title: String,
+    val selectColor: String,
+    val list: List<OpenSelectBoxItem>
+) : RequestBody {
 
     override fun checkParams() {
         Validator.notNull(title)
@@ -18,10 +20,11 @@ data class OpenSelectBoxRequest(val title: String,
     }
 }
 
-
-data class OpenSelectBoxItem(val name: String,
-                             val orderByType: Int,
-                             var isSelected: Boolean): RequestBody {
+data class OpenSelectBoxItem(
+    val name: String,
+    val orderByType: Int,
+    var isSelected: Boolean
+) : RequestBody {
     override fun checkParams() {
 
         Validator.notNull(name)
