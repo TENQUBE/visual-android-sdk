@@ -1,5 +1,3 @@
 package com.tenqube.webui
 
-class UIServiceBuilder {
-
-}
+class UIServiceBuilder
