@@ -8,6 +8,7 @@ import android.webkit.*
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.tenqube.jb.databinding.MainFragmentJbBinding
 import com.tenqube.jb.infrastructure.framework.widget.WebViewManager
 import java.util.*
 
@@ -18,7 +19,7 @@ class MainFragment : Fragment() {
     }
 
     private lateinit var viewModel: MainViewModel
-    private lateinit var viewDataBinding: MainFragmentBinding
+    private lateinit var viewDataBinding: MainFragmentJbBinding
     private lateinit var webViewManager: WebViewManager
 
     override fun onCreateView(
@@ -26,7 +27,7 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
-        viewDataBinding = MainFragmentBinding.inflate(inflater, container, false).apply {
+        viewDataBinding = MainFragmentJbBinding.inflate(inflater, container, false).apply {
             viewmodel = viewModel
         }
 
