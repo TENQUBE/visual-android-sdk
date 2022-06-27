@@ -5,4 +5,8 @@ data class ShowDatePickerRequest(val data: ShowDatePickerDto) : Request {
     }
 }
 
-data class ShowDatePickerDto(val date: String)
+data class ShowDatePickerDto(val date: String) {
+    fun asDomain(): com.tenqube.webui.dto.ShowDatePickerDto {
+        return com.tenqube.webui.dto.ShowDatePickerDto(date)
+    }
+}

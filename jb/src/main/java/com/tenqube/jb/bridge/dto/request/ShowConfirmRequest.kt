@@ -11,11 +11,30 @@ data class ShowConfirmDto(
     val message: String,
     val positive: ButtonDto,
     val negative: ButtonDto
-)
+) {
+    fun asDomain(): com.tenqube.webui.dto.ShowConfirmDto {
+        return com.tenqube.webui.dto.ShowConfirmDto(
+            title,
+            message,
+            positive.asDomain(),
+            negative.asDomain()
+        )
+    }
+}
 
 data class ButtonDto(
     val button: ButtonDetailDto
-)
+) {
+    fun asDomain(): com.tenqube.webui.dto.ButtonDto {
+        return com.tenqube.webui.dto.ButtonDto(
+            button = com.tenqube.webui.dto.ButtonDetailDto(
+                button.text,
+                button.color,
+                button.bgColor
+            )
+        )
+    }
+}
 
 data class ButtonDetailDto(
     val text: String,

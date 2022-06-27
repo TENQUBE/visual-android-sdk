@@ -7,4 +7,8 @@ data class ShowTimePickerRequest(val data: ShowTimePickerDto) : Request {
 
 data class ShowTimePickerDto(
     val date: String
-)
+) {
+    fun asDomain(): com.tenqube.webui.dto.ShowTimePickerDto {
+        return com.tenqube.webui.dto.ShowTimePickerDto(date)
+    }
+}

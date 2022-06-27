@@ -81,7 +81,7 @@ class AndroidUIBridge(
             classOfT = ShowConfirmRequest::class.java,
             body = {
                 it?.let {
-//                    uiService.showConfirm(it.data)
+                    uiService.showConfirm(it.data.asDomain())
                 }
             })
     }
@@ -93,7 +93,7 @@ class AndroidUIBridge(
             classOfT = ShowSelectBoxRequest::class.java,
             body = {
                 it?.let {
-//                    uiService.showSelectBox(it.data)
+                    uiService.showSelectBox(it.data.asDomain())
                 }
             })
     }
@@ -105,7 +105,7 @@ class AndroidUIBridge(
             classOfT = OpenNewViewRequest::class.java,
             body = {
                 it?.let {
-//                    uiService.openNewView(it.data)
+                    uiService.openNewView(it.data.asDomain())
                 }
             })
     }
@@ -118,7 +118,7 @@ class AndroidUIBridge(
             classOfT = ShowDatePickerRequest::class.java,
             body = {
                 it?.let {
-//                    uiService.showDatePicker(it.data)
+                    uiService.showDatePicker(it.data.asDomain())
                 }
             }
         )
@@ -131,7 +131,7 @@ class AndroidUIBridge(
             classOfT = ShowTimePickerRequest::class.java,
             body = {
                 it?.let {
-//                    uiService.showTimePicker(it.data)
+                    uiService.showTimePicker(it.data.asDomain())
                 }
             })
     }
