@@ -5,7 +5,7 @@ import android.os.Bundle
 import com.tenqube.reward.util.inTransaction
 import timber.log.Timber
 
-class MainActivity : AppCompatActivity() {
+class VisualActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         Timber.DebugTree()
         if (savedInstanceState == null) {
             supportFragmentManager.inTransaction {
-                replace(R.id.container, MainFragment.newInstance())
+                replace(R.id.container, VisualFragment.newInstance())
             }
         }
     }

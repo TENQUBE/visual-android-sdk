@@ -12,13 +12,14 @@ import com.tenqube.jb.databinding.MainFragmentJbBinding
 import com.tenqube.jb.infrastructure.framework.widget.WebViewManager
 import java.util.*
 
-class MainFragment : Fragment() {
+class VisualFragment : Fragment() {
 
     companion object {
-        fun newInstance() = MainFragment()
+        fun newInstance() = VisualFragment()
+        const val URL = "https://d34db13xxji3zw.cloudfront.net/?v=1.0&dv=1.0"
     }
 
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: VisualViewModel
     private lateinit var viewDataBinding: MainFragmentJbBinding
     private lateinit var webViewManager: WebViewManager
 
@@ -26,7 +27,7 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        viewModel = ViewModelProvider(this)[VisualViewModel::class.java]
         viewDataBinding = MainFragmentJbBinding.inflate(inflater, container, false).apply {
             viewmodel = viewModel
         }
@@ -48,10 +49,14 @@ class MainFragment : Fragment() {
     }
 
     private fun start() {
-        activity?.intent?.getStringExtra("url")?.let {
-            viewDataBinding.url.setText(it)
-            viewModel.start(it)
+        getUrl().run {
+            viewDataBinding.url.setText(this)
+            viewModel.start(this)
         }
+    }
+
+    private fun getUrl(): String {
+        return activity?.intent?.getStringExtra("url") ?: URL
     }
 
     private fun setupLifecycleOwner() {
@@ -103,6 +108,11 @@ class MainFragment : Fragment() {
     private fun setupOnBackPressedDispatcher() {
         activity?.onBackPressedDispatcher?.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
+                if(viewDataBinding.webView.canGoBack()) {
+                    viewDataBinding.webView.goBack()
+                } else {
+                    activity?.finish()
+                }
             }
         })
     }

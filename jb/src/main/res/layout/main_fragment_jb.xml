@@ -9,13 +9,13 @@
 
         <variable
             name="viewmodel"
-            type="com.tenqube.jb.MainViewModel" />
+            type="com.tenqube.jb.VisualViewModel" />
 
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        tools:context=".VisualActivity">
 
         <EditText
             android:padding="16dp"
