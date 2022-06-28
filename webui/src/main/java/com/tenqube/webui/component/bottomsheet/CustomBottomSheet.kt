@@ -38,7 +38,6 @@ class CustomBottomSheet(
                 bottomSheetDialog = BottomSheetDialog(activity).apply {
                     window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
                 }
-
             }
             bottomSheetDialog?.let { dialog ->
                 if (!isShowing) {
@@ -64,7 +63,6 @@ class CustomBottomSheet(
                     }
                 }
             }
-
         } catch (e: Exception) {
         }
     }
