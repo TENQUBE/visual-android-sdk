@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.*
 import androidx.lifecycle.ViewModelProvider
-import com.tenqube.ibk.bridge.AndroidUI
+import com.tenqube.ibk.bridge.AndroidUIBridge
 import com.tenqube.ibk.databinding.FragmentMainIbkBinding
 import com.tenqube.shared.webview.WebViewManager
 import com.tenqube.shared.webview.WebViewParam
@@ -56,7 +56,7 @@ class VisualFragment : Fragment() {
     }
 
     private fun setupBridges(webView: WebView) {
-        AndroidUI(webView, viewModel).let { ui ->
+        AndroidUIBridge(webView, viewModel).let { ui ->
             webView.addJavascriptInterface(ui, ui.bridgeName)
         }
     }

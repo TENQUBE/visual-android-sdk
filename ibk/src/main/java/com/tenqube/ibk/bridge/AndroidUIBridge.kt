@@ -5,51 +5,15 @@ import com.tenqube.ibk.VisualViewModel
 import com.tenqube.ibk.bridge.dto.request.*
 import com.tenqube.shared.webview.BridgeBase
 
-class AndroidUI(
+class AndroidUIBridge(
     webView: WebView,
     private val viewModel: VisualViewModel
 ): BridgeBase(webView), Bridge.UI {
     override val bridgeName: String
         get() = "visualUI"
 
-    override fun openNotiSettings() {
-        execute(
-            funcName = this@AndroidUI::openNotiSettings.name,
-            params = null,
-            classOfT = Any::class.java,
-            body = {
-                it?.let {
-                    viewModel.openNotiSettings()
-                }
-            })
-    }
-
-    override fun getBanks() {
-        execute(
-            funcName = this@AndroidUI::getBanks.name,
-            params = null,
-            classOfT = Any::class.java,
-            body = {
-                it?.let {
-                    viewModel.getBanks()
-                }
-            })
-    }
-
-    override fun openDeepLink(params: String?) {
-        execute(
-            funcName = this@AndroidUI::getBanks.name,
-            params = params,
-            classOfT = OpenDeepLinkRequest::class.java,
-            body = {
-                it?.let {
-                    viewModel.openDeepLink(it.data)
-                }
-            })
-    }
-
     override fun showToast(params: String?) {
-        execute(funcName = this@AndroidUI::showToast.name,
+        execute(funcName = this@AndroidUIBridge::showToast.name,
             params = params,
             classOfT = ShowToastRequest::class.java,
             body = {
@@ -61,7 +25,7 @@ class AndroidUI(
 
     override fun openSelectBox(params: String?) {
         execute(
-            funcName = this@AndroidUI::openSelectBox.name,
+            funcName = this@AndroidUIBridge::openSelectBox.name,
             params = params,
             classOfT = OpenSelectBoxRequest::class.java,
             body = {
@@ -73,7 +37,7 @@ class AndroidUI(
 
     override fun showAd(params: String?) {
         execute(
-            funcName = this@AndroidUI::showAd.name,
+            funcName = this@AndroidUIBridge::showAd.name,
             params = params,
             classOfT = ShowAdRequest::class.java,
             body = {
@@ -85,7 +49,7 @@ class AndroidUI(
 
     override fun hideAd() {
         execute(
-            funcName = this@AndroidUI::finish.name,
+            funcName = this@AndroidUIBridge::finish.name,
             params = null,
             classOfT = Any::class.java,
             body = {
@@ -95,7 +59,7 @@ class AndroidUI(
 
     override fun openNewView(params: String?) {
         execute(
-            funcName = this@AndroidUI::openNewView.name,
+            funcName = this@AndroidUIBridge::openNewView.name,
             params = params,
             classOfT = OpenNewViewRequest::class.java,
             body = {
@@ -107,22 +71,11 @@ class AndroidUI(
 
     override fun finish() {
         execute(
-            funcName = this@AndroidUI::finish.name,
+            funcName = this@AndroidUIBridge::finish.name,
             params = null,
             classOfT = Any::class.java,
             body = {
                 viewModel.finish()
-            })
-    }
-
-    override fun getTransactions(params: String?) {
-        execute(funcName = this@AndroidUI::getTransactions.name,
-            params = params,
-            classOfT = GetTransactionsRequest::class.java,
-            body = {
-                it?.let {
-                    viewModel.getTransactions(it.data)
-                }
             })
     }
 }
