@@ -1,6 +1,6 @@
 package com.tenqube.webui.dto
 
-data class ShowConfirmDto(
+data class ShowDialogDto(
     val title: String,
     val message: String,
     val positive: ButtonDto,
