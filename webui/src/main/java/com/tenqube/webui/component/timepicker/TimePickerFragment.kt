@@ -59,6 +59,10 @@ class TimePickerFragment: DialogFragment(), TimePickerDialog.OnTimeSetListener {
         }
     }
 
+    fun setListener(listener: TimePickerListener) {
+        this.listener = listener
+    }
+
     fun onTimeCalendar(time: String){
         listener?.onCalendar(time)
     }

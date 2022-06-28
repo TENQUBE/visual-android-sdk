@@ -12,9 +12,10 @@ import com.tenqube.webui.component.bottomsheet.CustomBottomSheet
 import com.tenqube.webui.component.bottomsheet.model.OpenSelectBoxItem
 import com.tenqube.webui.component.bottomsheet.model.OpenSelectBoxRequest
 import com.tenqube.webui.component.datepicker.DatePickerFragment
+import com.tenqube.webui.component.datepicker.DatePickerListener
 import com.tenqube.webui.component.datepicker.model.DateRequest
-import com.tenqube.webui.component.dialog.DialogCallback
 import com.tenqube.webui.component.timepicker.TimePickerFragment
+import com.tenqube.webui.component.timepicker.TimePickerListener
 import com.tenqube.webui.component.timepicker.model.TimeRequest
 import com.tenqube.webui.dto.*
 
@@ -37,44 +38,44 @@ class UiServiceImpl(
         Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
     }
 
-    override fun showDialog(request: ShowDialogDto, callback: DialogCallback) {
+    override fun showDialog(request: ShowDialog) {
         val builder = AlertDialog.Builder(activity)
 
         builder
-            .setTitle(request.title)
-            .setMessage(request.message)
+            .setTitle(request.request.title)
+            .setMessage(request.request.message)
             .setPositiveButton(
-                request.positive.button.text
+                request.request.positive.button.text
             ) { _, _ ->
-                callback.onClickPositiveButton()
+                request.callback.onClickPositiveButton()
             }
             .setNegativeButton(
-                request.negative.button.text
+                request.request.negative.button.text
             ) { _, _ ->
-                callback.onCLickNegativeButton()
+                request.callback.onCLickNegativeButton()
             }
             .create()
             .run {
                 this.show()
                 this.getButton(AlertDialog.BUTTON_POSITIVE).apply {
-                    setBackgroundColor(Color.parseColor(request.positive.button.bgColor))
-                    setTextColor(Color.parseColor(request.positive.button.color))
+                    setBackgroundColor(Color.parseColor(request.request.positive.button.bgColor))
+                    setTextColor(Color.parseColor(request.request.positive.button.color))
                 }
 
                 this.getButton(AlertDialog.BUTTON_NEGATIVE).apply {
-                    setBackgroundColor(Color.parseColor(request.negative.button.bgColor))
-                    setTextColor(Color.parseColor(request.negative.button.color))
+                    setBackgroundColor(Color.parseColor(request.request.negative.button.bgColor))
+                    setTextColor(Color.parseColor(request.request.negative.button.color))
                 }
             }
     }
 
-    override fun showSelectBox(request: ShowSelectBoxDto) {
+    override fun showSelectBox(request: ShowSelectBox) {
         val bottomSheet = CustomBottomSheet(activity)
         bottomSheet.showBottomDialog(
             OpenSelectBoxRequest(
-                request.title,
-                request.selectedColor,
-                request.data.map {
+                request.request.title,
+                request.request.selectedColor,
+                request.request.data.map {
                     OpenSelectBoxItem(
                         it.name,
                         it.orderByType,
@@ -82,6 +83,16 @@ class UiServiceImpl(
                     )
                 }
         ))
+        bottomSheet.setBottomListener(object : CustomBottomSheet.OnBottomListener{
+            override fun onItemSelected(openSelectBoxItem: OpenSelectBoxItem) {
+                bottomSheet.dismiss()
+                request.callback(SelectBoxItem(
+                    openSelectBoxItem.name,
+                    openSelectBoxItem.orderByType,
+                    openSelectBoxItem.isSelected
+                ))
+            }
+        })
     }
 
     override fun openNewView(request: OpenNewViewDto) {
@@ -99,21 +110,35 @@ class UiServiceImpl(
         }
     }
 
-    override fun showDatePicker(request: ShowDatePickerDto) {
+    override fun showDatePicker(request: ShowDatePicker) {
         val newFragment = DatePickerFragment.newInstance(
             DateRequest(
-                request.date,
-                request.callbackJS
+                request.request.date,
+                request.request.callbackJS
             )
+        )
+        newFragment.setListener(
+            object : DatePickerListener {
+                override fun onCalendar(date: String) {
+                    request.callback(date)
+                }
+            }
         )
         newFragment.show(activity.supportFragmentManager, "datePicker")
     }
 
-    override fun showTimePicker(request: ShowTimePickerDto) {
+    override fun showTimePicker(request: ShowTimePicker) {
         val newFragment = TimePickerFragment.newInstance(
             TimeRequest(
-                request.date
+                request.request.date
             )
+        )
+        newFragment.setListener(
+            object : TimePickerListener {
+                override fun onCalendar(time: String) {
+                    request.callback(time)
+                }
+            }
         )
         newFragment.show(activity.supportFragmentManager, "timePicker")
     }

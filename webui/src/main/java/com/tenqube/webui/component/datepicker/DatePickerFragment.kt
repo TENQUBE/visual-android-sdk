@@ -16,14 +16,15 @@ class DatePickerFragment : DialogFragment(), OnDateSetListener {
     private var listener: DatePickerListener? = null
     lateinit var calendar: Calendar
     lateinit var dateRequest: DateRequest
-    fun setListener(mListener: DatePickerListener?) {
-        this.listener = mListener
+
+    fun setListener(listener: DatePickerListener) {
+        this.listener = listener
     }
 
     override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
         dateRequest.callbackJS?.let { callbackJS ->
             calendar[year, month] = day
-            onCalendar(Utils.getYMD(calendar), callbackJS)
+            onCalendar(Utils.getYMD(calendar))
         }
     }
 
@@ -62,19 +63,15 @@ class DatePickerFragment : DialogFragment(), OnDateSetListener {
         super.onAttach(context)
     }
 
-    fun onCalendar(date: String, callback: String) {
+    fun onCalendar(date: String) {
         if (listener != null) {
-            listener!!.onCalendar(date, callback)
+            listener!!.onCalendar(date)
         }
     }
 
     override fun onDetach() {
         super.onDetach()
         listener = null
-    }
-
-    interface DatePickerListener {
-        fun onCalendar(date: String, callback: String)
     }
 
     companion object {

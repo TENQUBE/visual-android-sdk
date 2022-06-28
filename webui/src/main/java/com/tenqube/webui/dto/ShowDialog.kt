@@ -1,6 +1,13 @@
 package com.tenqube.webui.dto
 
-data class ShowDialogDto(
+import com.tenqube.webui.component.dialog.DialogCallback
+
+data class ShowDialog(
+    val request: ShowDialogRequest,
+    val callback: DialogCallback
+)
+
+data class ShowDialogRequest(
     val title: String,
     val message: String,
     val positive: ButtonDto,

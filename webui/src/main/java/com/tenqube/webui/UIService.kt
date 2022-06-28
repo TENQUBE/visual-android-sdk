@@ -1,6 +1,5 @@
 package com.tenqube.webui
 
-import com.tenqube.webui.component.dialog.DialogCallback
 import com.tenqube.webui.dto.*
 
 interface UIService {
@@ -10,13 +9,13 @@ interface UIService {
 
     fun showToast(msg: String)
 
-    fun showDialog(request: ShowDialogDto, callback: DialogCallback)
+    fun showDialog(request: ShowDialog)
 
-    fun showSelectBox(request: ShowSelectBoxDto)
+    fun showSelectBox(request: ShowSelectBox)
 
     fun openNewView(request: OpenNewViewDto)
 
-    fun showDatePicker(request: ShowDatePickerDto)
+    fun showDatePicker(request: ShowDatePicker)
 
-    fun showTimePicker(request: ShowTimePickerDto)
+    fun showTimePicker(request: ShowTimePicker)
 }
