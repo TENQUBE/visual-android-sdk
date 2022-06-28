@@ -37,7 +37,7 @@ object Validator {
     @Throws(ParameterException::class)
     fun isYMD(at: String) {
         var isValid = !TextUtils.isEmpty(at) && at.length == 10
-        Utils.ymdDF.setLenient(false)
+        Utils.ymdDF.isLenient = false
         try {
             Utils.ymdDF.parse(at)
         } catch (e: Exception) {
