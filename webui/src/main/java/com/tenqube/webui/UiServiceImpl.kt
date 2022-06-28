@@ -20,8 +20,7 @@ import com.tenqube.webui.dto.*
 
 class UiServiceImpl(
     private val activity: AppCompatActivity,
-    private val webView: WebView,
-    private val bottomSheet: CustomBottomSheet
+    private val webView: WebView
 ) : UIService {
 
     private var audioManager: AudioManager? = null
@@ -70,6 +69,7 @@ class UiServiceImpl(
     }
 
     override fun showSelectBox(request: ShowSelectBoxDto) {
+        val bottomSheet = CustomBottomSheet(activity)
         bottomSheet.showBottomDialog(
             OpenSelectBoxRequest(
                 request.title,
