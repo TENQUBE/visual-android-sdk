@@ -4,8 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.tenqube.ibk.bridge.dto.request.*
+import com.tenqube.webui.UIService
 
-class VisualViewModel: ViewModel() {
+class VisualViewModel(
+    private val uiService: UIService
+): ViewModel() {
 
     private val _url = MutableLiveData<String>()
     val url: LiveData<String> = _url

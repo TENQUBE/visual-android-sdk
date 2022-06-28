@@ -112,8 +112,7 @@ class UiServiceImpl(
     override fun showTimePicker(request: ShowTimePickerDto) {
         val newFragment = TimePickerFragment.newInstance(
             TimeRequest(
-                request.date,
-                request.callbackJS
+                request.date
             )
         )
         newFragment.show(activity.supportFragmentManager, "timePicker")

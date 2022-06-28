@@ -36,6 +36,5 @@ interface VisualBridge {
 
         @JavascriptInterface
         fun showTimePicker(params: String?)
-
     }
 }

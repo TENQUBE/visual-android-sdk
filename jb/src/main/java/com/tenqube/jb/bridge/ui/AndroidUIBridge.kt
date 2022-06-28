@@ -6,6 +6,7 @@ import com.tenqube.jb.bridge.VisualBridge
 import com.tenqube.jb.bridge.dto.request.*
 import com.tenqube.shared.webview.BridgeBase
 import com.tenqube.webui.UIService
+import com.tenqube.webui.component.dialog.DialogCallback
 
 class AndroidUIBridge(
     webView: WebView,
@@ -45,7 +46,6 @@ class AndroidUIBridge(
             classOfT = Any::class.java,
             body = {
                 it?.let {
-                    uiService.onPageLoaded() // 백키 권한을 웹뷰로 전달
                 }
             })
     }
@@ -58,7 +58,7 @@ class AndroidUIBridge(
             classOfT = RefreshRequest::class.java,
             body = {
                 it?.let {
-                    uiService.setRefreshEnabled(it.data.enabled)
+//                    uiService.setRefreshEnabled(it.data.enabled)
                 }
             })
     }
@@ -82,7 +82,15 @@ class AndroidUIBridge(
             classOfT = ShowConfirmRequest::class.java,
             body = {
                 it?.let {
-                    uiService.showConfirm(it.data.asDomain())
+                    uiService.showDialog(it.data.asDomain(), object : DialogCallback {
+                        override fun onClickPositiveButton() {
+                            TODO("Not yet implemented")
+                        }
+
+                        override fun onCLickNegativeButton() {
+                            TODO("Not yet implemented")
+                        }
+                    })
                 }
             })
     }

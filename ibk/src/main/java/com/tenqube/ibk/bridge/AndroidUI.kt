@@ -13,7 +13,8 @@ class AndroidUI(
         get() = "visualUI"
 
     override fun openNotiSettings() {
-        execute(funcName = this@AndroidUI::openNotiSettings.name,
+        execute(
+            funcName = this@AndroidUI::openNotiSettings.name,
             params = null,
             classOfT = Any::class.java,
             body = {
@@ -24,7 +25,8 @@ class AndroidUI(
     }
 
     override fun getBanks() {
-        execute(funcName = this@AndroidUI::getBanks.name,
+        execute(
+            funcName = this@AndroidUI::getBanks.name,
             params = null,
             classOfT = Any::class.java,
             body = {
@@ -35,7 +37,8 @@ class AndroidUI(
     }
 
     override fun openDeepLink(params: String?) {
-        execute(funcName = this@AndroidUI::getBanks.name,
+        execute(
+            funcName = this@AndroidUI::getBanks.name,
             params = params,
             classOfT = OpenDeepLinkRequest::class.java,
             body = {

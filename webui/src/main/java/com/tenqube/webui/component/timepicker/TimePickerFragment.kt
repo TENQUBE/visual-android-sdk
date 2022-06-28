@@ -43,7 +43,7 @@ class TimePickerFragment: DialogFragment(), TimePickerDialog.OnTimeSetListener {
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
         calendar[Calendar.HOUR_OF_DAY] = hourOfDay
         calendar[Calendar.MINUTE] = minute
-        onTimeCalendar(Utils.getHMS(calendar), timeRequest.callbackJS)
+        onTimeCalendar(Utils.getHMS(calendar))
     }
 
     override fun onAttach(activity: Activity) {
@@ -59,8 +59,8 @@ class TimePickerFragment: DialogFragment(), TimePickerDialog.OnTimeSetListener {
         }
     }
 
-    fun onTimeCalendar(time: String, callback: String){
-        listener?.onCalendar(time, callback)
+    fun onTimeCalendar(time: String){
+        listener?.onCalendar(time)
     }
 
     override fun onDetach() {

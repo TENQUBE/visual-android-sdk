@@ -8,12 +8,10 @@ import java.io.Serializable
 
 class TimeRequest(
     val time: String,
-    val callbackJS: String
 ): Request(), Serializable {
 
     @Throws(ParameterException::class)
     override fun checkParams() {
         Validator.isTime(time)
-        notNull(callbackJS)
     }
 }
