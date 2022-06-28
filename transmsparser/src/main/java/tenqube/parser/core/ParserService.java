@@ -1,9 +1,5 @@
 package tenqube.parser.core;
 
-/**
- * Created by tenqube on 2017. 4. 18..
- */
-
 import android.content.Context;
 import android.database.SQLException;
 import android.os.AsyncTask;
