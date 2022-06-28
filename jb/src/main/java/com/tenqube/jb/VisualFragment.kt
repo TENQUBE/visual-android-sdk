@@ -9,9 +9,8 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.tenqube.jb.databinding.MainFragmentJbBinding
-import com.tenqube.jb.infrastructure.framework.widget.WebViewManager
-import com.tenqube.jb.infrastructure.framework.widget.WebViewParam
-import java.util.*
+import com.tenqube.shared.webview.WebViewManager
+import com.tenqube.shared.webview.WebViewParam
 
 class VisualFragment : Fragment() {
 
@@ -29,9 +28,8 @@ class VisualFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewModel = ViewModelProvider(this)[VisualViewModel::class.java]
-        viewDataBinding = MainFragmentJbBinding.inflate(inflater, container, false).apply {
-            viewmodel = viewModel
-        }
+        viewDataBinding = MainFragmentJbBinding.inflate(inflater, container, false)
+            .apply { viewmodel = viewModel }
 
         viewDataBinding.search.setOnClickListener {
             viewModel.start(viewDataBinding.url.text.toString())
@@ -73,37 +71,9 @@ class VisualFragment : Fragment() {
     private fun setupWebView() {
         with(viewDataBinding.webView) {
             webViewManager = WebViewManager(
-                WebViewParam(requireActivity(), this)
+                WebViewParam(this)
             )
-            webViewManager.setupWebViewSettings()
-            setupWebViewClient(this)
-            setupWebChromeClient(this)
-        }
-    }
-
-    private fun setupWebViewClient(webView: WebView) {
-        webView.webViewClient = object : WebViewClient() {
-            override fun onReceivedError(
-                view: WebView,
-                errorCode: Int,
-                description: String,
-                failingUrl: String
-            ) {
-                viewDataBinding.webView.visibility = View.GONE
-            }
-
-            override fun onPageFinished(view: WebView?, url: String?) {
-                super.onPageFinished(view, url)
-            }
-        }
-    }
-
-    private fun setupWebChromeClient(webView: WebView) {
-        webView.webChromeClient = object : WebChromeClient() {
-            override fun onConsoleMessage(cm: ConsoleMessage?): Boolean {
-                val message = (cm?.message() ?: "").toLowerCase(Locale.getDefault())
-                return super.onConsoleMessage(cm)
-            }
+            webViewManager.setupWebView()
         }
     }
 

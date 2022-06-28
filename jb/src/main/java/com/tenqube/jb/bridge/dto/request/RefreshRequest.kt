@@ -1,6 +1,8 @@
 package com.tenqube.jb.bridge.dto.request
 
-data class RefreshRequest(val data: RefreshRequestDto) : Request {
+import com.tenqube.shared.webview.dto.RequestBody
+
+data class RefreshRequest(val data: RefreshRequestDto) : RequestBody {
     override fun checkParams() {
     }
 }

@@ -186,9 +186,6 @@ public class ParserService implements Parser {
             this.mParser.mParserPresenter.initTransactions();
             this.mParser.mParserPresenter.initMap();
             this.mParser.mParserPresenter.setSendersWithBulk();
-            this.mParser.mParserPresenter.initFinancialProductRules();
-
-            //벌크 시작 알린후
         }
 
         void cancelTask() {
@@ -207,7 +204,6 @@ public class ParserService implements Parser {
 
             int totalCnt = this.mAdapter.getSmsCount();
             ArrayList<Transaction> transactionBuffer = null;
-            ArrayList<FinancialProduct> financialProductBuffer = null;
 
             for (int i = 0; i < totalCnt && !this.mIsCanceled; i++) {
                 SMS sms = this.mAdapter.getSmsAt(i);
@@ -218,15 +214,6 @@ public class ParserService implements Parser {
                             transactionBuffer = new ArrayList<>();
                         }
                         transactionBuffer.addAll(transactions);
-                    } else { // transaction 파싱 안된경우
-
-                        ParserResult finResult = mParser.mParserPresenter.parseFinancialProduct(sms, mParser.mParserPresenter.getRepSender(sms));
-                        if(finResult.resultCode == ResultCode.SEND_TO_SERVER) {
-                            if (financialProductBuffer == null) {
-                                financialProductBuffer = new ArrayList<>();
-                            }
-                            financialProductBuffer.add(finResult.financialProduct);
-                        }
                     }
                 }
 
@@ -236,22 +223,12 @@ public class ParserService implements Parser {
                     transactionBuffer = null;
                 }
 
-                if(financialProductBuffer != null && financialProductBuffer.size() >= this.mParser.mTranCnt) {
-                    financialProductBuffer = null;
-                    mSendToServerThread.pushFinancialProducts(financialProductBuffer);
-                }
-
-
                 mAdapter.onProgress(i, totalCnt);
             }
 
             if (!this.mIsCanceled) {
                 if (transactionBuffer != null && !transactionBuffer.isEmpty()) {
                     mSendToServerThread.pushTransactions(transactionBuffer);
-                }
-
-                if (financialProductBuffer != null && !financialProductBuffer.isEmpty()) {
-                    mSendToServerThread.pushFinancialProducts(financialProductBuffer);
                 }
             }
 

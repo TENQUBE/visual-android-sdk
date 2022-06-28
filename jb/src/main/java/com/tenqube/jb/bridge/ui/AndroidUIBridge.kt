@@ -2,15 +2,15 @@ package com.tenqube.jb.bridge.ui
 
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
-import com.tenqube.jb.bridge.BridgeBase
-import com.tenqube.jb.bridge.RewardBridge
+import com.tenqube.jb.bridge.VisualBridge
 import com.tenqube.jb.bridge.dto.request.*
+import com.tenqube.shared.webview.BridgeBase
 import com.tenqube.webui.UIService
 
 class AndroidUIBridge(
     webView: WebView,
     private val uiService: UIService
-) : BridgeBase(webView), RewardBridge.UI {
+) : BridgeBase(webView), VisualBridge.UI {
 
     override val bridgeName: String
         get() = "visualUI"

@@ -1,5 +1,20 @@
 package tenqube.parser.core;
 
+import static tenqube.parser.constants.Constants.ALL;
+import static tenqube.parser.constants.Constants.LG_PAY;
+import static tenqube.parser.constants.Constants.SAMSUNG_PAY;
+import static tenqube.parser.core.BaseQueryHelper.IN;
+import static tenqube.parser.core.ParserReaderContract.TransactionsTable.INSERT_TRANSACTION;
+import static tenqube.parser.core.Utils.getSMSType;
+import static tenqube.parser.core.Utils.isSpendSMS;
+import static tenqube.parser.core.Utils.makeCardKey;
+import static tenqube.parser.core.Utils.makeRegKey;
+import static tenqube.parser.core.Utils.makeSpentMoneyDwTypeKey;
+import static tenqube.parser.core.Utils.transformRepSender;
+import static tenqube.parser.core.Utils.transformSender;
+import static tenqube.parser.util.LogUtil.LOGI;
+import static tenqube.parser.util.LogUtil.makeLogTag;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.SQLException;
@@ -15,10 +30,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import tenqube.parser.constants.Constants;
-import tenqube.parser.finsmsparser.presentation.FinSmsParser;
-import tenqube.parser.finsmsparser.presentation.FinSmsParserBuilder;
-import tenqube.parser.finsmsparser.presentation.model.FinanceResponse;
-import tenqube.parser.finsmsparser.presentation.model.FinancialProduct;
 import tenqube.parser.model.ParserResult;
 import tenqube.parser.model.ParsingRule;
 import tenqube.parser.model.RegData;
@@ -26,22 +37,6 @@ import tenqube.parser.model.ResultCode;
 import tenqube.parser.model.SMS;
 import tenqube.parser.model.Sender;
 import tenqube.parser.model.Transaction;
-
-import static tenqube.parser.constants.Constants.ALL;
-import static tenqube.parser.constants.Constants.LG_PAY;
-import static tenqube.parser.constants.Constants.SAMSUNG_PAY;
-import static tenqube.parser.core.BaseQueryHelper.IN;
-import static tenqube.parser.core.ParserReaderContract.TransactionsTable.INSERT_TRANSACTION;
-import static tenqube.parser.core.ParserService.mIsDebug;
-import static tenqube.parser.core.Utils.getSMSType;
-import static tenqube.parser.core.Utils.isSpendSMS;
-import static tenqube.parser.core.Utils.makeCardKey;
-import static tenqube.parser.core.Utils.makeRegKey;
-import static tenqube.parser.core.Utils.makeSpentMoneyDwTypeKey;
-import static tenqube.parser.core.Utils.transformRepSender;
-import static tenqube.parser.core.Utils.transformSender;
-import static tenqube.parser.util.LogUtil.LOGI;
-import static tenqube.parser.util.LogUtil.makeLogTag;
 
 
 class ParserPresenter {
@@ -60,14 +55,12 @@ class ParserPresenter {
 
     private Map<String, TransactionTableData> mTransactionMap =  new HashMap<>();
     private Map<String, CardTableData> mCardMap =  new HashMap<>();
-    private FinSmsParser finSmsParser;
 
     ParserPresenter(Context context)  {
         this.mContext = context;
         mParserDao = new ParserDao(context);
         mMapper = new ParserMapper();
         mRegHandler = new RegHandler(context);
-        finSmsParser = new FinSmsParserBuilder().with(context).build();
         LOGI(TAG, "ParsingHelper constructor");
     }
 
@@ -609,10 +602,6 @@ class ParserPresenter {
 
     }
 
-    void initFinancialProductRules() {
-        finSmsParser.cacheAllFinanceRules();
-    }
-
     void insertTransactionAndMaxSmsId(ArrayList<Transaction> transactions) {
         LOGI(TAG, "insertTransactionAndMaxSmsId");
 
@@ -733,7 +722,6 @@ class ParserPresenter {
         mOffsetMap = null;
         mTransactionMap = null;
         mCardMap = null;
-        finSmsParser.clearFinanceRuleCashes();
 
     }
 
@@ -875,52 +863,8 @@ class ParserPresenter {
             return parserResult;
         } catch (Exception e) {
             // 파싱 안됨
-            ParserResult finResult = parseFinancialProduct(sms, repSender);
-
-            if(finResult.resultCode != ResultCode.SEND_TO_SERVER) {
-                return new ParserResult(getResultCode(parserResult.resultCode, finResult.resultCode), null, null);
-            } else {
-                return finResult;
-            }
+            return parserResult;
         }
-
-    }
-
-    private int getResultCode(int tranResultCode, int finResultCode) {
-
-        if(tranResultCode == ResultCode.NEED_TO_SYNC_PARSING_RULE ||
-                tranResultCode == ResultCode.NEED_TO_SYNC_PARSING_RULE_NO_SENDER ||
-                tranResultCode == ResultCode.NEED_TO_SEND_TO_SERVER) {
-
-            return tranResultCode;
-        } else {
-            return finResultCode;
-        }
-
-    }
-
-    ParserResult parseFinancialProduct(SMS sms, String repSender) {
-        FinanceResponse<FinancialProduct> result = finSmsParser.parse(tenqube.parser.util.ParserMapper.INSTANCE.toFinancialSms(sms, repSender));
-
-        if(result instanceof FinanceResponse.Success) {
-            return new ParserResult(
-                    ResultCode.SEND_TO_SERVER,
-                    null,
-                   tenqube.parser.util.ParserMapper.INSTANCE.fromFinParser(((FinanceResponse.Success) result).getData(), sms)
-            );
-        } else if (result instanceof FinanceResponse.NeedToUpdate) {
-            return new ParserResult(
-                    ResultCode.NEED_TO_SYNC_PARSING_RULE,
-                    null,
-                    null);
-
-        } else {
-            return new ParserResult(
-                    ResultCode.NOT_PARSED,
-                    null,
-                    null);
-        }
-
     }
 
     /***
@@ -1060,7 +1004,6 @@ class ParserPresenter {
             mParserDao.mergeRegDatas(parsingRule.regDatas, bulkSize);
             mParserDao.mergeSenders(parsingRule.senders, bulkSize);
             mParserDao.mergeBanks(parsingRule.banks, bulkSize);
-            finSmsParser.saveFinanceRules(tenqube.parser.util.ParserMapper.INSTANCE.toFinItems(parsingRule.financialProductRules));
         } catch (SQLiteException e) {
             e.printStackTrace();
         }

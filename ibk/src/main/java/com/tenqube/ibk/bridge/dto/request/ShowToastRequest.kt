@@ -1,4 +1,4 @@
-package com.tenqube.jb.bridge.dto.request
+package com.tenqube.ibk.bridge.dto.request
 
 import com.tenqube.shared.webview.dto.RequestBody
 

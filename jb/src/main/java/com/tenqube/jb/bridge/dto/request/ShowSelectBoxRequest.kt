@@ -1,7 +1,10 @@
 package com.tenqube.jb.bridge.dto.request
 
+import com.tenqube.shared.webview.dto.RequestBody
 
-data class ShowSelectBoxRequest(val data: ShowSelectBoxDto) : Request {
+
+data class ShowSelectBoxRequest(val data: ShowSelectBoxDto) :
+    RequestBody {
     override fun checkParams() {
     }
 }

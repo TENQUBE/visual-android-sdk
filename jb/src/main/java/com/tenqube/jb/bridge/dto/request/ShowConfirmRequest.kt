@@ -1,7 +1,9 @@
 package com.tenqube.jb.bridge.dto.request
 
+import com.tenqube.shared.webview.dto.RequestBody
 
-data class ShowConfirmRequest(val data: ShowConfirmDto) : Request {
+
+data class ShowConfirmRequest(val data: ShowConfirmDto) : RequestBody {
     override fun checkParams() {
     }
 }

@@ -6,6 +6,7 @@ import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import java.lang.Exception
 import java.util.*
+import kotlin.math.max
 
 fun String.decode(): ByteArray {
     return Base64.decode(this, Base64.DEFAULT)
@@ -45,7 +46,6 @@ fun Long.elapsedLog(clazz: Class<Any>, msg : String) {
         clazz,
         "$msg / 경과시간: ${(System.currentTimeMillis() - this) / 1000}s ${System.currentTimeMillis() - this} ms "
     )
-
 }
 
 fun Date.toCal(): Calendar {
@@ -54,6 +54,9 @@ fun Date.toCal(): Calendar {
     }
 }
 
+fun Long.time(second: Int): Long {
+    return max(0, second * 1000 - (System.currentTimeMillis() - this))
+}
 
 @Throws(JsonSyntaxException::class)
 fun <T> String.fromJson(classOfT: Class<T>): T {
