@@ -1,6 +1,8 @@
 package com.tenqube.jb.bridge.dto.request
 
-data class OpenNewViewRequest(val data: OpenNewViewDto) : Request {
+import com.tenqube.shared.webview.dto.RequestBody
+
+data class OpenNewViewRequest(val data: OpenNewViewDto) : RequestBody {
     override fun checkParams() {
     }
 }

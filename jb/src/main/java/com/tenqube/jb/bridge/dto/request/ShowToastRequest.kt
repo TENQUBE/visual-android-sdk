@@ -1,6 +1,8 @@
 package com.tenqube.jb.bridge.dto.request
 
-data class ShowToastRequest(val data: ShowToastDto) : Request {
+import com.tenqube.shared.webview.dto.RequestBody
+
+data class ShowToastRequest(val data: ShowToastDto) : RequestBody {
     override fun checkParams() {
     }
 }

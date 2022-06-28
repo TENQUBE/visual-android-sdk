@@ -1,6 +1,9 @@
 package com.tenqube.jb.bridge.dto.request
 
-data class ShowDatePickerRequest(val data: ShowDatePickerDto) : Request {
+import com.tenqube.shared.webview.dto.RequestBody
+
+data class ShowDatePickerRequest(val data: ShowDatePickerDto) :
+    RequestBody {
     override fun checkParams() {
     }
 }

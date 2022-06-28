@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.tenqube.ibk" >
+
+    <application>
+        <activity
+            android:name=".VisualActivity"
+            android:exported="false"
+            android:label="@string/title_activity_visual"
+            android:theme="@style/Theme.Visualandroidsdk.NoActionBar" />
+    </application>
+
+</manifest>
