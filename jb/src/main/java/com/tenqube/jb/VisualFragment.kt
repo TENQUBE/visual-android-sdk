@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.tenqube.jb.databinding.MainFragmentJbBinding
 import com.tenqube.jb.infrastructure.framework.widget.WebViewManager
+import com.tenqube.jb.infrastructure.framework.widget.WebViewParam
 import java.util.*
 
 class VisualFragment : Fragment() {
@@ -70,10 +71,11 @@ class VisualFragment : Fragment() {
     }
 
     private fun setupWebView() {
-        webViewManager = WebViewManager(requireActivity())
         with(viewDataBinding.webView) {
-            webViewManager.setupWebViewSettings(this)
-            webViewManager.setupBridges(this)
+            webViewManager = WebViewManager(
+                WebViewParam(requireActivity(), this)
+            )
+            webViewManager.setupWebViewSettings()
             setupWebViewClient(this)
             setupWebChromeClient(this)
         }

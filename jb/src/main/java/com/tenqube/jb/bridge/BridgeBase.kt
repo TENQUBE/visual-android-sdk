@@ -33,7 +33,6 @@ open class BridgeBase(
             response.toJson())
 
         webView.loadUrl(url)
-
         return@withContext response
     }
 

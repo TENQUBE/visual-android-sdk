@@ -10,3 +10,5 @@ rootProject.name = "visual-android-sdk"
 include ':app'
 include ':webui'
 include ':jb'
+include ':shared'
+include ':transmsparser'

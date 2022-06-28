@@ -4,10 +4,17 @@ import android.app.Activity
 import android.webkit.WebSettings
 import android.webkit.WebView
 
-class WebViewManager(private val activity: Activity) {
+data class WebViewParam(
+    val activity: Activity,
+    val webView: WebView
+)
 
-    fun setupWebViewSettings(webView: WebView) {
-        webView.settings.apply {
+class WebViewManager(
+    private val param: WebViewParam
+) {
+
+    fun setupWebViewSettings() {
+        param.webView.settings.apply {
             javaScriptEnabled = true
             domStorageEnabled = true
             databaseEnabled = true
@@ -18,12 +25,5 @@ class WebViewManager(private val activity: Activity) {
         }
 
         WebView.setWebContentsDebuggingEnabled(true)
-    }
-
-    fun setupBridges(webView: WebView) {
-//        uiService = WidgetUIService(activity, webView)
-//        with(AndroidUIBridge(webView, uiService)) {
-//            webView.addJavascriptInterface(this, this.bridgeName)
-//        }
     }
 }

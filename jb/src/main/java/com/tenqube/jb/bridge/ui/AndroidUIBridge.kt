@@ -52,7 +52,8 @@ class AndroidUIBridge(
 
     @JavascriptInterface
     override fun setRefreshEnabled(params: String?) {
-        execute(funcName = this@AndroidUIBridge::setRefreshEnabled.name,
+        execute(
+            funcName = this@AndroidUIBridge::setRefreshEnabled.name,
             params = params,
             classOfT = RefreshRequest::class.java,
             body = {
