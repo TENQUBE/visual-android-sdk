@@ -24,7 +24,8 @@ class VisualFragment : Fragment() {
     private lateinit var webViewManager: WebViewManager
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         viewModel = ViewModelProvider(this)[VisualViewModel::class.java]
@@ -80,7 +81,7 @@ class VisualFragment : Fragment() {
     private fun setupOnBackPressedDispatcher() {
         activity?.onBackPressedDispatcher?.addCallback(object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if(viewDataBinding.webView.canGoBack()) {
+                if (viewDataBinding.webView.canGoBack()) {
                     viewDataBinding.webView.goBack()
                 } else {
                     activity?.finish()

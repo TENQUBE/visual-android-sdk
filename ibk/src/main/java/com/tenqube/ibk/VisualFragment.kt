@@ -1,11 +1,11 @@
 package com.tenqube.ibk
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.*
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.tenqube.ibk.bridge.AndroidUIBridge
 import com.tenqube.ibk.databinding.FragmentMainIbkBinding
@@ -24,14 +24,15 @@ class VisualFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         viewModel = ViewModelProvider(this)[VisualViewModel::class.java]
         viewDataBinding = FragmentMainIbkBinding.inflate(inflater, container, false)
             .apply {
-            viewmodel = viewModel
-        }
+                viewmodel = viewModel
+            }
         return viewDataBinding.root
     }
 

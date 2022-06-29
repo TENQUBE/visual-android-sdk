@@ -27,21 +27,21 @@ inline fun <T> invokeFuncWithLoggingTimeElapsed(
     val startTime = System.currentTimeMillis()
     val result: T = function.invoke()
 
-    if(Utils.isDebug)
-        Log.d("VisualSDK","$prefix : ${System.currentTimeMillis() - startTime} ms")
+    if (Utils.isDebug)
+        Log.d("VisualSDK", "$prefix : ${System.currentTimeMillis() - startTime} ms")
 
     return result
 }
 
 fun Boolean.toInt(): Int {
-    return if(this) {
+    return if (this) {
         1
     } else {
         0
     }
 }
 
-fun Long.elapsedLog(clazz: Class<Any>, msg : String) {
+fun Long.elapsedLog(clazz: Class<Any>, msg: String) {
     Utils.logD(
         clazz,
         "$msg / 경과시간: ${(System.currentTimeMillis() - this) / 1000}s ${System.currentTimeMillis() - this} ms "
@@ -95,12 +95,11 @@ fun Int.toFullCode(): Int {
             this
         }
     }
-
 }
 
 fun Int.toMcode(): Int {
 
-    return if(this > 100000) {
+    return if (this > 100000) {
         this / 100
     } else {
         this
@@ -108,33 +107,32 @@ fun Int.toMcode(): Int {
 }
 
 fun Int.dayOfWeek(): Int { // 1(월) 2 3 4 5 6 7(일)
-    return if(this  == 1) {
+    return if (this == 1) {
         7
     } else {
         this - 1
     }
 }
 
-fun String.toGroupByMonth() : String {
-    return this.substring(0, 7)// 2020-10
+fun String.toGroupByMonth(): String {
+    return this.substring(0, 7) // 2020-10
 }
 
-fun String.toGroupByDate() : String {
-    return this.substring(0, 10)// 2020-10-10
+fun String.toGroupByDate(): String {
+    return this.substring(0, 10) // 2020-10-10
 }
 
-
-fun String.toHour() : Int {
-    return this.substring(11, 13).toInt()//
+fun String.toHour(): Int {
+    return this.substring(11, 13).toInt() //
 }
 
-fun String.toGroupByWeek(currentWeekMonday: Long) : String { // 미랠
+fun String.toGroupByWeek(currentWeekMonday: Long): String { // 미랠
 
     val tranTime = Utils.convertDateTimeStrToDate(this).time
 
     val diff = (currentWeekMonday - tranTime) // 미래를 모두 이번주로 보는 현상이 발생
     val diffDays = diff / (24 * 60 * 60 * 1000) / 7
-    return if(diff < 0) {
+    return if (diff < 0) {
         diffDays
     } else {
         diffDays + 1

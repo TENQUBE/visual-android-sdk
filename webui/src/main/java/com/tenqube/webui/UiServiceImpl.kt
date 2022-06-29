@@ -82,15 +82,18 @@ class UiServiceImpl(
                         it.isSelected
                     )
                 }
-        ))
-        bottomSheet.setBottomListener(object : CustomBottomSheet.OnBottomListener{
+            )
+        )
+        bottomSheet.setBottomListener(object : CustomBottomSheet.OnBottomListener {
             override fun onItemSelected(openSelectBoxItem: OpenSelectBoxItem) {
                 bottomSheet.dismiss()
-                request.callback(SelectBoxItem(
-                    openSelectBoxItem.name,
-                    openSelectBoxItem.orderByType,
-                    openSelectBoxItem.isSelected
-                ))
+                request.callback(
+                    SelectBoxItem(
+                        openSelectBoxItem.name,
+                        openSelectBoxItem.orderByType,
+                        openSelectBoxItem.isSelected
+                    )
+                )
             }
         })
     }

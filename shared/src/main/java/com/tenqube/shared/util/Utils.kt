@@ -13,7 +13,7 @@ object Utils {
     const val TAG = "VisualSDK"
 
     fun logD(className: Class<Any>, msg: String) {
-        if(isDebug) {
+        if (isDebug) {
             Log.d(TAG, "${className.simpleName} $msg")
         }
     }
@@ -39,7 +39,7 @@ object Utils {
     }
 
     fun convertDateTimeStrToCalendar(str: String): Calendar {
-        return Calendar.getInstance().apply {  time = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA).parse(str) }
+        return Calendar.getInstance().apply { time = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA).parse(str) }
             ?: throw FormatNotMatchedException("Date Format Not Matched")
     }
 
@@ -103,5 +103,4 @@ object Utils {
         calendar.add(Calendar.DATE, -(dayOfWeek - 1)) // 월요일로 만듦니다.
         return calendar
     }
-
 }

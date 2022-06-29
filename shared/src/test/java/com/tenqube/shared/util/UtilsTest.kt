@@ -43,7 +43,6 @@ class UtilsTest {
         MatcherAssert.assertThat(value, CoreMatchers.`is`(str))
     }
 
-
     @Test
     fun convertDateTimeStrToCalendar_str_returnCalendar() {
         // Given
@@ -67,7 +66,6 @@ class UtilsTest {
         // Then
         MatcherAssert.assertThat(value, CoreMatchers.`is`(str))
     }
-
 
     @Test
     fun convertTimeStrToCalendar_str_returnCalendar() {
@@ -105,5 +103,4 @@ class UtilsTest {
         // Then
         MatcherAssert.assertThat(monday, CoreMatchers.`is`(Calendar.MONDAY))
     }
-
 }

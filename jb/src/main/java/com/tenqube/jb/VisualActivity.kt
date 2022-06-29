@@ -1,7 +1,7 @@
 package com.tenqube.jb
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.tenqube.shared.util.inTransaction
 import timber.log.Timber
 

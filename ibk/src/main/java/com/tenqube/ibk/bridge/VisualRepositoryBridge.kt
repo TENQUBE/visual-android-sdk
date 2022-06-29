@@ -8,7 +8,7 @@ import com.tenqube.shared.webview.BridgeBase
 class VisualRepositoryBridge(
     webView: WebView,
     private val viewModel: VisualViewModel
-): BridgeBase(webView), Bridge.Repository {
+) : BridgeBase(webView), Bridge.Repository {
     override val bridgeName: String
         get() = "visualRepository"
 
@@ -21,17 +21,20 @@ class VisualRepositoryBridge(
                 it?.let {
                     viewModel.getBanks()
                 }
-            })
+            }
+        )
     }
 
     override fun getTransactions(params: String?) {
-        execute(funcName = this@VisualRepositoryBridge::getTransactions.name,
+        execute(
+            funcName = this@VisualRepositoryBridge::getTransactions.name,
             params = params,
             classOfT = GetTransactionsRequest::class.java,
             body = {
                 it?.let {
                     viewModel.getTransactions(it.data)
                 }
-            })
+            }
+        )
     }
 }

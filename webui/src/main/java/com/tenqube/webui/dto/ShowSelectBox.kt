@@ -2,7 +2,7 @@ package com.tenqube.webui.dto
 
 data class ShowSelectBox(
     val request: SelectBoxRequest,
-    val callback:(selectBox: SelectBoxItem) -> Unit
+    val callback: (selectBox: SelectBoxItem) -> Unit
 )
 
 data class SelectBoxRequest(

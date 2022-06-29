@@ -1,6 +1,5 @@
 package com.tenqube.shared.util
 
-
 import android.content.Context
 import android.os.Build
 import android.security.KeyPairGeneratorSpec
@@ -41,8 +40,8 @@ object SecurityKeyManager {
     private const val KEY_PROVIDER_NAME = "AndroidKeyStore"
     private const val CIPHER_ALGORITHM =
         "${KeyProperties.KEY_ALGORITHM_RSA}/" +
-                "${KeyProperties.BLOCK_MODE_ECB}/" +
-                KeyProperties.ENCRYPTION_PADDING_RSA_PKCS1
+            "${KeyProperties.BLOCK_MODE_ECB}/" +
+            KeyProperties.ENCRYPTION_PADDING_RSA_PKCS1
 
     private lateinit var keyEntry: KeyStore.Entry
 
@@ -85,14 +84,18 @@ object SecurityKeyManager {
         try {
             with(KeyPairGenerator.getInstance(KeyProperties.KEY_ALGORITHM_RSA, KEY_PROVIDER_NAME), {
                 val spec = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    KeyGenParameterSpec.Builder(alias,
-                        KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT)
+                    KeyGenParameterSpec.Builder(
+                        alias,
+                        KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
+                    )
                         .setAlgorithmParameterSpec(RSAKeyGenParameterSpec(KEY_LENGTH_BIT, F4))
                         .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
                         .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_RSA_PKCS1)
-                        .setDigests(KeyProperties.DIGEST_SHA512,
+                        .setDigests(
+                            KeyProperties.DIGEST_SHA512,
                             KeyProperties.DIGEST_SHA384,
-                            KeyProperties.DIGEST_SHA256)
+                            KeyProperties.DIGEST_SHA256
+                        )
                         /*
                          * Setting true only permit the private key to be used if the user authenticated
                          * within the last five minutes.

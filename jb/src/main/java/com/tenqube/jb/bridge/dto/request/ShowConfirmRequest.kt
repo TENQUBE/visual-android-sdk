@@ -3,7 +3,6 @@ package com.tenqube.jb.bridge.dto.request
 import com.tenqube.shared.webview.dto.RequestBody
 import com.tenqube.webui.dto.ShowDialogRequest
 
-
 data class ShowConfirmRequest(val data: ShowConfirmDto) : RequestBody {
     override fun checkParams() {
     }
@@ -44,4 +43,3 @@ data class ButtonDetailDto(
     val color: String,
     val bgColor: String
 )
-
