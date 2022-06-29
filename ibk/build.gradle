@@ -37,8 +37,8 @@ android {
 
 dependencies {
     implementation project(":webui")
-    implementation project(":transmsparser")
     implementation project(":shared")
+    implementation project(":visualbase")
 
     implementation 'com.google.code.gson:gson:2.9.0'
 
