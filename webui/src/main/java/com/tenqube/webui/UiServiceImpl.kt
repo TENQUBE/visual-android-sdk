@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.media.AudioManager
 import android.net.Uri
-import android.webkit.WebView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.tenqube.webui.component.bottomsheet.CustomBottomSheet
@@ -20,8 +19,7 @@ import com.tenqube.webui.component.timepicker.model.TimeRequest
 import com.tenqube.webui.dto.*
 
 class UiServiceImpl(
-    private val activity: AppCompatActivity,
-    private val webView: WebView
+    private val activity: AppCompatActivity
 ) : UIService {
 
     private var audioManager: AudioManager? = null
