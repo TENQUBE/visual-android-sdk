@@ -6,8 +6,7 @@
         <activity
             android:name=".VisualActivity"
             android:exported="false"
-            android:label="@string/title_activity_visual"
-            android:theme="@style/Theme.Visualandroidsdk.NoActionBar" />
+            android:label="@string/title_activity_visual" />
     </application>
 
 </manifest>

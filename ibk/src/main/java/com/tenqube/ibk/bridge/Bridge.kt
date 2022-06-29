@@ -10,7 +10,6 @@ interface Bridge {
         @JavascriptInterface
         fun openNotiSettings()
 
-
         @JavascriptInterface
         fun openDeepLink(params: String?)
     }

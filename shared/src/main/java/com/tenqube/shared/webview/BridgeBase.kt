@@ -14,7 +14,7 @@ import kotlin.coroutines.CoroutineContext
 
 open class BridgeBase(
     private val webView: WebView
-): CoroutineScope {
+) : CoroutineScope {
 
     var job = SupervisorJob()
     override val coroutineContext: CoroutineContext
@@ -32,8 +32,10 @@ open class BridgeBase(
                 statusCode = StatusCode.Success.code,
                 msg = StatusCode.Success.name, body = any
             )
-            val url: String = getJs(makeResponseCallback(funcName),
-                response.toJson())
+            val url: String = getJs(
+                makeResponseCallback(funcName),
+                response.toJson()
+            )
             webView.loadUrl(url)
             return@withContext response
         }
@@ -48,8 +50,10 @@ open class BridgeBase(
                 statusCode = StatusCode.ServerError.code,
                 msg = msg
             )
-            val url: String = getJs(makeResponseCallback(funcName),
-                response.toJson())
+            val url: String = getJs(
+                makeResponseCallback(funcName),
+                response.toJson()
+            )
 
             webView.loadUrl(url)
         }

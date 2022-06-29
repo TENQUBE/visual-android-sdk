@@ -1,6 +1,7 @@
 package com.tenqube.jb.bridge.dto.request
 
 import com.tenqube.shared.webview.dto.RequestBody
+import com.tenqube.webui.dto.DatePickerRequest
 
 data class ShowDatePickerRequest(val data: ShowDatePickerDto) :
     RequestBody {
@@ -9,7 +10,7 @@ data class ShowDatePickerRequest(val data: ShowDatePickerDto) :
 }
 
 data class ShowDatePickerDto(val date: String) {
-    fun asDomain(): com.tenqube.webui.dto.ShowDatePickerDto {
-        return com.tenqube.webui.dto.ShowDatePickerDto(date)
+    fun asDomain(): DatePickerRequest {
+        return DatePickerRequest(date)
     }
 }

@@ -1,8 +1,8 @@
 package com.tenqube.jb
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.tenqube.reward.util.inTransaction
+import androidx.appcompat.app.AppCompatActivity
+import com.tenqube.shared.util.inTransaction
 import timber.log.Timber
 
 class VisualActivity : AppCompatActivity() {

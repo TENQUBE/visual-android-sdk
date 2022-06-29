@@ -150,10 +150,9 @@ object Validator {
     }
 
     @Throws(ParameterError::class)
-    fun <T>notEmpty(values: List<T>?) {
+    fun <T> notEmpty(values: List<T>?) {
         if (values.isNullOrEmpty()) throw ParameterError(
             "values is empty"
         )
     }
-
 }

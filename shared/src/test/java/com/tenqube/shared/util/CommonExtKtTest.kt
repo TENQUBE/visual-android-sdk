@@ -18,7 +18,6 @@ class CommonExtKtTest {
 
         // Then
         assertThat(result, CoreMatchers.`is`(1))
-
     }
 
     @Test
@@ -31,7 +30,6 @@ class CommonExtKtTest {
 
         // Then
         assertThat(result, CoreMatchers.`is`(0))
-
     }
 
     @Test
@@ -45,7 +43,6 @@ class CommonExtKtTest {
         // Then
         assertThat(result.timeInMillis, CoreMatchers.`is`(result.timeInMillis))
     }
-
 
     @Test
     fun toLcode_categoryCode_returnLcode() {
@@ -105,7 +102,6 @@ class CommonExtKtTest {
 
         // Then
         assertThat(result, CoreMatchers.`is`(1))
-
     }
 
     @Test
@@ -130,7 +126,6 @@ class CommonExtKtTest {
 
         // Then
         assertThat(result, CoreMatchers.`is`("2020-10"))
-
     }
 
     @Test
@@ -143,7 +138,6 @@ class CommonExtKtTest {
 
         // Then
         assertThat(result, CoreMatchers.`is`("2020-10-10"))
-
     }
 
     @Test
@@ -156,7 +150,6 @@ class CommonExtKtTest {
 
         // Then
         assertThat(result, CoreMatchers.`is`(10))
-
     }
 
     @Test
@@ -170,15 +163,16 @@ class CommonExtKtTest {
 
         // Then
         assertThat(result, CoreMatchers.`is`("0"))
-
     }
 
     @Test
     fun toGroupByWeek_lastWeekDate_returnWeek1() {
         // Given
-        val value = Utils.convertCalendarToDateTimeStr(Calendar.getInstance().apply {
-            add(Calendar.WEEK_OF_YEAR, -1)
-        })
+        val value = Utils.convertCalendarToDateTimeStr(
+            Calendar.getInstance().apply {
+                add(Calendar.WEEK_OF_YEAR, -1)
+            }
+        )
 
         val calendar = getCurrentWeekMonday()
         // When
@@ -186,15 +180,16 @@ class CommonExtKtTest {
 
         // Then
         assertThat(result, CoreMatchers.`is`("1"))
-
     }
 
     @Test
     fun toGroupByWeek_lastWeekDate_returnWeek2() {
         // Given
-        val value = Utils.convertCalendarToDateTimeStr(Calendar.getInstance().apply {
-            add(Calendar.WEEK_OF_YEAR, -2)
-        })
+        val value = Utils.convertCalendarToDateTimeStr(
+            Calendar.getInstance().apply {
+                add(Calendar.WEEK_OF_YEAR, -2)
+            }
+        )
 
         val calendar = getCurrentWeekMonday()
         // When
@@ -202,14 +197,15 @@ class CommonExtKtTest {
 
         // Then
         assertThat(result, CoreMatchers.`is`("2"))
-
     }
 
     @Test
     fun toGroupByWeek_afterDate_returnWeekMinus1() {
-        val value = Utils.convertCalendarToDateTimeStr(Calendar.getInstance().apply {
-            add(Calendar.WEEK_OF_YEAR, 1)
-        })
+        val value = Utils.convertCalendarToDateTimeStr(
+            Calendar.getInstance().apply {
+                add(Calendar.WEEK_OF_YEAR, 1)
+            }
+        )
 
         val calendar = getCurrentWeekMonday()
         // When
@@ -221,9 +217,11 @@ class CommonExtKtTest {
 
     @Test
     fun toGroupByWeek_afterDate_returnWeekMinus2() {
-        val value = Utils.convertCalendarToDateTimeStr(Calendar.getInstance().apply {
-            add(Calendar.WEEK_OF_YEAR, 2)
-        })
+        val value = Utils.convertCalendarToDateTimeStr(
+            Calendar.getInstance().apply {
+                add(Calendar.WEEK_OF_YEAR, 2)
+            }
+        )
 
         val calendar = getCurrentWeekMonday()
         // When
@@ -232,5 +230,4 @@ class CommonExtKtTest {
         // Then
         assertThat(result, CoreMatchers.`is`("-2"))
     }
-
 }

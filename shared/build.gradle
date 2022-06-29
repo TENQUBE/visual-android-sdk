@@ -4,10 +4,10 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.vanniktech.maven.publish'
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion rootProject.compileSdkVersion
     defaultConfig {
-        minSdkVersion 23
-        targetSdkVersion 31
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
         versionCode 1
         versionName POM_VERSION
 

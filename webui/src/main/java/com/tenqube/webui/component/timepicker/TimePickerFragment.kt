@@ -13,7 +13,7 @@ import com.tenqube.webui.component.utils.Utils
 import java.lang.RuntimeException
 import java.util.*
 
-class TimePickerFragment: DialogFragment(), TimePickerDialog.OnTimeSetListener {
+class TimePickerFragment : DialogFragment(), TimePickerDialog.OnTimeSetListener {
 
     private var listener: TimePickerListener? = null
     private var calendar = Calendar.getInstance()
@@ -27,7 +27,7 @@ class TimePickerFragment: DialogFragment(), TimePickerDialog.OnTimeSetListener {
             if (calendarHMS == null) dismiss()
             timeRequest = request
             calendar = calendarHMS!!
-        }?: dismiss()
+        } ?: dismiss()
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -53,8 +53,8 @@ class TimePickerFragment: DialogFragment(), TimePickerDialog.OnTimeSetListener {
                 context as TimePickerListener
         } else {
             throw RuntimeException(
-                context.toString()
-                        + " must implement OnFragmentInteractionListener"
+                context.toString() +
+                    " must implement OnFragmentInteractionListener"
             )
         }
     }
@@ -63,7 +63,7 @@ class TimePickerFragment: DialogFragment(), TimePickerDialog.OnTimeSetListener {
         this.listener = listener
     }
 
-    fun onTimeCalendar(time: String){
+    fun onTimeCalendar(time: String) {
         listener?.onCalendar(time)
     }
 

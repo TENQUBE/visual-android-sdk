@@ -36,11 +36,11 @@ class DatePickerFragment : DialogFragment(), OnDateSetListener {
             if (calendarYMD == null) dismiss()
             dateRequest = request
             calendar = calendarYMD!!
-        }?: dismiss()
+        } ?: dismiss()
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        //Use the current date as the default date in the date picker
+        // Use the current date as the default date in the date picker
         activity?.let {
             val year = calendar[Calendar.YEAR]
             val month = calendar[Calendar.MONTH]

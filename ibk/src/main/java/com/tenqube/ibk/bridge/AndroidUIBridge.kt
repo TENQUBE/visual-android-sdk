@@ -8,19 +8,21 @@ import com.tenqube.shared.webview.BridgeBase
 class AndroidUIBridge(
     webView: WebView,
     private val viewModel: VisualViewModel
-): BridgeBase(webView), Bridge.UI {
+) : BridgeBase(webView), Bridge.UI {
     override val bridgeName: String
         get() = "visualUI"
 
     override fun showToast(params: String?) {
-        execute(funcName = this@AndroidUIBridge::showToast.name,
+        execute(
+            funcName = this@AndroidUIBridge::showToast.name,
             params = params,
             classOfT = ShowToastRequest::class.java,
             body = {
                 it?.let {
                     viewModel.showToast(it.data.message)
                 }
-            })
+            }
+        )
     }
 
     override fun openSelectBox(params: String?) {
@@ -32,7 +34,8 @@ class AndroidUIBridge(
                 it?.let {
                     viewModel.openSelectBox(it.data)
                 }
-            })
+            }
+        )
     }
 
     override fun showAd(params: String?) {
@@ -44,7 +47,8 @@ class AndroidUIBridge(
                 it?.let {
                     viewModel.showAd(it.data)
                 }
-            })
+            }
+        )
     }
 
     override fun hideAd() {
@@ -54,7 +58,8 @@ class AndroidUIBridge(
             classOfT = Any::class.java,
             body = {
                 viewModel.hideAd()
-            })
+            }
+        )
     }
 
     override fun openNewView(params: String?) {
@@ -66,7 +71,8 @@ class AndroidUIBridge(
                 it?.let {
                     viewModel.openNewView(it.data)
                 }
-            })
+            }
+        )
     }
 
     override fun finish() {
@@ -76,6 +82,7 @@ class AndroidUIBridge(
             classOfT = Any::class.java,
             body = {
                 viewModel.finish()
-            })
+            }
+        )
     }
 }

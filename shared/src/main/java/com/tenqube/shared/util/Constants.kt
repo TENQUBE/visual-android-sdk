@@ -31,12 +31,10 @@ object Constants {
 
         ServerError(500);
 
-
         companion object {
             fun fromCode(code: Int): StatusCode {
                 return values().find { it.code == code } ?: ServerError
             }
         }
-
     }
 }

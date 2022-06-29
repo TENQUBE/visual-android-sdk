@@ -4,11 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.tenqube.ibk.bridge.dto.request.*
+import com.tenqube.ibk.service.CardAppService
+import com.tenqube.ibk.service.TransactionAppService
+import com.tenqube.ibk.service.UserAppService
 import com.tenqube.webui.UIService
 
 class VisualViewModel(
+    private val transactionAppService: TransactionAppService,
+    private val cardAppService: CardAppService,
+    private val userAppService: UserAppService,
     private val uiService: UIService
-): ViewModel() {
+) : ViewModel() {
 
     private val _url = MutableLiveData<String>()
     val url: LiveData<String> = _url
@@ -55,11 +61,9 @@ class VisualViewModel(
     }
 
     fun openNotiSettings() {
-
     }
 
     fun getBanks() {
-
     }
 
     fun openDeepLink(request: OpenDeepLinkDto) {
@@ -71,15 +75,12 @@ class VisualViewModel(
     }
 
     fun openSelectBox(request: OpenSelectBoxDto) {
-
     }
 
     fun showAd(request: ShowAdDto) {
-
     }
 
     fun hideAd() {
-
     }
 
     fun openNewView(request: OpenNewViewDto) {
