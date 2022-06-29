@@ -14,11 +14,9 @@ class UIServiceBuilder {
     }
 
     fun build(): UIService {
-
         requireNotNull(activity) {
             throw ParameterException("activity is null")
         }
-
         return UiServiceImpl(
             activity!!
         )
