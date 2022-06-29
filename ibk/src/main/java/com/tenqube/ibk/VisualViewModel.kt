@@ -4,9 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.tenqube.ibk.bridge.dto.request.*
+import com.tenqube.ibk.service.CardAppService
+import com.tenqube.ibk.service.TransactionAppService
+import com.tenqube.ibk.service.UserAppService
 import com.tenqube.webui.UIService
 
 class VisualViewModel(
+    private val transactionAppService: TransactionAppService,
+    private val cardAppService: CardAppService,
+    private val userAppService: UserAppService,
     private val uiService: UIService
 ) : ViewModel() {
 
