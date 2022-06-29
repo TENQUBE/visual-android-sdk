@@ -20,8 +20,7 @@ import com.tenqube.webui.component.timepicker.model.TimeRequest
 import com.tenqube.webui.dto.*
 
 class UiServiceImpl(
-    private val activity: AppCompatActivity,
-    private val webView: WebView
+    private val activity: AppCompatActivity
 ) : UIService {
 
     private var audioManager: AudioManager? = null
