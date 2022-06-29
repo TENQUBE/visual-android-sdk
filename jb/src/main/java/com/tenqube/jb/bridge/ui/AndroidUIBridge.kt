@@ -4,9 +4,16 @@ import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import com.tenqube.jb.bridge.VisualBridge
 import com.tenqube.jb.bridge.dto.request.*
+import com.tenqube.jb.bridge.dto.request.OpenNewViewRequest
+import com.tenqube.jb.bridge.dto.request.RefreshRequest
+import com.tenqube.jb.bridge.dto.request.ShowConfirmRequest
 import com.tenqube.shared.webview.BridgeBase
 import com.tenqube.webui.UIService
 import com.tenqube.webui.component.dialog.DialogCallback
+import com.tenqube.webui.dto.ShowDatePicker
+import com.tenqube.webui.dto.ShowDialog
+import com.tenqube.webui.dto.ShowSelectBox
+import com.tenqube.webui.dto.ShowTimePicker
 
 class AndroidUIBridge(
     webView: WebView,
@@ -82,15 +89,15 @@ class AndroidUIBridge(
             classOfT = ShowConfirmRequest::class.java,
             body = {
                 it?.let {
-                    uiService.showDialog(it.data.asDomain(), object : DialogCallback {
+                    uiService.showDialog(ShowDialog(request = it.data.asDomain(),
+                    object : DialogCallback {
                         override fun onClickPositiveButton() {
-                            TODO("Not yet implemented")
                         }
 
                         override fun onCLickNegativeButton() {
-                            TODO("Not yet implemented")
                         }
-                    })
+
+                    }))
                 }
             })
     }
@@ -102,7 +109,9 @@ class AndroidUIBridge(
             classOfT = ShowSelectBoxRequest::class.java,
             body = {
                 it?.let {
-                    uiService.showSelectBox(it.data.asDomain())
+                    uiService.showSelectBox(ShowSelectBox(request = it.data.asDomain()) { selectBox ->
+
+                    })
                 }
             })
     }
@@ -127,7 +136,9 @@ class AndroidUIBridge(
             classOfT = ShowDatePickerRequest::class.java,
             body = {
                 it?.let {
-                    uiService.showDatePicker(it.data.asDomain())
+                    uiService.showDatePicker(ShowDatePicker(request = it.data.asDomain()) {
+
+                    })
                 }
             }
         )
@@ -140,7 +151,9 @@ class AndroidUIBridge(
             classOfT = ShowTimePickerRequest::class.java,
             body = {
                 it?.let {
-                    uiService.showTimePicker(it.data.asDomain())
+                    uiService.showTimePicker(ShowTimePicker(request = it.data.asDomain()) {
+
+                    })
                 }
             })
     }
