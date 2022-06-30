@@ -5,9 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.telephony.SmsMessage
 import android.text.TextUtils
+import com.tenqube.visualbase.domain.parser.SMS
 import com.tenqube.visualbase.infrastructure.framework.parser.SmsMmsService
 import tenqube.parser.constants.Constants
-import tenqube.parser.model.SMS
 import java.text.SimpleDateFormat
 import java.util.*
 
