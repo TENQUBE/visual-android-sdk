@@ -32,28 +32,26 @@ class ParserAppService(
 
     private suspend fun getSearchedTransactions(parsedTransactions: List<ParsedTransaction>):
             List<SearchedTransaction> {
+        val searchRequests = parsedTransactions.map {
+            SearchRequest.from(it)
+        }
         val searchResults = searchService.search(
-            parsedTransactions.map {
-                SearchRequest.from()
-                (
-                    it.transaction.identifier,
-                    it.transaction.keyword,
-                    it.transaction.spentMoney,
-                    it.transaction.currency
-                )
-            }
-        ).associateBy { it.identifier }
+            searchRequests
+        ).results.associateBy { it.identifier }
 
-        return parsedTransactions.map {
-            SearchedTransaction(it, getOrDefault(searchResults, it))
+        val searchRequestMap = searchRequests.associateBy { it.identifier }
+        return parsedTransactions.mapNotNull {
+            searchRequestMap[it.transaction.identifier]?.let { request ->
+                SearchedTransaction(it, getOrDefault(searchResults, request))
+            }
         }
     }
 
     private fun getOrDefault(
-        searchResults: Map<String, SearchResult>,
-        transaction: ParsedTransaction
-    ) = (searchResults[transaction.transaction.identifier]
-        ?: TranCompany.getDefaultTranCompany(transaction.transaction.identifier, transaction.transaction.dwType))
+        searchResults: Map<String, TranCompany>,
+        searchRequest: SearchRequest
+    ) = (searchResults[searchRequest.identifier]
+        ?: TranCompany.getDefaultTranCompany(searchRequest))
 
     private suspend fun calculateCurrency(searchedTransactions: List<SearchedTransaction>):
             List<CurrencyTransaction> {
@@ -72,7 +70,7 @@ class ParserAppService(
 
 data class SearchedTransaction(
     val parsedTransaction: ParsedTransaction,
-    val searchResult: SearchResult
+    val searchResult: TranCompany
 ) {
     fun getTransaction(): tenqube.parser.model.Transaction {
         return parsedTransaction.transaction
@@ -91,7 +89,7 @@ data class CurrencyTransaction(
             cardType = this.searchedTransaction.getTransaction().cardType,
             cardSubType = this.searchedTransaction.getTransaction().cardSubType,
             company = this.searchedTransaction.searchResult.company,
-            categoryCode = this.searchedTransaction.searchResult.categoryCode,
+            categoryCode = this.searchedTransaction.searchResult.category.code,
             spentDate = this.searchedTransaction.getTransaction().spentDate,
             finishDate = this.searchedTransaction.getTransaction().finishDate,
             spentMoney = amount,
