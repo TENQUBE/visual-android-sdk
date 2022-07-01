@@ -1,7 +1,7 @@
 package com.tenqube.visualbase.domain.currency
 
 interface CurrencyService {
-    suspend fun calculate(request: CurrencyRequest): Double
+    suspend fun exchange(request: CurrencyRequest): Double
 }
 
 data class CurrencyRequest(

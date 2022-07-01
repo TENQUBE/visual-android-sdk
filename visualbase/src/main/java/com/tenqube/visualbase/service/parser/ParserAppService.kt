@@ -6,7 +6,6 @@ import com.tenqube.visualbase.domain.parser.ParsedTransaction
 import com.tenqube.visualbase.domain.parser.ParserService
 import com.tenqube.visualbase.domain.parser.SMS
 import com.tenqube.visualbase.domain.search.SearchRequest
-import com.tenqube.visualbase.domain.search.SearchResult
 import com.tenqube.visualbase.domain.search.SearchService
 import com.tenqube.visualbase.domain.search.TranCompany
 import com.tenqube.visualbase.domain.transaction.command.SaveTransactionDto
@@ -57,7 +56,7 @@ class ParserAppService(
             List<CurrencyTransaction> {
         return searchedTransactions.map {
             CurrencyTransaction(
-                it, currencyService.calculate(
+                it, currencyService.exchange(
                     CurrencyRequest(
                         from = it.parsedTransaction.transaction.currency,
                         amount = it.parsedTransaction.transaction.spentMoney
