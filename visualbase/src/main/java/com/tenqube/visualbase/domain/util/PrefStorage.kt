@@ -10,4 +10,8 @@ interface PrefStorage {
     fun saveLayer(layer: String)
 
     fun getApiKey(): String
+
+    fun getSearchUrl(): String
+
+    fun getSearchApiKey(): String
 }

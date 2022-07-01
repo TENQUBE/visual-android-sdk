@@ -5,10 +5,7 @@ import com.tenqube.visualbase.domain.currency.CurrencyService
 import com.tenqube.visualbase.domain.util.getValue
 import com.tenqube.visualbase.infrastructure.adapter.currency.local.CurrencyDao
 import com.tenqube.visualbase.infrastructure.adapter.currency.local.CurrencyModel
-import com.tenqube.visualbase.infrastructure.adapter.currency.remote.CurrencyApiService
-import com.tenqube.visualbase.infrastructure.adapter.currency.remote.CurrencyRemoteDataSource
-import java.lang.Exception
-import java.util.*
+import com.tenqube.visualbase.infrastructure.adapter.search.remote.CurrencyRemoteDataSource
 
 class CurrencyServiceImpl(
     private val currencyRemoteDataSource: CurrencyRemoteDataSource,
@@ -23,7 +20,9 @@ class CurrencyServiceImpl(
         val rate = currencyDao.findByFromAndTo(request.from, request.to)?.let {
             getFromLocal(request, it)
         } ?: getFromRemote(request).also {
-            currencyDao.save(CurrencyModel(request.from, request.to, it, System.currentTimeMillis()))
+            currencyDao.save(
+                CurrencyModel(request.from, request.to, it, System.currentTimeMillis())
+            )
         }
 
         return request.amount * rate.toDouble()
@@ -36,7 +35,9 @@ class CurrencyServiceImpl(
     private suspend fun getFromLocal(request: CurrencyRequest, currency: CurrencyModel): Float {
         return if ((System.currentTimeMillis() - currency.createdAt) > 24 * 60 * 60 * 1000) {
             getFromRemote(request).also {
-                currencyDao.update(currency.copy(rate = it, createdAt = System.currentTimeMillis()))
+                currencyDao.update(
+                    currency.copy(rate = it, createdAt = System.currentTimeMillis())
+                )
             }
         } else {
             currency.rate

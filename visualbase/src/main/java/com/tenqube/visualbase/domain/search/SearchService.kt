@@ -4,10 +4,13 @@ import com.tenqube.visualbase.domain.parser.ParsedTransaction
 import com.tenqube.visualbase.domain.transaction.Company
 
 interface SearchService {
-    suspend fun search(request: List<SearchRequest>): SearchResult
+    suspend fun search(request: SearchRequest): SearchResult
 }
 
 data class SearchRequest(
+    val transactions: List<SearchTransaction>
+)
+data class SearchTransaction(
     val identifier: String,
     val keyword: String,
     val type: String,
@@ -21,8 +24,8 @@ data class SearchRequest(
     val mCode: Int
 ) {
     companion object {
-        fun from(transaction: ParsedTransaction) : SearchRequest {
-            return SearchRequest(
+        fun from(transaction: ParsedTransaction) : SearchTransaction {
+            return SearchTransaction(
                 identifier = transaction.transaction.identifier,
                 keyword = transaction.transaction.keyword,
                 type = getType(transaction.transaction.dwType),
@@ -74,7 +77,7 @@ data class TranCompany(
     val keyword: Keyword
 ) {
     companion object {
-        fun getDefaultTranCompany(currentTran: SearchRequest): TranCompany {
+        fun getDefaultTranCompany(currentTran: SearchTransaction): TranCompany {
             val isDeposit = currentTran.type == "deposit"
             val isBank = currentTran.method == "account"
             val keyword = Keyword(currentTran.keyword, currentTran.keyword)
