@@ -30,7 +30,9 @@ class CurrencyRemoteDataSource(
 
     suspend fun exchange(request: CurrencyRequest): Result<CurrencyResponse> {
         return when (val response = safeApiCall(ioDispatcher) {
-            currencyApiService.exchange(getUrl("currency/rate/${request.from}/${request.to}"), getHeader())
+            currencyApiService.exchange(
+                getUrl("currency/rate/${request.from}/${request.to}"),
+                getHeader())
         }) {
             is ResultWrapper.Success -> {
                 Result.Success(response.value)

@@ -8,4 +8,8 @@ data class CurrencyRequest(
     val from: String,
     val to: String = "KRW",
     val amount: Double
-)
+) {
+    fun isKorea(): Boolean {
+        return from == "KRW" && to == "KRW"
+    }
+}
