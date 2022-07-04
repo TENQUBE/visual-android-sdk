@@ -1,12 +1,9 @@
 package com.tenqube.visualbase.infrastructure.framework.parser.util
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.telephony.SmsMessage
 import android.text.TextUtils
 import com.tenqube.visualbase.domain.parser.SMS
-import com.tenqube.visualbase.infrastructure.framework.parser.SmsMmsService
 import tenqube.parser.constants.Constants
 import java.text.SimpleDateFormat
 import java.util.*
@@ -120,11 +117,5 @@ object SMSUtil {
         date.time = time
         val fullDF = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
         return fullDF.format(date)
-    }
-
-    fun sendIntentService(context: Context, sms: SMS) {
-        val startIntent = Intent(context, SmsMmsService::class.java)
-        startIntent.putExtra(SmsMmsService.ARG_SMS, sms)
-        context.startService(startIntent)
     }
 }

@@ -9,7 +9,18 @@ interface SearchService {
 
 data class SearchRequest(
     val transactions: List<SearchTransaction>
-)
+) {
+    companion object {
+        fun from(transactions: List<ParsedTransaction>) :SearchRequest {
+            return SearchRequest(
+                transactions.map {
+                    SearchTransaction.from(it)
+                }
+            )
+        }
+    }
+}
+
 data class SearchTransaction(
     val identifier: String,
     val keyword: String,

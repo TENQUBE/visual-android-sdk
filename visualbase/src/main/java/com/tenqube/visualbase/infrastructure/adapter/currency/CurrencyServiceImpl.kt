@@ -5,7 +5,7 @@ import com.tenqube.visualbase.domain.currency.CurrencyService
 import com.tenqube.visualbase.domain.util.getValue
 import com.tenqube.visualbase.infrastructure.adapter.currency.local.CurrencyDao
 import com.tenqube.visualbase.infrastructure.adapter.currency.local.CurrencyModel
-import com.tenqube.visualbase.infrastructure.adapter.search.remote.CurrencyRemoteDataSource
+import com.tenqube.visualbase.infrastructure.adapter.currency.remote.CurrencyRemoteDataSource
 
 class CurrencyServiceImpl(
     private val currencyRemoteDataSource: CurrencyRemoteDataSource,

@@ -7,6 +7,7 @@ import com.tenqube.visualbase.domain.parser.ParserService
 import com.tenqube.visualbase.domain.parser.SMS
 import com.tenqube.visualbase.domain.search.SearchRequest
 import com.tenqube.visualbase.domain.search.SearchService
+import com.tenqube.visualbase.domain.search.SearchTransaction
 import com.tenqube.visualbase.domain.search.TranCompany
 import com.tenqube.visualbase.domain.transaction.command.SaveTransactionDto
 import com.tenqube.visualbase.service.transaction.TransactionAppService
@@ -31,14 +32,12 @@ class ParserAppService(
 
     private suspend fun getSearchedTransactions(parsedTransactions: List<ParsedTransaction>):
             List<SearchedTransaction> {
-        val searchRequests = parsedTransactions.map {
-            SearchRequest.from(it)
-        }
+        val searchRequests = SearchRequest.from(parsedTransactions)
         val searchResults = searchService.search(
             searchRequests
         ).results.associateBy { it.identifier }
 
-        val searchRequestMap = searchRequests.associateBy { it.identifier }
+        val searchRequestMap = searchRequests.transactions.associateBy { it.identifier }
         return parsedTransactions.mapNotNull {
             searchRequestMap[it.transaction.identifier]?.let { request ->
                 SearchedTransaction(it, getOrDefault(searchResults, request))
@@ -48,9 +47,9 @@ class ParserAppService(
 
     private fun getOrDefault(
         searchResults: Map<String, TranCompany>,
-        searchRequest: SearchRequest
-    ) = (searchResults[searchRequest.identifier]
-        ?: TranCompany.getDefaultTranCompany(searchRequest))
+        searchTransaction: SearchTransaction
+    ) = (searchResults[searchTransaction.identifier]
+        ?: TranCompany.getDefaultTranCompany(searchTransaction))
 
     private suspend fun calculateCurrency(searchedTransactions: List<SearchedTransaction>):
             List<CurrencyTransaction> {
