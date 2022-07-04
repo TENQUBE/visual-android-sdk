@@ -5,6 +5,7 @@ import com.tenqube.visualbase.domain.currency.CurrencyService
 import com.tenqube.visualbase.domain.parser.ParsedTransaction
 import com.tenqube.visualbase.domain.parser.ParserService
 import com.tenqube.visualbase.domain.parser.SMS
+import com.tenqube.visualbase.domain.parser.SmsFilter
 import com.tenqube.visualbase.domain.search.SearchRequest
 import com.tenqube.visualbase.domain.search.SearchService
 import com.tenqube.visualbase.domain.search.SearchTransaction
@@ -20,14 +21,24 @@ class ParserAppService(
 ) {
     suspend fun parse(sms: SMS): Result<Unit> {
         val parsedTransactions = parserService.parse(sms)
+        return saveTransactions(parsedTransactions)
+    }
+
+    suspend fun saveTransactions(
+        parsedTransactions: List<ParsedTransaction>
+    ): Result<Unit> {
         val searchedTransactions = getSearchedTransactions(parsedTransactions)
         val currencyTransactions = calculateCurrency(searchedTransactions)
         transactionAppService.saveTransactions(
             currencyTransactions.map {
-                it.asDomain(sms)
+                it.asDomain()
             }
         )
         return Result.success(Unit)
+    }
+
+    suspend fun getSmsList(filter: SmsFilter): List<SMS> {
+        return parserService.getSmsList(filter)
     }
 
     private suspend fun getSearchedTransactions(parsedTransactions: List<ParsedTransaction>):
@@ -79,8 +90,7 @@ data class CurrencyTransaction(
     val searchedTransaction: SearchedTransaction,
     val amount: Double
 ) {
-    fun asDomain(sms: SMS
-    ): SaveTransactionDto {
+    fun asDomain(): SaveTransactionDto {
         return SaveTransactionDto(
             id = this.searchedTransaction.getTransaction().identifier,
             cardName = this.searchedTransaction.getTransaction().cardName,
@@ -97,7 +107,14 @@ data class CurrencyTransaction(
             currency = this.searchedTransaction.getTransaction().currency,
             dwType = this.searchedTransaction.getTransaction().dwType,
             memo = this.searchedTransaction.getTransaction().memo,
-            sms = sms
+            sms = SMS(
+                this.searchedTransaction.getTransaction().smsId,
+                this.searchedTransaction.getTransaction().fullSms,
+                this.searchedTransaction.getTransaction().sender,
+                this.searchedTransaction.getTransaction().sender,
+                this.searchedTransaction.getTransaction().smsDate,
+                this.searchedTransaction.getTransaction().smsType
+            )
         )
     }
 }
