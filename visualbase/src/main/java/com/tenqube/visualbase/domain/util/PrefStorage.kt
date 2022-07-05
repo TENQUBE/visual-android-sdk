@@ -13,6 +13,9 @@ interface PrefStorage {
     fun getSearchUrl(): String
     fun getSearchApiKey(): String
 
+    fun getResourceUrl(): String
+    fun getResourceApiKey(): String
+
     fun getRuleVersion(): Int
     fun saveRuleVersion(version: Int)
 
