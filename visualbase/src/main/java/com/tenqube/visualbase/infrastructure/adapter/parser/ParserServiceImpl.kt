@@ -11,24 +11,33 @@ class ParserServiceImpl(
     private val context: Context,
     private val parserService: tenqube.parser.core.ParserService,
 ) : ParserService {
+
     override suspend fun parse(sms: SMS): List<ParsedTransaction> {
         return listOf()
     }
 
     override suspend fun getSmsList(filter: SmsFilter): List<SMS> {
-        return listOf()
-    }
-
-    private fun initCursor() {
+        val results = mutableListOf<SMS>()
         try {
             val uri = Uri.parse("content://sms/inbox")
-            val cursor = context.contentResolver.query(uri, null, getWhere(), null, "date asc")
-            cursor?.moveToFirst()
+            val cursor = context.contentResolver.query(
+                uri,
+                null,
+                filter.getQueryCondition(),
+                null,
+                "date asc")
+            cursor?.let {
+                if(it.moveToFirst()) {
+                    while (!it.isAfterLast) {
+                        results.add(SMS.from(it))
+                        it.moveToNext()
+                    }
+                }
+            }
         } catch (e: Exception) {
+            e.printStackTrace()
         }
-    }
 
-    private fun getWhere(): String {
-        return ""
+        return results
     }
 }
