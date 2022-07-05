@@ -28,6 +28,18 @@ data class SMS(
     val smsDate: String,
     val smsType: Int
 ) : Serializable {
+
+    fun toParser(): tenqube.parser.model.SMS {
+        return tenqube.parser.model.SMS(
+            smsId,
+            fullSms,
+            originTel,
+            displayTel,
+            smsDate,
+            smsType
+        )
+    }
+
     companion object {
         @SuppressLint("Range")
         fun from(cursor: Cursor): SMS {
