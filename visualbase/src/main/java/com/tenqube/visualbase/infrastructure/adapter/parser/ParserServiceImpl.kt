@@ -23,9 +23,9 @@ class ParserServiceImpl(
         when(result.resultCode) {
             ResultCode.NEED_TO_SYNC_PARSING_RULE,
             ResultCode.NEED_TO_SEND_TO_SERVER ->
-                parsingRuleService.sync()
+                sync()
             ResultCode.NEED_TO_SYNC_PARSING_RULE_NO_SENDER ->
-                parsingRuleService.syncWhenNoSender()
+                syncWhenNoSender()
             ResultCode.SEND_TO_SERVER -> {
                 results.addAll(
                     result.transactions.map {
@@ -36,6 +36,17 @@ class ParserServiceImpl(
         }
 
         return results
+    }
+
+    private suspend fun sync() {
+        val parsingRule = parsingRuleService.getParsingRule()
+        parserService.syncParsingRule(parsingRule.parsingRule)
+    }
+
+    private suspend fun syncWhenNoSender() {
+        parsingRuleService.getParsingRuleWhenNoSender()?.let {
+            parserService.syncParsingRule(it.parsingRule)
+        }
     }
 
     override suspend fun getSmsList(filter: SmsFilter): List<SMS> {
