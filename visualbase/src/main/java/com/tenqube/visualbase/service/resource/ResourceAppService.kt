@@ -1,6 +1,6 @@
 package com.tenqube.visualbase.service.resource
 
-import com.tenqube.visualbase.domain.resource.ParsingRuleDto
+import com.tenqube.visualbase.domain.resource.dto.ParsingRuleDto
 import com.tenqube.visualbase.domain.resource.ResourceRepository
 import com.tenqube.visualbase.domain.util.getValue
 

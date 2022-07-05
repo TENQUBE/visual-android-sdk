@@ -1,4 +1,4 @@
-package com.tenqube.visualbase.domain.resource
+package com.tenqube.visualbase.domain.resource.dto
 
 import tenqube.parser.model.ParsingRule
 
