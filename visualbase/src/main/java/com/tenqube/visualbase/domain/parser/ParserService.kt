@@ -26,7 +26,8 @@ data class SMS(
     val originTel: String,
     val displayTel: String,
     val smsDate: String,
-    val smsType: Int
+    val smsType: Int,
+    val title: String = ""
 ) : Serializable {
 
     fun toParser(): tenqube.parser.model.SMS {
@@ -36,7 +37,8 @@ data class SMS(
             originTel,
             displayTel,
             smsDate,
-            smsType
+            smsType,
+            title
         )
     }
 
@@ -54,6 +56,18 @@ data class SMS(
                 displayTel = address,
                 smsDate = Utils.convertDateToDateTimeStr(Date(date)),
                 smsType = Constants.SMSType.SMS.ordinal
+            )
+        }
+
+        fun fromParser(sms: tenqube.parser.model.SMS) : SMS {
+            return SMS(
+                sms.smsId,
+                sms.fullSms,
+                sms.sender,
+                sms.sender,
+                sms.smsDate,
+                sms.smsType,
+                sms.title
             )
         }
     }

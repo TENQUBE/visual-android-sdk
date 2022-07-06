@@ -10,7 +10,7 @@ import java.util.*
 
 object SMSUtil {
 
-    fun parseSms(bundle: Bundle?): SMS? {
+    fun parseBundle(bundle: Bundle?): SMS? {
         return bundle?.let {
             val items = parsePdus(it)
             SMS(
