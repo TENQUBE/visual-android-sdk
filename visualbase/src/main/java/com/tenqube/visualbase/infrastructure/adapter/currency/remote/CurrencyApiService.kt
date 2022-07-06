@@ -1,6 +1,5 @@
 package com.tenqube.visualbase.infrastructure.adapter.currency.remote
 
-import com.tenqube.visualbase.infrastructure.adapter.search.remote.CurrencyResponse
 import retrofit2.http.GET
 import retrofit2.http.HeaderMap
 import retrofit2.http.Url

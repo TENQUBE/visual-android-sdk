@@ -3,8 +3,7 @@ package com.tenqube.visualbase.infrastructure.adapter.currency.remote
 import com.tenqube.visualbase.domain.currency.CurrencyRequest
 import com.tenqube.visualbase.domain.util.PrefStorage
 import com.tenqube.visualbase.domain.util.Result
-import com.tenqube.visualbase.infrastructure.adapter.search.remote.CurrencyApiService
-import com.tenqube.visualbase.infrastructure.adapter.search.remote.CurrencyResponse
+import com.tenqube.visualbase.infrastructure.util.ErrorMsg
 import com.tenqube.visualbase.infrastructure.util.ResultWrapper
 import com.tenqube.visualbase.infrastructure.util.safeApiCall
 import kotlinx.coroutines.CoroutineDispatcher
@@ -40,10 +39,10 @@ class CurrencyRemoteDataSource(
                 Result.Success(response.value)
             }
             is ResultWrapper.NetworkError -> {
-                Result.Error(Exception("network error"))
+                Result.Error(Exception(ErrorMsg.NETWORK.msg))
             }
             is ResultWrapper.GenericError -> {
-                Result.Error(Exception(response.error?.toString() ?: "generic error"))
+                Result.Error(Exception(response.error?.toString() ?: ErrorMsg.GENERIC.msg))
             }
         }
     }

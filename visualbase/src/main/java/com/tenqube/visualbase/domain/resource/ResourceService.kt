@@ -6,10 +6,10 @@ import com.tenqube.visualbase.domain.util.Result
 
 interface ResourceService {
 
-    fun getVersion(): VersionDto
+    suspend fun getVersion(): VersionDto
 
-    fun getParsingRule(
+    suspend fun getParsingRule(
         clientVersion: Int,
         serverVersion: Int
-    ) : Result<ParsingRuleDto>
+    ) : ParsingRuleDto
 }

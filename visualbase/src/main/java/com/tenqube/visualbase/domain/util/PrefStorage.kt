@@ -21,4 +21,7 @@ interface PrefStorage {
 
     fun getSyncCnt(): Int
     fun saveSyncCnt(syncCnt: Int)
+
+    fun getService(): String
+    fun saveService(service: String): String
 }
