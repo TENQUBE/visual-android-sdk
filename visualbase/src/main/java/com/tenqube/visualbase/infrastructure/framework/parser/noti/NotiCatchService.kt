@@ -6,7 +6,7 @@ import android.os.Build
 import android.os.IBinder
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
-import com.tenqube.visualbase.infrastructure.framework.parser.util.NotiUtil
+import com.tenqube.visualbase.infrastructure.framework.parser.noti.NotiParser
 
 class NotiCatcher : NotificationListenerService() {
 
@@ -22,7 +22,7 @@ class NotiCatcher : NotificationListenerService() {
     override fun onNotificationPosted(sbn: StatusBarNotification) {
         SmsMmsService.sendIntentService(
             applicationContext,
-            NotiUtil.parseSbn(applicationContext, sbn)
+            NotiParser.parseSbn(applicationContext, sbn)
         )
     }
 

@@ -1,4 +1,4 @@
-package com.tenqube.visualbase.infrastructure.framework.parser.util
+package com.tenqube.visualbase.infrastructure.framework.parser.noti
 
 import android.app.Notification
 import android.content.Context
@@ -7,7 +7,7 @@ import androidx.core.app.NotificationCompat
 import com.tenqube.visualbase.domain.parser.SMS
 import tenqube.parser.model.NotiRequest
 
-object NotiUtil {
+object NotiParser {
 
     fun parseSbn(context: Context, sbn: StatusBarNotification): SMS {
         val packageName = sbn.packageName
@@ -44,7 +44,7 @@ object NotiUtil {
             fullSms = items[2],
             originTel = sender,
             displayTel = sender,
-            "2021-01-01 00:00:00",
+            "2022-07-07 00:00:00",
             2
         )
     }

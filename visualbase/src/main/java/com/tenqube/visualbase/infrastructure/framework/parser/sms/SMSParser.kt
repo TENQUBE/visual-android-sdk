@@ -1,4 +1,4 @@
-package com.tenqube.visualbase.infrastructure.framework.parser.util
+package com.tenqube.visualbase.infrastructure.framework.parser.sms
 
 import android.os.Bundle
 import android.telephony.SmsMessage
@@ -8,7 +8,7 @@ import tenqube.parser.constants.Constants
 import java.text.SimpleDateFormat
 import java.util.*
 
-object SMSUtil {
+object SMSParser {
 
     fun parseBundle(bundle: Bundle?): SMS? {
         return bundle?.let {
