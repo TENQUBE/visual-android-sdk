@@ -11,14 +11,28 @@ import com.tenqube.visualbase.domain.search.SearchService
 import com.tenqube.visualbase.domain.search.SearchTransaction
 import com.tenqube.visualbase.domain.search.TranCompany
 import com.tenqube.visualbase.domain.transaction.command.SaveTransactionDto
+import com.tenqube.visualbase.domain.util.PrefStorage
 import com.tenqube.visualbase.service.transaction.TransactionAppService
+import java.util.*
 
 class ParserAppService(
     private val parserService: ParserService,
     private val currencyService: CurrencyService,
     private val searchService: SearchService,
-    private val transactionAppService: TransactionAppService
+    private val transactionAppService: TransactionAppService,
+    private val prefStorage: PrefStorage
 ) {
+
+    suspend fun parseRcsListAfterLastParsedTime() {
+        val lastTime = prefStorage.getLastRcsTime() ?: System.currentTimeMillis()
+        val currentTime = Calendar.getInstance().timeInMillis
+        val smsList = parserService.getRcsList(SmsFilter(lastTime, currentTime))
+        smsList.forEach {
+            parse(it)
+        }
+        prefStorage.saveLastRcsTime(currentTime)
+    }
+
     suspend fun parse(sms: SMS): Result<Unit> {
         val parsedTransactions = parserService.parse(sms)
         return saveTransactions(parsedTransactions)
@@ -34,11 +48,15 @@ class ParserAppService(
                 it.asDomain()
             }
         )
+
         return Result.success(Unit)
     }
 
     suspend fun getSmsList(filter: SmsFilter): List<SMS> {
-        return parserService.getSmsList(filter)
+        return parserService.getSmsList(filter) +
+                parserService.getRcsList(filter).also {
+                    prefStorage.saveLastRcsTime(filter.toAt)
+                }
     }
 
     private suspend fun getSearchedTransactions(parsedTransactions: List<ParsedTransaction>):

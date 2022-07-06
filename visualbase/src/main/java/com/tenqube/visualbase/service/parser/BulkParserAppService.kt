@@ -52,8 +52,9 @@ class BulkSmsAdapterImpl(
 }
 
 class BulkParserAppService(
-    private val parserAppService: ParserAppService,
+    private val parserAppService: ParserAppService
 ) {
+
     fun getSmsList(filter: SmsFilter): List<SMS> = runBlocking {
         return@runBlocking parserAppService.getSmsList(filter).map {
             SMS(

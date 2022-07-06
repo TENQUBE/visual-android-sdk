@@ -24,4 +24,7 @@ interface PrefStorage {
 
     fun getService(): String
     fun saveService(service: String): String
+
+    fun getLastRcsTime(): Long?
+    fun saveLastRcsTime(time: Long)
 }
