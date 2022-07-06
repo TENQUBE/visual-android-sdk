@@ -12,6 +12,8 @@ interface ParserService {
     suspend fun parse(sms: SMS): List<ParsedTransaction>
 
     suspend fun getSmsList(filter: SmsFilter): List<SMS>
+
+    suspend fun getRcsList(filter: SmsFilter): List<SMS>
 }
 
 data class SmsFilter(val fromAt: Long, val toAt: Long) {

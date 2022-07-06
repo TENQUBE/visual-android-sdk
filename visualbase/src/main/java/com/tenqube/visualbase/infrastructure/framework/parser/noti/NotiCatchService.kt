@@ -1,4 +1,4 @@
-package com.tenqube.visualbase.infrastructure.framework.parser
+package com.tenqube.visualbase.infrastructure.framework.parser.noti
 
 import android.annotation.TargetApi
 import android.content.Intent
@@ -6,7 +6,7 @@ import android.os.Build
 import android.os.IBinder
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
-import com.tenqube.visualbase.infrastructure.framework.parser.noti.NotiParser
+import com.tenqube.visualbase.infrastructure.framework.parser.SmsMmsService
 
 class NotiCatcher : NotificationListenerService() {
 

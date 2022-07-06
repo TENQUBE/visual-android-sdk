@@ -61,16 +61,13 @@ object RcsParser {
         widgetObject: JSONObject,
         collector: StringBuilder,
         delimiter: String
-    ): Boolean {
-        return when (widgetObject.getString("widget")) {
+    ) {
+        when (widgetObject.getString("widget")) {
             "TextView" -> {
                 val text = widgetObject.getString("text")
                 if (text.isNotEmpty()) {
                     collector.append(delimiter)
                     collector.append(text)
-                    true
-                } else {
-                    false
                 }
             }
             "LinearLayout" -> {
@@ -82,9 +79,7 @@ object RcsParser {
                     collectDisplayText(jsonObject, collector, delimiter)
                     i++
                 }
-                true
             }
-            else -> false
         }
     }
 }

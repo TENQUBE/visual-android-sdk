@@ -2,18 +2,20 @@ package com.tenqube.visualbase.infrastructure.adapter.parser
 
 import android.content.Context
 import android.net.Uri
+import com.tenqube.shared.util.getValue
 import com.tenqube.visualbase.domain.parser.ParsedTransaction
 import com.tenqube.visualbase.domain.parser.ParserService
 import com.tenqube.visualbase.domain.parser.SMS
 import com.tenqube.visualbase.domain.parser.SmsFilter
+import com.tenqube.visualbase.infrastructure.adapter.parser.rcs.RcsService
 import com.tenqube.visualbase.infrastructure.adapter.parser.rule.ParsingRuleService
-import com.tenqube.visualbase.service.resource.ResourceAppService
 import tenqube.parser.model.ResultCode
 
 class ParserServiceImpl(
     private val context: Context,
     private val parserService: tenqube.parser.core.ParserService,
-    private val parsingRuleService: ParsingRuleService
+    private val parsingRuleService: ParsingRuleService,
+    private val rcsService: RcsService
 ) : ParserService {
 
     override suspend fun parse(sms: SMS): List<ParsedTransaction> {
@@ -72,5 +74,9 @@ class ParserServiceImpl(
         }
 
         return results
+    }
+
+    override suspend fun getRcsList(filter: SmsFilter): List<SMS> {
+        return rcsService.queryRcs(filter.fromAt, filter.toAt).getValue()
     }
 }
