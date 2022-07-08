@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"/>
 
     <Button
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/jb"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

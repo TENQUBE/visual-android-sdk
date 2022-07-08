@@ -1,6 +1,6 @@
 package com.tenqube.webui.dto
 
-data class ShowTimePicker(
+data class OpenTimePicker(
     val request: TimePickerRequest,
     val callback: (time: String) -> Unit
 )

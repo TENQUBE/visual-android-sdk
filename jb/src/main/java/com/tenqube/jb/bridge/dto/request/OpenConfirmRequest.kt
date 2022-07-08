@@ -3,17 +3,12 @@ package com.tenqube.jb.bridge.dto.request
 import com.tenqube.shared.webview.dto.RequestBody
 import com.tenqube.webui.dto.ShowDialogRequest
 
-data class ShowConfirmRequest(val data: ShowConfirmDto) : RequestBody {
-    override fun checkParams() {
-    }
-}
-
-data class ShowConfirmDto(
+data class OpenConfirmRequest(
     val title: String,
     val message: String,
     val positive: ButtonDto,
     val negative: ButtonDto
-) {
+) : RequestBody {
     fun asDomain(): ShowDialogRequest {
         return ShowDialogRequest(
             title,
@@ -21,6 +16,9 @@ data class ShowConfirmDto(
             positive.asDomain(),
             negative.asDomain()
         )
+    }
+
+    override fun checkParams() {
     }
 }
 

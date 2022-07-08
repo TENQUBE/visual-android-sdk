@@ -6,22 +6,22 @@ import com.tenqube.jb.bridge.VisualBridge
 import com.tenqube.jb.bridge.dto.request.*
 import com.tenqube.jb.bridge.dto.request.OpenNewViewRequest
 import com.tenqube.jb.bridge.dto.request.RefreshRequest
-import com.tenqube.jb.bridge.dto.request.ShowConfirmRequest
+import com.tenqube.jb.bridge.dto.request.OpenConfirmRequest
 import com.tenqube.shared.webview.BridgeBase
 import com.tenqube.webui.UIService
 import com.tenqube.webui.component.dialog.DialogCallback
-import com.tenqube.webui.dto.ShowDatePicker
+import com.tenqube.webui.dto.OpenDatePicker
 import com.tenqube.webui.dto.ShowDialog
-import com.tenqube.webui.dto.ShowSelectBox
-import com.tenqube.webui.dto.ShowTimePicker
+import com.tenqube.webui.dto.OpenSelectBox
+import com.tenqube.webui.dto.OpenTimePicker
 
 class AndroidUIBridge(
-    webView: WebView,
+    private val webView: WebView,
     private val uiService: UIService
 ) : BridgeBase(webView), VisualBridge.UI {
 
     override val bridgeName: String
-        get() = "visualUI"
+        get() = "visualSDK"
 
     @JavascriptInterface
     override fun finish() {
@@ -70,7 +70,7 @@ class AndroidUIBridge(
             classOfT = RefreshRequest::class.java,
             body = {
                 it?.let {
-//                    uiService.setRefreshEnabled(it.data.enabled)
+//                    uiService.setRefreshEnabled(it.enabled)
                 }
             }
         )
@@ -84,23 +84,23 @@ class AndroidUIBridge(
             classOfT = ShowToastRequest::class.java,
             body = {
                 it?.let {
-                    uiService.showToast(it.data.message)
+                    uiService.showToast(it.message)
                 }
             }
         )
     }
 
     @JavascriptInterface
-    override fun showConfirm(params: String?) {
+    override fun openConfirm(params: String?) {
         execute(
-            funcName = this@AndroidUIBridge::showConfirm.name,
+            funcName = this@AndroidUIBridge::openConfirm.name,
             params = params,
-            classOfT = ShowConfirmRequest::class.java,
+            classOfT = OpenConfirmRequest::class.java,
             body = {
                 it?.let {
                     uiService.showDialog(
                         ShowDialog(
-                            request = it.data.asDomain(),
+                            request = it.asDomain(),
                             object : DialogCallback {
                                 override fun onClickPositiveButton() {
                                 }
@@ -116,15 +116,15 @@ class AndroidUIBridge(
     }
 
     @JavascriptInterface
-    override fun showSelectBox(params: String?) {
+    override fun openSelectBox(params: String?) {
         execute(
-            funcName = this@AndroidUIBridge::showSelectBox.name,
+            funcName = this@AndroidUIBridge::openSelectBox.name,
             params = params,
-            classOfT = ShowSelectBoxRequest::class.java,
+            classOfT = OpenSelectBoxRequest::class.java,
             body = {
                 it?.let {
-                    uiService.showSelectBox(
-                        ShowSelectBox(request = it.data.asDomain()) { selectBox ->
+                    uiService.openSelectBox(
+                        OpenSelectBox(request = it.asDomain()) { selectBox ->
                         }
                     )
                 }
@@ -140,22 +140,35 @@ class AndroidUIBridge(
             classOfT = OpenNewViewRequest::class.java,
             body = {
                 it?.let {
-                    uiService.openNewView(it.data.asDomain())
+                    uiService.openNewView(it.asDomain())
+                }
+            }
+        )
+    }
+
+    override fun openDeepLink(params: String?) {
+        execute(
+            funcName = this@AndroidUIBridge::openNewView.name,
+            params = params,
+            classOfT = OpenNewViewRequest::class.java,
+            body = {
+                it?.let {
+                    uiService.openNewView(it.asDomain())
                 }
             }
         )
     }
 
     @JavascriptInterface
-    override fun showDatePicker(params: String?) {
+    override fun openDatePicker(params: String?) {
         execute(
-            funcName = this@AndroidUIBridge::showDatePicker.name,
+            funcName = this@AndroidUIBridge::openDatePicker.name,
             params = params,
-            classOfT = ShowDatePickerRequest::class.java,
+            classOfT = OpenDatePickerRequest::class.java,
             body = {
                 it?.let {
-                    uiService.showDatePicker(
-                        ShowDatePicker(request = it.data.asDomain()) {
+                    uiService.openDatePicker(
+                        OpenDatePicker(request = it.asDomain()) {
                         }
                     )
                 }
@@ -164,19 +177,28 @@ class AndroidUIBridge(
     }
 
     @JavascriptInterface
-    override fun showTimePicker(params: String?) {
+    override fun openTimePicker(params: String?) {
         execute(
-            funcName = this@AndroidUIBridge::showTimePicker.name,
+            funcName = this@AndroidUIBridge::openTimePicker.name,
             params = params,
-            classOfT = ShowTimePickerRequest::class.java,
+            classOfT = OpenTimePickerRequest::class.java,
             body = {
                 it?.let {
-                    uiService.showTimePicker(
-                        ShowTimePicker(request = it.data.asDomain()) {
+                    uiService.openTimePicker(
+                        OpenTimePicker(request = it.asDomain()) {
                         }
                     )
                 }
             }
         )
+    }
+
+    override fun openNotiSettings(params: String?) {
+    }
+
+    override fun showAd(params: String?) {
+    }
+
+    override fun hideAd(params: String?) {
     }
 }

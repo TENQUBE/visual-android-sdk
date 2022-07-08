@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.*
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -13,7 +12,6 @@ import com.tenqube.jb.bridge.ui.AndroidUIBridge
 import com.tenqube.jb.databinding.MainFragmentJbBinding
 import com.tenqube.shared.webview.WebViewManager
 import com.tenqube.shared.webview.WebViewParam
-import com.tenqube.webui.UIService
 import com.tenqube.webui.UIServiceBuilder
 
 class VisualFragment : Fragment() {
@@ -69,7 +67,9 @@ class VisualFragment : Fragment() {
 
     private fun setupEvents() {
         viewModel.url.observe(this.viewLifecycleOwner) {
-            viewDataBinding.webView.loadUrl(it)
+//            viewDataBinding.webView.loadUrl(it)
+
+            viewDataBinding.webView.loadUrl("file:///android_asset/sample.html")
         }
     }
 
@@ -84,6 +84,7 @@ class VisualFragment : Fragment() {
                 .activity(activity as AppCompatActivity)
                 .webView(this)
                 .build()
+
             val ui = AndroidUIBridge(this, uiService)
             this.addJavascriptInterface(ui, ui.bridgeName)
         }

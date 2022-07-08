@@ -23,18 +23,30 @@ interface VisualBridge {
         fun showToast(params: String?)
 
         @JavascriptInterface
-        fun showConfirm(params: String?)
+        fun openConfirm(params: String?)
 
         @JavascriptInterface
-        fun showSelectBox(params: String?)
+        fun openSelectBox(params: String?)
 
         @JavascriptInterface
         fun openNewView(params: String?)
 
         @JavascriptInterface
-        fun showDatePicker(params: String?)
+        fun openDeepLink(params: String?)
 
         @JavascriptInterface
-        fun showTimePicker(params: String?)
+        fun openDatePicker(params: String?)
+
+        @JavascriptInterface
+        fun openTimePicker(params: String?)
+
+        @JavascriptInterface
+        fun openNotiSettings(params: String?)
+
+        @JavascriptInterface
+        fun showAd(params: String?)
+
+        @JavascriptInterface
+        fun hideAd(params: String?)
     }
 }

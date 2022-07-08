@@ -1,9 +1,11 @@
 package com.tenqube.webui.dto
 
-data class ShowSelectBox(
+import java.io.Serializable
+
+data class OpenSelectBox(
     val request: SelectBoxRequest,
     val callback: (selectBox: SelectBoxItem) -> Unit
-)
+): Serializable
 
 data class SelectBoxRequest(
     val title: String,

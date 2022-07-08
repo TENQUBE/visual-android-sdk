@@ -2,23 +2,20 @@ package com.tenqube.jb.bridge.dto.request
 
 import com.tenqube.shared.webview.dto.RequestBody
 
-data class ShowSelectBoxRequest(val data: ShowSelectBoxDto) :
-    RequestBody {
-    override fun checkParams() {
-    }
-}
-
-data class ShowSelectBoxDto(
+data class OpenSelectBoxRequest(
     val title: String,
     val selectedColor: String,
     val data: List<SelectBoxItemDto>
-) {
+) : RequestBody {
     fun asDomain(): com.tenqube.webui.dto.SelectBoxRequest {
         return com.tenqube.webui.dto.SelectBoxRequest(
             title,
             selectedColor,
             data.map { it.asDomain() }
         )
+    }
+
+    override fun checkParams() {
     }
 }
 

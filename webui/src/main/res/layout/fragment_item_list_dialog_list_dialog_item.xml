@@ -6,9 +6,11 @@
     android:gravity="center"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+
     android:background="@drawable/round_box"
     android:layout_margin="4dp"
-    android:padding="10dp">
+    android:padding="10dp"
+    >
 
     <TextView
         android:textColor="@android:color/black"
