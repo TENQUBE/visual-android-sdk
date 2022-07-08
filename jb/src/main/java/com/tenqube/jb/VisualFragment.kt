@@ -79,9 +79,11 @@ class VisualFragment : Fragment() {
                 WebViewParam(this)
             )
             webViewManager.setupWebView()
+
             val uiService = UIServiceBuilder()
                 .activity(activity as AppCompatActivity)
-                .webView(this).build()
+                .webView(this)
+                .build()
             val ui = AndroidUIBridge(this, uiService)
             this.addJavascriptInterface(ui, ui.bridgeName)
         }
