@@ -7,6 +7,7 @@ import com.tenqube.jb.bridge.dto.request.*
 import com.tenqube.jb.bridge.dto.request.OpenNewViewRequest
 import com.tenqube.jb.bridge.dto.request.RefreshRequest
 import com.tenqube.jb.bridge.dto.request.OpenConfirmRequest
+import com.tenqube.jb.bridge.dto.response.WebResult
 import com.tenqube.shared.webview.BridgeBase
 import com.tenqube.webui.UIService
 import com.tenqube.webui.component.dialog.DialogCallback
@@ -14,6 +15,8 @@ import com.tenqube.webui.dto.OpenDatePicker
 import com.tenqube.webui.dto.ShowDialog
 import com.tenqube.webui.dto.OpenSelectBox
 import com.tenqube.webui.dto.OpenTimePicker
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class AndroidUIBridge(
     private val webView: WebView,
@@ -117,14 +120,18 @@ class AndroidUIBridge(
 
     @JavascriptInterface
     override fun openSelectBox(params: String?) {
+        val funcName = this@AndroidUIBridge::openSelectBox.name
         execute(
-            funcName = this@AndroidUIBridge::openSelectBox.name,
+            funcName = funcName,
             params = params,
             classOfT = OpenSelectBoxRequest::class.java,
             body = {
                 it?.let {
                     uiService.openSelectBox(
                         OpenSelectBox(request = it.asDomain()) { selectBox ->
+                            GlobalScope.launch {
+                                onSuccess(funcName, WebResult(selectBox))
+                            }
                         }
                     )
                 }
@@ -148,9 +155,9 @@ class AndroidUIBridge(
 
     override fun openDeepLink(params: String?) {
         execute(
-            funcName = this@AndroidUIBridge::openNewView.name,
+            funcName = this@AndroidUIBridge::openDeepLink.name,
             params = params,
-            classOfT = OpenNewViewRequest::class.java,
+            classOfT = OpenDeepLinkRequest::class.java,
             body = {
                 it?.let {
                     uiService.openNewView(it.asDomain())
