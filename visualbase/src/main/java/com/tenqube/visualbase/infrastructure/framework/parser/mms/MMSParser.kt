@@ -46,6 +46,7 @@ object MMSParser {
         } finally {
             mmsCursor?.close()
         }
+
         return null
     }
 
@@ -100,7 +101,6 @@ object MMSParser {
                             if ("text/plain" == type) {
                                 val data = cursor.getString(cursor.getColumnIndex("_data"))
                                 msg = if (data != null && !TextUtils.isEmpty(data)) {
-                                    // implementation of this method below
                                     getMmsText(context, partId)
                                 } else {
                                     cursor.getString(cursor.getColumnIndex("text"))
