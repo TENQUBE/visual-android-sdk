@@ -29,7 +29,8 @@ object MMSParser {
                     val id = mmsCursor.getInt(mmsCursor.getColumnIndex("_id"))
                     val date = mmsCursor.getLong(mmsCursor.getColumnIndex("date")) * 1000
                     val tel = getMMSAddress(context, id)
-                    val msg = parseMessage(context, id.toString())
+                    val msg = parseMessage(context, id.toString()) ?: return null
+
                     return SMS(
                         id,
                         msg,
@@ -80,7 +81,7 @@ object MMSParser {
     }
 
     @SuppressLint("Range")
-    private fun parseMessage(context: Context, id: String): String {
+    private fun parseMessage(context: Context, id: String): String? {
         var cursor: Cursor? = null
         var msg: String? = null
         val uri = Uri.parse("content://mms/part")
@@ -100,7 +101,7 @@ object MMSParser {
                                 val data = cursor.getString(cursor.getColumnIndex("_data"))
                                 msg = if (data != null && !TextUtils.isEmpty(data)) {
                                     // implementation of this method below
-                                    getMmsText(partId)
+                                    getMmsText(context, partId)
                                 } else {
                                     cursor.getString(cursor.getColumnIndex("text"))
                                 }
