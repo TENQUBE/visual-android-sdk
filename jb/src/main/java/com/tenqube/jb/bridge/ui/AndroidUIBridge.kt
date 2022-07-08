@@ -107,9 +107,11 @@ class AndroidUIBridge(
                             request = it.asDomain(),
                             object : DialogCallback {
                                 override fun onClickPositiveButton() {
+
                                 }
 
                                 override fun onCLickNegativeButton() {
+
                                 }
                             }
                         )
