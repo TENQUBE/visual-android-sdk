@@ -2,6 +2,7 @@ package com.tenqube.jb.bridge.ui
 
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
+import android.widget.Toast
 import com.tenqube.jb.bridge.VisualBridge
 import com.tenqube.jb.bridge.dto.request.*
 import com.tenqube.jb.bridge.dto.request.OpenNewViewRequest
@@ -201,11 +202,14 @@ class AndroidUIBridge(
     }
 
     override fun openNotiSettings(params: String?) {
+        Toast.makeText(webView.context, "openNotiSettings $params", Toast.LENGTH_SHORT).show()
     }
 
     override fun showAd(params: String?) {
+        Toast.makeText(webView.context, "showAd $params", Toast.LENGTH_SHORT).show()
     }
 
     override fun hideAd(params: String?) {
+        Toast.makeText(webView.context, "hideAd $params", Toast.LENGTH_SHORT).show()
     }
 }

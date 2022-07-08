@@ -38,6 +38,10 @@ class VisualFragment : Fragment() {
             viewModel.start(viewDataBinding.url.text.toString())
         }
 
+        viewDataBinding.test.setOnClickListener {
+            goTest()
+        }
+
         return viewDataBinding.root
     }
 
@@ -67,10 +71,12 @@ class VisualFragment : Fragment() {
 
     private fun setupEvents() {
         viewModel.url.observe(this.viewLifecycleOwner) {
-//            viewDataBinding.webView.loadUrl(it)
-
-            viewDataBinding.webView.loadUrl("file:///android_asset/sample.html")
+            viewDataBinding.webView.loadUrl(it)
         }
+    }
+
+    private fun goTest() {
+        viewDataBinding.webView.loadUrl("file:///android_asset/sample.html")
     }
 
     private fun setupWebView() {
