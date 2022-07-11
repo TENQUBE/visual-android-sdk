@@ -7,7 +7,7 @@ import android.view.*
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -21,8 +21,9 @@ class NotiCatchDialogFragment : DialogFragment() {
     private var recyclerView: RecyclerView? = null
     private var callback: Callback? = null
     private var arg: NotiCatchArg? = null
-    private lateinit var viewModel: NotiCatchViewModel
-
+    val viewModel: NotiCatchViewModel by viewModels {
+        NotiCatchViewModelFactory(ResourceAppService(requireContext()))
+    }
     fun setCallback(callback: Callback) {
         this.callback = callback
     }
@@ -33,7 +34,6 @@ class NotiCatchDialogFragment : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(  this)[NotiCatchViewModel::class.java]
         arg = arguments?.getSerializable("arg") as NotiCatchArg
     }
 
@@ -62,10 +62,11 @@ class NotiCatchDialogFragment : DialogFragment() {
                 )
             recyclerView?.layoutManager = LinearLayoutManager(activity)
             recyclerView?.adapter = appAdapter
-            viewModel.loadApps()
             viewModel.apps.observe(this) {
                 appAdapter?.submitList(it)
             }
+
+            viewModel.loadApps()
             val nextButton = view.findViewById<Button>(R.id.next)
             nextButton.setOnClickListener {
                 if (callback != null) {

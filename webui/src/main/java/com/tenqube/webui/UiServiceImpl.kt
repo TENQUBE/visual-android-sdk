@@ -121,8 +121,8 @@ class UiServiceImpl(
         newFragment.show(activity.supportFragmentManager, "timePicker")
     }
 
-    override fun openNotiSettings(apps: List<NotificationAppDto>) {
-        val notiCatchDialogFragment = NotiCatchDialogFragment.newInstance(NotiCatchArg(apps))
+    override fun openNotiSettings() {
+        val notiCatchDialogFragment = NotiCatchDialogFragment.newInstance(NotiCatchArg(listOf()))
         notiCatchDialogFragment.setCallback(callback = object : NotiCatchDialogFragment.Callback {
             override fun onClickNext() {
             }

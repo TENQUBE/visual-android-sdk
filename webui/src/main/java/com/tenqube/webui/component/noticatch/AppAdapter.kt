@@ -14,8 +14,6 @@ import com.tenqube.webui.component.noticatch.dto.NotificationAppDto
 class AppAdapter (private val requestManager: RequestManager) :
     ListAdapter<NotificationAppDto, RecyclerView.ViewHolder>(AdapterDataDiffCallback()) {
 
-    private val apps = mutableListOf<NotificationAppDto>()
-
     class NotiCatchViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
         val icon: ImageView = itemView.findViewById<View>(R.id.icon) as ImageView
@@ -35,13 +33,14 @@ class AppAdapter (private val requestManager: RequestManager) :
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val notiCatch: NotificationAppDto = apps[position]
-        val notiCatchViewHolder = holder as NotiCatchViewHolder
-        requestManager.load(notiCatch.image).into(notiCatchViewHolder.icon)
-        notiCatchViewHolder.appName.text = notiCatch.name
+        getItem(position)?.let { item ->
+            val notiCatchViewHolder = holder as NotiCatchViewHolder
+            requestManager.load(item.image).into(notiCatchViewHolder.icon)
+            notiCatchViewHolder.appName.text = item.name
+        }
     }
 
     override fun getItemCount(): Int {
-        return apps.size
+        return currentList.size
     }
 }

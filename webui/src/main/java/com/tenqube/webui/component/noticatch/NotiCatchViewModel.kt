@@ -1,11 +1,12 @@
 package com.tenqube.webui.component.noticatch
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.tenqube.webui.component.noticatch.dto.NotificationAppDto
 import kotlinx.coroutines.launch
+
+class NotiCatchViewModelFactory(private val resourceAppService: ResourceAppService): ViewModelProvider.NewInstanceFactory() {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T = NotiCatchViewModel(resourceAppService) as T
+}
 
 class NotiCatchViewModel(
     private val resourceAppService: ResourceAppService

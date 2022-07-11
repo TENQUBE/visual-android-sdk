@@ -1,6 +1,5 @@
 package com.tenqube.shared.webview
 
-import android.util.Log
 import android.webkit.WebView
 import com.tenqube.shared.error.ParameterError
 import com.tenqube.shared.util.elapsedLog

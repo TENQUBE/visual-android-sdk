@@ -13,6 +13,7 @@ import com.tenqube.jb.databinding.MainFragmentJbBinding
 import com.tenqube.shared.webview.WebViewManager
 import com.tenqube.shared.webview.WebViewParam
 import com.tenqube.webui.UIServiceBuilder
+import com.tenqube.webui.component.noticatch.ResourceAppService
 
 class VisualFragment : Fragment() {
 

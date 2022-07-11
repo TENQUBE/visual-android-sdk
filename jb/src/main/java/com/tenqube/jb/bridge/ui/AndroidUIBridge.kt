@@ -22,8 +22,7 @@ import kotlinx.coroutines.launch
 
 class AndroidUIBridge(
     webView: WebView,
-    private val uiService: UIService,
-    private val resource: ResourceAppService,
+    private val uiService: UIService
 ) : BridgeBase(webView), VisualBridge.UI {
 
     override val bridgeName: String
@@ -213,11 +212,7 @@ class AndroidUIBridge(
             params = null,
             classOfT = Any::class.java,
             body = {
-                it?.let {
-                    uiService.openNotiSettings(resource.getNotiCatchApps().map { noti ->
-                        NotificationAppDto(noti.name, noti.image)
-                    })
-                }
+                uiService.openNotiSettings()
             }
         )
     }
