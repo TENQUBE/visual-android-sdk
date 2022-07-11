@@ -41,7 +41,7 @@ interface VisualBridge {
         fun openTimePicker(params: String?)
 
         @JavascriptInterface
-        fun openNotiSettings(params: String?)
+        fun openNotiSettings()
 
         @JavascriptInterface
         fun showAd(params: String?)

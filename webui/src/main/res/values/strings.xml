@@ -1,0 +1,5 @@
+<resources>
+    <string name="visual_notification_catch_dialog_title">%1$s의 알림 접근을 ON으로 설정해주세요.</string>
+    <string name="visual_notification_catch_dialog_content">알림을 연동하시면 SMS와 아래 알림 앱으로 수신하는 내역이 자동으로 기록됩니다.</string>
+    <string name="visual_notification_catch_dialog_yes">다음</string>
+</resources>

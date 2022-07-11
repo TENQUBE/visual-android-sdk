@@ -18,4 +18,6 @@ interface UIService {
     fun openDatePicker(request: OpenDatePicker)
 
     fun openTimePicker(request: OpenTimePicker)
+
+    fun openNotiSettings()
 }

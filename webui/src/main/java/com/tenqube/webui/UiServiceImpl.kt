@@ -117,4 +117,8 @@ class UiServiceImpl(
         )
         newFragment.show(activity.supportFragmentManager, "timePicker")
     }
+
+    override fun openNotiSettings() {
+        TODO("Not yet implemented")
+    }
 }

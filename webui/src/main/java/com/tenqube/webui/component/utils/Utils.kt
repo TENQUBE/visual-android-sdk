@@ -1,6 +1,7 @@
 package com.tenqube.webui.component.utils
 
 import android.app.Activity
+import android.content.Context
 import android.content.res.Resources
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
@@ -84,5 +85,9 @@ object Utils {
         } catch (e: ParseException) {
         }
         return calendar
+    }
+
+    fun getApplicationName(context: Context): String {
+        return ""
     }
 }

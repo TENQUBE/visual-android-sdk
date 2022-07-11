@@ -2,7 +2,6 @@ package com.tenqube.jb.bridge.ui
 
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
-import android.widget.Toast
 import com.tenqube.jb.bridge.VisualBridge
 import com.tenqube.jb.bridge.dto.request.*
 import com.tenqube.jb.bridge.dto.request.OpenNewViewRequest
@@ -20,7 +19,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class AndroidUIBridge(
-    private val webView: WebView,
+    webView: WebView,
     private val uiService: UIService
 ) : BridgeBase(webView), VisualBridge.UI {
 
@@ -205,17 +204,26 @@ class AndroidUIBridge(
     }
 
     @JavascriptInterface
-    override fun openNotiSettings(params: String?) {
-        Toast.makeText(webView.context, "openNotiSettings $params", Toast.LENGTH_SHORT).show()
+    override fun openNotiSettings() {
+        execute(
+            funcName = this@AndroidUIBridge::openNotiSettings.name,
+            params = null,
+            classOfT = Any::class.java,
+            body = {
+                it?.let {
+                    uiService.openNotiSettings()
+                }
+            }
+        )
     }
 
     @JavascriptInterface
     override fun showAd(params: String?) {
-        Toast.makeText(webView.context, "showAd $params", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(webView.context, "showAd $params", Toast.LENGTH_SHORT).show()
     }
 
     @JavascriptInterface
     override fun hideAd(params: String?) {
-        Toast.makeText(webView.context, "hideAd $params", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(webView.context, "hideAd $params", Toast.LENGTH_SHORT).show()
     }
 }
