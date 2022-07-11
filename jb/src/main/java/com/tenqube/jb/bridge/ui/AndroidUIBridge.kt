@@ -8,9 +8,11 @@ import com.tenqube.jb.bridge.dto.request.OpenNewViewRequest
 import com.tenqube.jb.bridge.dto.request.RefreshRequest
 import com.tenqube.jb.bridge.dto.request.OpenConfirmRequest
 import com.tenqube.jb.bridge.dto.response.WebResult
+import com.tenqube.webui.component.noticatch.ResourceAppService
 import com.tenqube.shared.webview.BridgeBase
 import com.tenqube.webui.UIService
 import com.tenqube.webui.component.dialog.DialogCallback
+import com.tenqube.webui.component.noticatch.dto.NotificationAppDto
 import com.tenqube.webui.dto.OpenDatePicker
 import com.tenqube.webui.dto.ShowDialog
 import com.tenqube.webui.dto.OpenSelectBox
@@ -20,7 +22,8 @@ import kotlinx.coroutines.launch
 
 class AndroidUIBridge(
     webView: WebView,
-    private val uiService: UIService
+    private val uiService: UIService,
+    private val resource: ResourceAppService,
 ) : BridgeBase(webView), VisualBridge.UI {
 
     override val bridgeName: String
@@ -211,7 +214,9 @@ class AndroidUIBridge(
             classOfT = Any::class.java,
             body = {
                 it?.let {
-                    uiService.openNotiSettings()
+                    uiService.openNotiSettings(resource.getNotiCatchApps().map { noti ->
+                        NotificationAppDto(noti.name, noti.image)
+                    })
                 }
             }
         )

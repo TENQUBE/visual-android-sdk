@@ -7,6 +7,7 @@ import android.view.*
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -19,7 +20,8 @@ class NotiCatchDialogFragment : DialogFragment() {
     private var appAdapter: AppAdapter? = null
     private var recyclerView: RecyclerView? = null
     private var callback: Callback? = null
-    private var params: NotiCatchParam? = null
+    private var arg: NotiCatchArg? = null
+    private lateinit var viewModel: NotiCatchViewModel
 
     fun setCallback(callback: Callback) {
         this.callback = callback
@@ -31,10 +33,8 @@ class NotiCatchDialogFragment : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val bundle = arguments
-        if (bundle != null) {
-            params = bundle.getSerializable(ARG) as NotiCatchParam?
-        }
+        viewModel = ViewModelProvider(  this)[NotiCatchViewModel::class.java]
+        arg = arguments?.getSerializable("arg") as NotiCatchArg
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -58,11 +58,14 @@ class NotiCatchDialogFragment : DialogFragment() {
                 AppAdapter(
                     Glide.with(
                         requireActivity()
-                    ),
-                    params?.apps ?: listOf()
+                    )
                 )
             recyclerView?.layoutManager = LinearLayoutManager(activity)
             recyclerView?.adapter = appAdapter
+            viewModel.loadApps()
+            viewModel.apps.observe(this) {
+                appAdapter?.submitList(it)
+            }
             val nextButton = view.findViewById<Button>(R.id.next)
             nextButton.setOnClickListener {
                 if (callback != null) {
@@ -78,15 +81,14 @@ class NotiCatchDialogFragment : DialogFragment() {
     }
 
     companion object {
-        const val ARG = "arg"
-        fun newInstance(params: NotiCatchParam): NotiCatchDialogFragment {
+        fun newInstance(param: NotiCatchArg): NotiCatchDialogFragment {
             return NotiCatchDialogFragment().apply {
-                this.arguments = Bundle().apply {
-                    putSerializable(ARG, params)
+                arguments = Bundle().apply {
+                    putSerializable("arg", param)
                 }
             }
         }
     }
 }
 
-data class NotiCatchParam(val apps: List<NotificationAppDto>) : Serializable
+data class NotiCatchArg(val apps: List<NotificationAppDto>) : Serializable

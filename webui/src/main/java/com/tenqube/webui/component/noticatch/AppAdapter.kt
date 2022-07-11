@@ -5,14 +5,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.tenqube.webui.R
 import com.tenqube.webui.component.noticatch.dto.NotificationAppDto
 
-class AppAdapter (private val requestManager: RequestManager,
-                  private val apps: List<NotificationAppDto>) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class AppAdapter (private val requestManager: RequestManager) :
+    ListAdapter<NotificationAppDto, RecyclerView.ViewHolder>(AdapterDataDiffCallback()) {
+
+    private val apps = mutableListOf<NotificationAppDto>()
 
     class NotiCatchViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {

@@ -1,5 +1,6 @@
 package com.tenqube.webui
 
+import com.tenqube.webui.component.noticatch.dto.NotificationAppDto
 import com.tenqube.webui.dto.*
 
 interface UIService {
@@ -19,5 +20,5 @@ interface UIService {
 
     fun openTimePicker(request: OpenTimePicker)
 
-    fun openNotiSettings()
+    fun openNotiSettings(apps: List<NotificationAppDto>)
 }
