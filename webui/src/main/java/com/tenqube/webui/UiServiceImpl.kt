@@ -1,18 +1,13 @@
 package com.tenqube.webui
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.media.AudioManager
 import android.net.Uri
-import android.webkit.WebView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentActivity
 import com.tenqube.webui.component.bottomsheet.ItemListDialogFragment
-import com.tenqube.webui.component.bottomsheet.model.OpenSelectBoxItem
-import com.tenqube.webui.component.bottomsheet.model.OpenSelectBoxRequest
 import com.tenqube.webui.component.datepicker.DatePickerFragment
 import com.tenqube.webui.component.datepicker.DatePickerListener
 import com.tenqube.webui.component.datepicker.model.DateRequest
@@ -22,8 +17,7 @@ import com.tenqube.webui.component.timepicker.model.TimeRequest
 import com.tenqube.webui.dto.*
 
 class UiServiceImpl(
-    private val activity: FragmentActivity,
-    private val webView: WebView
+    private val activity: FragmentActivity
 ) : UIService {
 
     private var audioManager: AudioManager? = null

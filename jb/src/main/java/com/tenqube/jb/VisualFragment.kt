@@ -30,7 +30,7 @@ class VisualFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProvider(this)[VisualViewModel::class.java]
+        viewModel = ViewModelProvider(  this)[VisualViewModel::class.java]
         viewDataBinding = MainFragmentJbBinding.inflate(inflater, container, false)
             .apply { viewmodel = viewModel }
 
@@ -88,7 +88,6 @@ class VisualFragment : Fragment() {
 
             val uiService = UIServiceBuilder()
                 .activity(activity as AppCompatActivity)
-                .webView(this)
                 .build()
 
             val ui = AndroidUIBridge(this, uiService)

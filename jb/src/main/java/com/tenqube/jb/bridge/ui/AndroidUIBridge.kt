@@ -156,6 +156,7 @@ class AndroidUIBridge(
         )
     }
 
+    @JavascriptInterface
     override fun openDeepLink(params: String?) {
         execute(
             funcName = this@AndroidUIBridge::openDeepLink.name,
@@ -203,14 +204,17 @@ class AndroidUIBridge(
         )
     }
 
+    @JavascriptInterface
     override fun openNotiSettings(params: String?) {
         Toast.makeText(webView.context, "openNotiSettings $params", Toast.LENGTH_SHORT).show()
     }
 
+    @JavascriptInterface
     override fun showAd(params: String?) {
         Toast.makeText(webView.context, "showAd $params", Toast.LENGTH_SHORT).show()
     }
 
+    @JavascriptInterface
     override fun hideAd(params: String?) {
         Toast.makeText(webView.context, "hideAd $params", Toast.LENGTH_SHORT).show()
     }
