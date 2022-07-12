@@ -27,7 +27,7 @@ public class ParserService implements Parser {
     public static final String TAG = makeLogTag(ParserService.class);
 
     private Context mContext;
-    private boolean mIsBulk = false;
+    private boolean mIsBulk;
     public static boolean mIsDebug = false;
     private int mTranCnt;
 
@@ -46,10 +46,10 @@ public class ParserService implements Parser {
 
     private ParserService(Context context) throws SQLException {
         this.mContext = context;
-
         this.mParserPresenter = new ParserPresenter(context);
         this.mIsBulk = false;
-        this.mTranCnt = PrefUtils.getInstance(this.mContext).loadIntValue(PrefUtils.TRAN_COUNT, 50);
+        this.mTranCnt = PrefUtils.getInstance(this.mContext)
+                .loadIntValue(PrefUtils.TRAN_COUNT, 50);
     }
 
     @Override
@@ -59,7 +59,6 @@ public class ParserService implements Parser {
 
     @Override
     public void syncParsingRule(ParsingRule parsingRule) throws SQLException {
-
         if (parsingRule != null) {
             SecretKeyManager.getInstance(this.mContext).saveKey(parsingRule.securityKey);
             PrefUtils.getInstance(this.mContext).saveIntValue(PrefUtils.RULE_VERSION, parsingRule.ruleVersion);
@@ -71,18 +70,15 @@ public class ParserService implements Parser {
 
     @Override
     public ParserResult parse(SMS sms) throws SQLException {
-
         if(PrefUtils.getInstance(this.mContext).loadIntValue(PrefUtils.RULE_VERSION, BuildConfig.RULE_VERSION) == BuildConfig.RULE_VERSION)
-            return new ParserResult(ResultCode.NEED_TO_SYNC_PARSING_RULE, null, null);
-
+            return new ParserResult(ResultCode.NEED_TO_SYNC_PARSING_RULE, null);
         if (sms != null && sms.isValid()) {
             if (!this.mIsBulk) {
                 mParserPresenter.deleteOldTransaction(sms.getSmsDate());
             }
-
             return mParserPresenter.parse(sms);
         } else {
-            return new ParserResult(ResultCode.PARAMETER_ERROR, null, null);
+            return new ParserResult(ResultCode.PARAMETER_ERROR, null);
         }
     }
 
@@ -94,7 +90,6 @@ public class ParserService implements Parser {
     @Override
     public void destroy() {
         if (mInstance != null) {
-
             if (mParseBulkTask != null) {
                 mParseBulkTask.cancel(true);
                 mParseBulkTask = null;
@@ -110,7 +105,6 @@ public class ParserService implements Parser {
 
     @Override
     public void initDb() throws SQLException {
-
         this.mParserPresenter.initDb();
     }
 
@@ -135,29 +129,21 @@ public class ParserService implements Parser {
         return mParserPresenter.getRepSender(sms);
     }
 
-
     @Override
     public void parseBulk(BulkSmsAdapter bulkSmsAdapter) throws SQLException {
-
         LOGI(TAG, "Start FUNC : parseBulk");
-
         if(bulkSmsAdapter != null && !mIsBulk) {
-
             mIsBulk = true;
-
             if(PrefUtils.getInstance(this.mContext).loadIntValue(PrefUtils.RULE_VERSION, BuildConfig.RULE_VERSION) == BuildConfig.RULE_VERSION) {
                 bulkSmsAdapter.onError(ResultCode.NEED_TO_SYNC_PARSING_RULE);
                 mIsBulk = false;
-
             } else {
                 this.cancelParseBulk();
                 mParseBulkTask = new ParserBulkTask(this, bulkSmsAdapter);
                 mParseBulkTask.execute();
             }
-
         }
         LOGI(TAG, "End FUNC : parseBulk");
-
     }
 
 
@@ -173,7 +159,6 @@ public class ParserService implements Parser {
             this.mParser = parserService;
             this.mAdapter = smsAdapter;
             this.mIsCanceled = false;
-
         }
 
         @Override
@@ -190,7 +175,6 @@ public class ParserService implements Parser {
             }
             this.mIsCanceled = true;
         }
-
 
         @Override
         protected Void doInBackground(Void... params) {
@@ -212,7 +196,6 @@ public class ParserService implements Parser {
                         transactionBuffer.addAll(transactions);
                     }
                 }
-
 
                 if (transactionBuffer != null && transactionBuffer.size() >= this.mParser.mTranCnt) {
                     mSendToServerThread.pushTransactions(transactionBuffer);
@@ -236,14 +219,12 @@ public class ParserService implements Parser {
                 e.printStackTrace();
             }
 
-
             return null;
         }
 
 
         @Override
         protected void onPostExecute(Void aVoid) {
-
             try {
                 LOGI(TAG, "onPostExecute");
                 if (mSendToServerThread != null) {
@@ -261,20 +242,17 @@ public class ParserService implements Parser {
                             mAdapter.onError(ResultCode.FORCE_STOP); // cancel... ResultCode 에 취소 에러 상태추가해주세요.
                         }
                     }
-
                     this.mSendToServerThread.releaseAll();
                     this.mSendToServerThread = null;
                 }
 
                 if(this.mParser!=null) {
-
                     this.mParser.mIsBulk = false;
-
                     if(mParser.mParserPresenter !=null)
                         this.mParser.mParserPresenter.onBulkComplete();
                 }
 
-            }catch (Exception e) {
+            } catch (Exception e) {
                e.printStackTrace();
             }
 
@@ -290,16 +268,11 @@ public class ParserService implements Parser {
         private boolean mIsError;
         private boolean mIsCompleted;
         private boolean mIsCanceled;
-
         private boolean mIsLastTransactionPushed;
-        private boolean mIsLastFinancialProductPushed;
 
         private BulkSmsAdapter mAdapter;
         private LinkedList<ArrayList<Transaction>> mTransactionPool;
         private ArrayList<ArrayList<Transaction>> mSendingTransactionPool;
-
-        private LinkedList<ArrayList<FinancialProduct>> mFinancialProductPool;
-        private ArrayList<ArrayList<FinancialProduct>> mSendingFinancialProductPool;
 
         private Object mWaitObject;
         private ParserPresenter mParserPresenter;
@@ -308,12 +281,7 @@ public class ParserService implements Parser {
             super();
             this.mTransactionPool = new LinkedList<>();
             this.mSendingTransactionPool = new ArrayList<>();
-
-            this.mFinancialProductPool = new LinkedList<>();
-            this.mSendingFinancialProductPool = new ArrayList<>();
-
             this.mIsLastTransactionPushed = false;
-
             this.mAdapter = adapter;
             this.mWaitObject = new Object();
             this.mIsError = false;
@@ -323,15 +291,10 @@ public class ParserService implements Parser {
         }
 
         void cancelThread() {
-
             this.mIsCanceled = true;
             this.mTransactionPool.clear();
             this.mSendingTransactionPool.clear();
-            this.mFinancialProductPool.clear();
-            this.mSendingFinancialProductPool.clear();
-
             this.wakeupThread();
-
             LOGI(TAG, "Thread Canceled.. ");
 
         }
@@ -350,37 +313,17 @@ public class ParserService implements Parser {
             this.wakeupThread();
         }
 
-        void pushFinancialProducts(ArrayList<FinancialProduct> products) {
-            if (products != null) {
-                if (!this.mIsError && !this.mIsCanceled) {
-                    this.mFinancialProductPool.push(products);
-                }
-            }
-            this.wakeupThread();
-        }
-
         @Override
         public void run() {
-
             LOGI(TAG, "Start Sender Thread ");
             while (!isFinishedLoop()) {
-
                 final boolean hasTransaction = mTransactionPool !=null && !mTransactionPool.isEmpty();
-                final boolean hasFinancialProduct = mFinancialProductPool !=null && !mFinancialProductPool.isEmpty();
-
-
-                if (hasTransaction || hasFinancialProduct) {
+                if (hasTransaction) {
                     ArrayList<Transaction> transactions = new ArrayList<>();
                     ArrayList<FinancialProduct> financialProducts = new ArrayList<>();
-
                     if(hasTransaction) {
                         transactions = Utils.distinctTransactions(mTransactionPool.pop());
                         this.mSendingTransactionPool.add(transactions);
-                    }
-
-                    if(hasFinancialProduct) {
-                        financialProducts = mFinancialProductPool.pop();
-                        this.mSendingFinancialProductPool.add(financialProducts);
                     }
 
                     LOGI(TAG, "Start Network ... ");
@@ -390,52 +333,34 @@ public class ParserService implements Parser {
                     mAdapter.sendToServerTransactions(transactions, financialProducts, new OnNetworkResultListener() {
                         @Override
                         public void onResult(final boolean bSuccess) {
-
                             try {
                                 if(mSendingTransactionPool != null && hasTransaction) {
-
                                     mSendingTransactionPool.remove(finalTransactions);
-
                                     if (bSuccess) {
                                         mParserPresenter.insertTransactionAndMaxSmsId(finalTransactions);
                                     }
-
                                     LOGI(TAG, "End Network ... ");
                                 }
-
-                                if(mSendingFinancialProductPool != null && hasFinancialProduct) {
-                                    mSendingFinancialProductPool.remove(finalFinancialProducts);
-                                }
-
                                 if (!bSuccess && !mIsError) {
                                     mIsError = true;
                                 }
-
-                                if (mIsLastTransactionPushed && mTransactionPool.isEmpty() && (mSendingTransactionPool == null || mSendingTransactionPool.isEmpty()) &&
-                                mFinancialProductPool.isEmpty() && (mSendingFinancialProductPool == null || mSendingFinancialProductPool.isEmpty())) {
-
+                                if (mIsLastTransactionPushed && mTransactionPool.isEmpty() &&
+                                        (mSendingTransactionPool == null || mSendingTransactionPool.isEmpty())) {
                                     mIsCompleted = true;
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
-
                             wakeupThread();
-
-
                         }
                     });
-                } else if (mIsLastTransactionPushed && mSendingTransactionPool.isEmpty() && mSendingFinancialProductPool.isEmpty()) {
-
+                } else if (mIsLastTransactionPushed && mSendingTransactionPool.isEmpty()) {
                     mIsCompleted = true;
                 }
-
                 if (this.shouldWaitThread()) {
                     this.waitThread();
                 }
-
             }
-
             LOGI(TAG, "End Sender Thread");
         }
 
@@ -446,12 +371,10 @@ public class ParserService implements Parser {
                 this.mTransactionPool.clear();
                 this.mTransactionPool = null;
             }
-
             if (this.mSendingTransactionPool != null) {
                 this.mSendingTransactionPool.clear();
                 this.mSendingTransactionPool = null;
             }
-
             this.mWaitObject = null;
         }
 

@@ -6,20 +6,20 @@ import android.graphics.Color
 import android.media.AudioManager
 import android.net.Uri
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import com.tenqube.webui.component.bottomsheet.CustomBottomSheet
-import com.tenqube.webui.component.bottomsheet.model.OpenSelectBoxItem
-import com.tenqube.webui.component.bottomsheet.model.OpenSelectBoxRequest
+import androidx.fragment.app.FragmentActivity
+import com.tenqube.webui.component.bottomsheet.ItemListDialogFragment
 import com.tenqube.webui.component.datepicker.DatePickerFragment
 import com.tenqube.webui.component.datepicker.DatePickerListener
 import com.tenqube.webui.component.datepicker.model.DateRequest
+import com.tenqube.webui.component.noticatch.NotiCatchArg
+import com.tenqube.webui.component.noticatch.NotiCatchDialogFragment
 import com.tenqube.webui.component.timepicker.TimePickerFragment
 import com.tenqube.webui.component.timepicker.TimePickerListener
 import com.tenqube.webui.component.timepicker.model.TimeRequest
 import com.tenqube.webui.dto.*
 
 class UiServiceImpl(
-    private val activity: AppCompatActivity
+    private val activity: FragmentActivity
 ) : UIService {
 
     private var audioManager: AudioManager? = null
@@ -67,33 +67,9 @@ class UiServiceImpl(
             }
     }
 
-    override fun showSelectBox(request: ShowSelectBox) {
-        val bottomSheet = CustomBottomSheet(activity)
-        bottomSheet.showBottomDialog(
-            OpenSelectBoxRequest(
-                request.request.title,
-                request.request.selectedColor,
-                request.request.data.map {
-                    OpenSelectBoxItem(
-                        it.name,
-                        it.orderByType,
-                        it.isSelected
-                    )
-                }
-            )
-        )
-        bottomSheet.setBottomListener(object : CustomBottomSheet.OnBottomListener {
-            override fun onItemSelected(openSelectBoxItem: OpenSelectBoxItem) {
-                bottomSheet.dismiss()
-                request.callback(
-                    SelectBoxItem(
-                        openSelectBoxItem.name,
-                        openSelectBoxItem.orderByType,
-                        openSelectBoxItem.isSelected
-                    )
-                )
-            }
-        })
+    override fun openSelectBox(request: OpenSelectBox) {
+        ItemListDialogFragment.newInstance(request)
+            .show(activity.supportFragmentManager, "")
     }
 
     override fun openNewView(request: OpenNewViewDto) {
@@ -111,7 +87,7 @@ class UiServiceImpl(
         }
     }
 
-    override fun showDatePicker(request: ShowDatePicker) {
+    override fun openDatePicker(request: OpenDatePicker) {
         val newFragment = DatePickerFragment.newInstance(
             DateRequest(
                 request.request.date,
@@ -128,7 +104,7 @@ class UiServiceImpl(
         newFragment.show(activity.supportFragmentManager, "datePicker")
     }
 
-    override fun showTimePicker(request: ShowTimePicker) {
+    override fun openTimePicker(request: OpenTimePicker) {
         val newFragment = TimePickerFragment.newInstance(
             TimeRequest(
                 request.request.date
@@ -142,5 +118,16 @@ class UiServiceImpl(
             }
         )
         newFragment.show(activity.supportFragmentManager, "timePicker")
+    }
+
+    override fun openNotiSettings() {
+        val notiCatchDialogFragment = NotiCatchDialogFragment.newInstance(NotiCatchArg(listOf()))
+        notiCatchDialogFragment.setCallback(
+            callback = object : NotiCatchDialogFragment.Callback {
+                override fun onClickNext() {
+                }
+            }
+        )
+        notiCatchDialogFragment.show(activity.supportFragmentManager, "notiCatch")
     }
 }

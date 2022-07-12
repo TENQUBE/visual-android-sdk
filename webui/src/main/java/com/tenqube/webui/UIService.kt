@@ -11,11 +11,13 @@ interface UIService {
 
     fun showDialog(request: ShowDialog)
 
-    fun showSelectBox(request: ShowSelectBox)
+    fun openSelectBox(request: OpenSelectBox)
 
     fun openNewView(request: OpenNewViewDto)
 
-    fun showDatePicker(request: ShowDatePicker)
+    fun openDatePicker(request: OpenDatePicker)
 
-    fun showTimePicker(request: ShowTimePicker)
+    fun openTimePicker(request: OpenTimePicker)
+
+    fun openNotiSettings()
 }

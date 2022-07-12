@@ -4,19 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.*
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.tenqube.jb.bridge.ui.AndroidUIBridge
 import com.tenqube.jb.databinding.MainFragmentJbBinding
 import com.tenqube.shared.webview.WebViewManager
 import com.tenqube.shared.webview.WebViewParam
+import com.tenqube.webui.UIServiceBuilder
 
 class VisualFragment : Fragment() {
 
     companion object {
         fun newInstance() = VisualFragment()
-        const val URL = "https://d34db13xxji3zw.cloudfront.net/?v=1.0&dv=1.0"
+        const val URL = "file:///android_asset/sample.html"
     }
 
     private lateinit var viewModel: VisualViewModel
@@ -34,6 +36,10 @@ class VisualFragment : Fragment() {
 
         viewDataBinding.search.setOnClickListener {
             viewModel.start(viewDataBinding.url.text.toString())
+        }
+
+        viewDataBinding.test.setOnClickListener {
+            goTest()
         }
 
         return viewDataBinding.root
@@ -69,12 +75,23 @@ class VisualFragment : Fragment() {
         }
     }
 
+    private fun goTest() {
+        viewDataBinding.webView.loadUrl("file:///android_asset/sample.html")
+    }
+
     private fun setupWebView() {
         with(viewDataBinding.webView) {
             webViewManager = WebViewManager(
                 WebViewParam(this)
             )
             webViewManager.setupWebView()
+
+            val uiService = UIServiceBuilder()
+                .activity(activity as AppCompatActivity)
+                .build()
+
+            val ui = AndroidUIBridge(this, uiService)
+            this.addJavascriptInterface(ui, ui.bridgeName)
         }
     }
 

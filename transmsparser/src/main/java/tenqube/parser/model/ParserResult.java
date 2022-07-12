@@ -9,13 +9,9 @@ import java.util.ArrayList;
 
 public class ParserResult implements Serializable {
 
-
-    public ParserResult(int resultCode, ArrayList<Transaction> transactions, FinancialProduct financialProduct) {
-
+    public ParserResult(int resultCode, ArrayList<Transaction> transactions) {
         this.resultCode = resultCode;
         this.transactions = transactions;
-        this.financialProduct = financialProduct;
-
     }
 
     public ParserResult() {
@@ -27,13 +23,10 @@ public class ParserResult implements Serializable {
      */
     public int resultCode;
 
-
     /**
      * 파싱된 내역 리스트 {@link Transaction}
      */
     public ArrayList<Transaction> transactions;
-
-    public FinancialProduct financialProduct;
 
     @Override
     public String toString() {
