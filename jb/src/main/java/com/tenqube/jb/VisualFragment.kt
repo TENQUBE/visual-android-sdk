@@ -19,7 +19,7 @@ class VisualFragment : Fragment() {
 
     companion object {
         fun newInstance() = VisualFragment()
-        const val URL = "https://d34db13xxji3zw.cloudfront.net/?v=1.0&dv=1.0"
+        const val URL = "file:///android_asset/sample.html"
     }
 
     private lateinit var viewModel: VisualViewModel
