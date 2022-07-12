@@ -87,5 +87,14 @@ url: 'https://tenqube.com'
     }
 </script>
 
+<input type="button" value="setRefreshEnabled" onClick="setRefreshEnabled(JSON.stringify({
+  enabled: false
+}))"/>
+<script type="text/javascript">
+    function setRefreshEnabled(param) {
+        visualSDK.setRefreshEnabled(param);
+    }
+</script>
+
 </body>
 </html>

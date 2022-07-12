@@ -5,18 +5,17 @@ plugins {
 }
 
 android {
-    compileSdk 31
+    compileSdk rootProject.compileSdkVersion
 
     defaultConfig {
         applicationId "com.tenqube.visual_android_sdk"
-        minSdk 23
-        targetSdk 31
+        minSdk rootProject.minSdkVersion
+        targetSdk rootProject.targetSdkVersion
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-
     buildTypes {
         release {
             minifyEnabled false
@@ -37,9 +36,9 @@ android {
 
 dependencies {
 //    implementation project(":webui")
-//    implementation project(":jb")
+    implementation project(":jb")
 //    implementation project(":ibk")
-    implementation 'com.tenqube:jb:0.0.1-alpha02'
+//    implementation 'com.tenqube:jb:0.0.1-alpha02'
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'com.google.android.material:material:1.6.1'

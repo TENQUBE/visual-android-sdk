@@ -20,4 +20,6 @@ interface UIService {
     fun openTimePicker(request: OpenTimePicker)
 
     fun openNotiSettings()
+
+    fun setRefreshEnabled(enabled: Boolean)
 }

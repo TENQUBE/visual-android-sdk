@@ -51,6 +51,7 @@ class VisualFragment : Fragment() {
         setupLifecycleOwner()
         setupEvents()
         setupWebView()
+        setupSwipeRefreshView()
         start()
     }
 
@@ -88,6 +89,9 @@ class VisualFragment : Fragment() {
 
             val uiService = UIServiceBuilder()
                 .activity(activity as AppCompatActivity)
+                .refreshCallback {
+                    setRefreshEnabled(it)
+                }
                 .build()
 
             val ui = AndroidUIBridge(this, uiService)
@@ -105,5 +109,16 @@ class VisualFragment : Fragment() {
                 }
             }
         })
+    }
+
+    private fun setupSwipeRefreshView() {
+        viewDataBinding.swipeRefreshLayout.setOnRefreshListener {
+            viewDataBinding.swipeRefreshLayout.isRefreshing = false
+            viewDataBinding.webView.reload()
+        }
+    }
+
+    private fun setRefreshEnabled(enabled: Boolean) {
+        viewDataBinding.swipeRefreshLayout.isEnabled = enabled
     }
 }

@@ -19,7 +19,8 @@ import com.tenqube.webui.component.timepicker.model.TimeRequest
 import com.tenqube.webui.dto.*
 
 class UiServiceImpl(
-    private val activity: FragmentActivity
+    private val activity: FragmentActivity,
+    private val callback: (enabled: Boolean) -> Unit
 ) : UIService {
 
     private var audioManager: AudioManager? = null
@@ -129,5 +130,9 @@ class UiServiceImpl(
             }
         )
         notiCatchDialogFragment.show(activity.supportFragmentManager, "notiCatch")
+    }
+
+    override fun setRefreshEnabled(enabled: Boolean) {
+        callback(enabled)
     }
 }

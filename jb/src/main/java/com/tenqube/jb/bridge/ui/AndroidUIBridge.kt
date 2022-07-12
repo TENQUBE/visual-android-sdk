@@ -73,7 +73,7 @@ class AndroidUIBridge(
             classOfT = RefreshRequest::class.java,
             body = {
                 it?.let {
-//                    uiService.setRefreshEnabled(it.enabled)
+                    uiService.setRefreshEnabled(it.enabled)
                 }
             }
         )
