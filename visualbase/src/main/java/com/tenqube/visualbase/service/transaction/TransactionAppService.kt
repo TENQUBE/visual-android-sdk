@@ -2,14 +2,10 @@ package com.tenqube.visualbase.service.transaction
 
 import com.tenqube.visualbase.domain.card.CardRepository
 import com.tenqube.visualbase.domain.category.CategoryRepository
-import com.tenqube.visualbase.domain.parser.ParsedTransaction
-import com.tenqube.visualbase.domain.transaction.Transaction
 import com.tenqube.visualbase.domain.transaction.TransactionRepository
 import com.tenqube.visualbase.domain.transaction.command.SaveTransactionDto
 import com.tenqube.visualbase.domain.usercategoryconfig.UserCategoryConfigRepository
 import com.tenqube.visualbase.service.user.UserAppService
-
-
 
 class TransactionAppService(
     private val transactionRepository: TransactionRepository,

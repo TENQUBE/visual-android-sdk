@@ -4,13 +4,13 @@ import androidx.lifecycle.*
 import com.tenqube.webui.component.noticatch.dto.NotificationAppDto
 import kotlinx.coroutines.launch
 
-class NotiCatchViewModelFactory(private val resourceAppService: ResourceAppService): ViewModelProvider.NewInstanceFactory() {
+class NotiCatchViewModelFactory(private val resourceAppService: ResourceAppService) : ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel> create(modelClass: Class<T>): T = NotiCatchViewModel(resourceAppService) as T
 }
 
 class NotiCatchViewModel(
     private val resourceAppService: ResourceAppService
-    ) : ViewModel() {
+) : ViewModel() {
 
     private val _apps = MutableLiveData<List<NotificationAppDto>>()
     val apps: LiveData<List<NotificationAppDto>> = _apps
@@ -23,5 +23,4 @@ class NotiCatchViewModel(
             }
         }
     }
-
 }

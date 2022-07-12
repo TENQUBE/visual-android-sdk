@@ -61,7 +61,7 @@ data class SMS(
             )
         }
 
-        fun fromParser(sms: tenqube.parser.model.SMS) : SMS {
+        fun fromParser(sms: tenqube.parser.model.SMS): SMS {
             return SMS(
                 sms.smsId,
                 sms.fullSms,

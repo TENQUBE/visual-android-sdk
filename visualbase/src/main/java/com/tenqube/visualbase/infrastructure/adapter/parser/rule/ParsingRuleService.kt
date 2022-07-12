@@ -6,7 +6,8 @@ import com.tenqube.visualbase.service.resource.ResourceAppService
 
 class ParsingRuleService(
     private val resourceAppService: ResourceAppService,
-    private val prefStorage: PrefStorage) {
+    private val prefStorage: PrefStorage
+) {
 
     suspend fun getParsingRule(): ParsingRuleDto {
         val clientVersion = prefStorage.getRuleVersion()
@@ -21,7 +22,7 @@ class ParsingRuleService(
     suspend fun getParsingRuleWhenNoSender(): ParsingRuleDto? {
         val cnt = prefStorage.getSyncCnt()
         val newSyncCnt = cnt + 1
-        return if(newSyncCnt == 10) {
+        return if (newSyncCnt == 10) {
             getParsingRule().also {
                 prefStorage.saveSyncCnt(0)
             }

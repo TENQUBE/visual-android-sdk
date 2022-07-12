@@ -8,7 +8,7 @@ import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import com.tenqube.visualbase.infrastructure.framework.parser.SmsMmsService
 
-class NotiCatcher : NotificationListenerService() {
+class NotiCatchService : NotificationListenerService() {
 
     override fun onBind(mIntent: Intent): IBinder? {
         return super.onBind(mIntent)

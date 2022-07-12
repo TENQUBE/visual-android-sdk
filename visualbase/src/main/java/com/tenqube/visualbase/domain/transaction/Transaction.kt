@@ -17,7 +17,7 @@ data class Transaction(
     val oriSpentMoney: Double,
     val installmentCnt: Int,
     val keyword: String,
-    val repeatType: Int= 0,
+    val repeatType: Int = 0,
     val currency: String,
     val dwType: Int,
     val memo: String,
@@ -26,8 +26,7 @@ data class Transaction(
     val isCustom: Boolean = false,
     val isUserUpdate: Boolean = false,
     val isUpdateAll: Boolean = false
-    ) : Entity {
-}
+) : Entity
 
 data class Company(
     val id: String,

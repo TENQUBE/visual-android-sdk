@@ -44,7 +44,6 @@ class BulkSmsAdapterImpl(
     }
 
     override fun onCompleted() {
-
     }
 
     override fun onError(resultCode: Int) {
@@ -69,8 +68,10 @@ class BulkParserAppService(
     }
 
     suspend fun saveTransactions(transactions: ArrayList<Transaction>) {
-        parserAppService.saveTransactions(transactions.map {
-            ParsedTransaction(it)
-        })
+        parserAppService.saveTransactions(
+            transactions.map {
+                ParsedTransaction(it)
+            }
+        )
     }
 }

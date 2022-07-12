@@ -11,7 +11,7 @@ data class SearchRequest(
     val transactions: List<SearchTransaction>
 ) {
     companion object {
-        fun from(transactions: List<ParsedTransaction>) :SearchRequest {
+        fun from(transactions: List<ParsedTransaction>): SearchRequest {
             return SearchRequest(
                 transactions.map {
                     SearchTransaction.from(it)
@@ -35,7 +35,7 @@ data class SearchTransaction(
     val mCode: Int
 ) {
     companion object {
-        fun from(transaction: ParsedTransaction) : SearchTransaction {
+        fun from(transaction: ParsedTransaction): SearchTransaction {
             return SearchTransaction(
                 identifier = transaction.transaction.identifier,
                 keyword = transaction.transaction.keyword,
@@ -51,15 +51,15 @@ data class SearchTransaction(
             )
         }
 
-        private fun getType(dwType: Int) : String {
-            return when(dwType) {
+        private fun getType(dwType: Int): String {
+            return when (dwType) {
                 0 -> "deposit"
                 else -> "withdraw"
             }
         }
 
         private fun getMethod(cardType: Int): String {
-            return when(cardType) {
+            return when (cardType) {
                 0 -> "debit"
                 1 -> "credit"
                 else -> "account"
@@ -67,7 +67,7 @@ data class SearchTransaction(
         }
 
         private fun getAmountType(currency: String): String {
-            return if(currency.isEmpty() || "none" == currency) {
+            return if (currency.isEmpty() || "none" == currency) {
                 "KRW"
             } else {
                 currency

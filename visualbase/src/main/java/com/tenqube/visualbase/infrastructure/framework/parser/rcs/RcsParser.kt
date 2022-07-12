@@ -20,7 +20,7 @@ object RcsParser {
             val bodyJson = c.getString(c.getColumnIndex("body"))
             val fullSMS: String = getDisplayText(bodyJson)
 
-            if(checkParams(id, address, date, fullSMS)) {
+            if (checkParams(id, address, date, fullSMS)) {
                 return null
             }
 

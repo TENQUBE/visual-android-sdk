@@ -2,7 +2,6 @@ package com.tenqube.visualbase.domain.resource
 
 import com.tenqube.visualbase.domain.resource.dto.ParsingRuleDto
 import com.tenqube.visualbase.domain.resource.dto.VersionDto
-import com.tenqube.visualbase.domain.util.Result
 
 interface ResourceService {
 
@@ -11,5 +10,5 @@ interface ResourceService {
     suspend fun getParsingRule(
         clientVersion: Int,
         serverVersion: Int
-    ) : ParsingRuleDto
+    ): ParsingRuleDto
 }

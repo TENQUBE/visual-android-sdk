@@ -18,7 +18,7 @@ class CurrencyRemoteDataSource(
     private val baseUrl = ""
 
     private fun getUrl(path: String): String {
-        return "${baseUrl}/${prefStorage.getLayer()}/$path"
+        return "$baseUrl/${prefStorage.getLayer()}/$path"
     }
 
     private fun getHeader(): Map<String, String> {
@@ -30,11 +30,14 @@ class CurrencyRemoteDataSource(
     }
 
     suspend fun exchange(request: CurrencyRequest): Result<CurrencyResponse> {
-        return when (val response = safeApiCall(ioDispatcher) {
-            currencyApiService.exchange(
-                getUrl("currency/rate/${request.from}/${request.to}"),
-                getHeader())
-        }) {
+        return when (
+            val response = safeApiCall(ioDispatcher) {
+                currencyApiService.exchange(
+                    getUrl("currency/rate/${request.from}/${request.to}"),
+                    getHeader()
+                )
+            }
+        ) {
             is ResultWrapper.Success -> {
                 Result.Success(response.value)
             }

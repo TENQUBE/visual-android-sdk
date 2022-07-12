@@ -11,5 +11,4 @@ interface UserRepository {
     suspend fun save(item: User): Result<Unit>
 
     suspend fun delete(item: User): Result<Unit>
-
 }

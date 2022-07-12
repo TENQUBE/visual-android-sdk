@@ -12,10 +12,12 @@ interface ResourceApiService {
 
     @GET
     suspend fun syncParsingRule(
-        @Url url: String, @HeaderMap header: Map<String, String>,
+        @Url url: String,
+        @HeaderMap header: Map<String, String>,
         @Query("type") type: String,
         @Query("clientVersion") clientVersion: Int,
-        @Query("serverVersion") serverVersion: Int): SyncParsingRuleDto
+        @Query("serverVersion") serverVersion: Int
+    ): SyncParsingRuleDto
 
     @GET
     suspend fun syncParsingRuleKey(@Url url: String, @HeaderMap header: Map<String, String>): ParsingRuleKeyDto

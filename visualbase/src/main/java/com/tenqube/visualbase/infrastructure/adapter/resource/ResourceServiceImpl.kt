@@ -19,14 +19,15 @@ class ResourceServiceImpl(
         clientVersion: Int,
         serverVersion: Int
     ): ParsingRuleDto {
-        return resourceRemoteDataSource.getParsingRule(clientVersion,
-        serverVersion).getValue().run {
+        return resourceRemoteDataSource.getParsingRule(
+            clientVersion,
+            serverVersion
+        ).getValue().run {
             checkSignature(this)
             this.resource.asDomain()
         }
     }
 
     private fun checkSignature(rule: SyncParsingRuleDto) {
-
     }
 }

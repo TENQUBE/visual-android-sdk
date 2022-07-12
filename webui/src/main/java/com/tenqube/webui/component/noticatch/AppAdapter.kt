@@ -11,7 +11,7 @@ import com.bumptech.glide.RequestManager
 import com.tenqube.webui.R
 import com.tenqube.webui.component.noticatch.dto.NotificationAppDto
 
-class AppAdapter (private val requestManager: RequestManager) :
+class AppAdapter(private val requestManager: RequestManager) :
     ListAdapter<NotificationAppDto, RecyclerView.ViewHolder>(AdapterDataDiffCallback()) {
 
     class NotiCatchViewHolder(itemView: View) :

@@ -16,7 +16,7 @@ sealed class Result<out R> {
 }
 
 fun <T> Result<T>.getValue(): T {
-    return if(this is Result.Success) {
+    return if (this is Result.Success) {
         this.data
     } else {
         throw (this as Result.Error).exception

@@ -45,7 +45,8 @@ class NotiCatchDialogFragment : DialogFragment() {
                 .inflate(R.layout.visual_dialog_noti_catch, null)
             val titleTextView = view.findViewById<TextView>(R.id.title)
             titleTextView.text = getString(
-                R.string.visual_notification_catch_dialog_title, Utils.getApplicationName(
+                R.string.visual_notification_catch_dialog_title,
+                Utils.getApplicationName(
                     requireActivity().applicationContext
                 )
             )

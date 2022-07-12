@@ -10,7 +10,7 @@ data class User(
     val gaId: String = "",
     val fcm: String? = null,
     val userConfig: UserConfig = UserConfig(userId = id)
-): Entity {
+) : Entity {
     companion object {
         fun from(createUser: CreateUser): User {
             return User(

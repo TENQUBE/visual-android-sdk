@@ -9,10 +9,12 @@ import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
 
-class ResourceAppService(private val context: Context,
-                         private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO) {
+class ResourceAppService(
+    private val context: Context,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+) {
 
-    suspend fun getNotiCatchApps(): List<NotificationApp> = withContext(ioDispatcher){
+    suspend fun getNotiCatchApps(): List<NotificationApp> = withContext(ioDispatcher) {
         val am: AssetManager = context.assets
         val inStream: InputStream
         val buffer: BufferedReader
@@ -30,8 +32,8 @@ class ResourceAppService(private val context: Context,
                 val colums = line.split("\t").toTypedArray()
                 apps.add(
                     NotificationApp(
-                        colums[1],  //name
-                        colums[2],  //image
+                        colums[1], // name
+                        colums[2], // image
                     )
                 )
             }

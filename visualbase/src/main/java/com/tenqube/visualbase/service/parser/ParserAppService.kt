@@ -54,13 +54,13 @@ class ParserAppService(
 
     suspend fun getSmsList(filter: SmsFilter): List<SMS> {
         return parserService.getSmsList(filter) +
-                parserService.getRcsList(filter).also {
-                    prefStorage.saveLastRcsTime(filter.toAt)
-                }
+            parserService.getRcsList(filter).also {
+                prefStorage.saveLastRcsTime(filter.toAt)
+            }
     }
 
     private suspend fun getSearchedTransactions(parsedTransactions: List<ParsedTransaction>):
-            List<SearchedTransaction> {
+        List<SearchedTransaction> {
         val searchRequests = SearchRequest.from(parsedTransactions)
         val searchResults = searchService.search(
             searchRequests
@@ -77,14 +77,17 @@ class ParserAppService(
     private fun getOrDefault(
         searchResults: Map<String, TranCompany>,
         searchTransaction: SearchTransaction
-    ) = (searchResults[searchTransaction.identifier]
-        ?: TranCompany.getDefaultTranCompany(searchTransaction))
+    ) = (
+        searchResults[searchTransaction.identifier]
+            ?: TranCompany.getDefaultTranCompany(searchTransaction)
+        )
 
     private suspend fun calculateCurrency(searchedTransactions: List<SearchedTransaction>):
-            List<CurrencyTransaction> {
+        List<CurrencyTransaction> {
         return searchedTransactions.map {
             CurrencyTransaction(
-                it, currencyService.exchange(
+                it,
+                currencyService.exchange(
                     CurrencyRequest(
                         from = it.parsedTransaction.transaction.currency,
                         amount = it.parsedTransaction.transaction.spentMoney

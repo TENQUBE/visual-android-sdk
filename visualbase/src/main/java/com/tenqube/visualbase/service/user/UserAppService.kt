@@ -20,12 +20,12 @@ class UserAppService(
 
     private suspend fun checkNewUserOrThrow() {
         val user = userRepository.findUser().getOrNull()
-        if(user != null) {
+        if (user != null) {
             throw UserNotAuthenticatedException("user already exist")
         }
     }
 
-    suspend fun getUser() : User {
+    suspend fun getUser(): User {
         return userRepository.findUser().getOrThrow()
     }
 }

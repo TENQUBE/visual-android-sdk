@@ -20,7 +20,8 @@ class ItemListDialogFragment : BottomSheetDialogFragment() {
     lateinit var callback: (SelectBoxItem) -> Unit
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_bottom_sheet_view, container, false)
@@ -55,6 +56,5 @@ class ItemListDialogFragment : BottomSheetDialogFragment() {
                     putSerializable(ARG_ITEM, item)
                 }
             }
-
     }
 }

@@ -14,7 +14,7 @@ class BottomViewHolder internal constructor(
     inflater: LayoutInflater,
     parent: ViewGroup,
     private val selectedColor: Int,
-    val callback : (Int) -> Unit
+    val callback: (Int) -> Unit
 ) : RecyclerView.ViewHolder(
     inflater.inflate(
         R.layout.fragment_item_list_dialog_list_dialog_item,
@@ -34,7 +34,7 @@ class BottomViewHolder internal constructor(
 
     fun bind(bottomSheetData: SelectBoxItem) {
 
-        when(bottomSheetData.isSelected) {
+        when (bottomSheetData.isSelected) {
             true -> {
                 changeColor(container, selectedColor)
                 name.setTextColor(selectedColor)
@@ -57,4 +57,3 @@ class BottomViewHolder internal constructor(
         }
     }
 }
-

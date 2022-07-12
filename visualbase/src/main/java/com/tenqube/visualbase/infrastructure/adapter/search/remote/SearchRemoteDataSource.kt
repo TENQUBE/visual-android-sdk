@@ -31,13 +31,15 @@ class SearchRemoteDataSource(
     }
 
     suspend fun search(request: SearchRequest): Result<SearchResult> {
-        return when (val response = safeApiCall(ioDispatcher) {
-            searchApiService.searchCompany(
-                getUrl(),
-                getHeader(),
-                request
-            )
-        }) {
+        return when (
+            val response = safeApiCall(ioDispatcher) {
+                searchApiService.searchCompany(
+                    getUrl(),
+                    getHeader(),
+                    request
+                )
+            }
+        ) {
             is ResultWrapper.Success -> {
                 Result.Success(response.value)
             }

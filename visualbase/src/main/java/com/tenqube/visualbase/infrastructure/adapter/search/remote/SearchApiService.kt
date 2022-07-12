@@ -9,5 +9,6 @@ interface SearchApiService {
     suspend fun searchCompany(
         @Url url: String,
         @HeaderMap header: Map<String, String>,
-        @Body req: SearchRequest): SearchResult
+        @Body req: SearchRequest
+    ): SearchResult
 }

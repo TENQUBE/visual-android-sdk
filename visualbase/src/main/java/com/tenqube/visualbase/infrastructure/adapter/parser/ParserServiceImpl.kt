@@ -22,7 +22,7 @@ class ParserServiceImpl(
         val results = mutableListOf<ParsedTransaction>()
 
         val result = parserService.parse(sms.toParser())
-        when(result.resultCode) {
+        when (result.resultCode) {
             ResultCode.NEED_TO_SYNC_PARSING_RULE,
             ResultCode.NEED_TO_SEND_TO_SERVER ->
                 sync()
@@ -60,9 +60,10 @@ class ParserServiceImpl(
                 null,
                 filter.getQueryCondition(),
                 null,
-                "date asc")
+                "date asc"
+            )
             cursor?.let {
-                if(it.moveToFirst()) {
+                if (it.moveToFirst()) {
                     while (!it.isAfterLast) {
                         results.add(SMS.from(it))
                         it.moveToNext()

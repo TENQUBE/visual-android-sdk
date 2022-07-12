@@ -15,17 +15,19 @@ class RcsService(private val context: Context) {
     private val SAMSUNG_URI = Uri.parse("content://im/chat")
 
     suspend fun queryRcs(from: Long, to: Long): Result<List<SMS>> {
-        return Result.Success(when {
-            isSamsung() -> {
-                queryRcsForSAMSUNG(from, to)
+        return Result.Success(
+            when {
+                isSamsung() -> {
+                    queryRcsForSAMSUNG(from, to)
+                }
+                isLg() -> {
+                    queryRcsForLG(from, to)
+                }
+                else -> {
+                    emptyList()
+                }
             }
-            isLg() -> {
-                queryRcsForLG(from, to)
-            }
-            else -> {
-                emptyList()
-            }
-        })
+        )
     }
 
     private fun isSamsung(): Boolean {
@@ -56,7 +58,7 @@ class RcsService(private val context: Context) {
                 }
             }
         } catch (e: java.lang.Exception) {
-            Utils.logD(javaClass, "RcsServiceImpl queryRcsForSAMSUNG c ${e}")
+            Utils.logD(javaClass, "RcsServiceImpl queryRcsForSAMSUNG c $e")
         } finally {
             c?.close()
         }

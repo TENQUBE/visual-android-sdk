@@ -13,7 +13,6 @@ import com.tenqube.webui.component.datepicker.DatePickerListener
 import com.tenqube.webui.component.datepicker.model.DateRequest
 import com.tenqube.webui.component.noticatch.NotiCatchArg
 import com.tenqube.webui.component.noticatch.NotiCatchDialogFragment
-import com.tenqube.webui.component.noticatch.dto.NotificationAppDto
 import com.tenqube.webui.component.timepicker.TimePickerFragment
 import com.tenqube.webui.component.timepicker.TimePickerListener
 import com.tenqube.webui.component.timepicker.model.TimeRequest
@@ -123,10 +122,12 @@ class UiServiceImpl(
 
     override fun openNotiSettings() {
         val notiCatchDialogFragment = NotiCatchDialogFragment.newInstance(NotiCatchArg(listOf()))
-        notiCatchDialogFragment.setCallback(callback = object : NotiCatchDialogFragment.Callback {
-            override fun onClickNext() {
+        notiCatchDialogFragment.setCallback(
+            callback = object : NotiCatchDialogFragment.Callback {
+                override fun onClickNext() {
+                }
             }
-        })
+        )
         notiCatchDialogFragment.show(activity.supportFragmentManager, "notiCatch")
     }
 }

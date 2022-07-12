@@ -29,12 +29,14 @@ class ResourceRemoteDataSource(
     }
 
     suspend fun getVersion(): Result<VersionDto> {
-        return when (val response = safeApiCall(ioDispatcher) {
-            resourceApiService.syncVersion(
-                "${getUrl()}/resource/version",
-                getHeader()
-            )
-        }) {
+        return when (
+            val response = safeApiCall(ioDispatcher) {
+                resourceApiService.syncVersion(
+                    "${getUrl()}/resource/version",
+                    getHeader()
+                )
+            }
+        ) {
             is ResultWrapper.Success -> {
                 Result.Success(response.value)
             }
@@ -51,15 +53,17 @@ class ResourceRemoteDataSource(
         clientVersion: Int,
         serverVersion: Int
     ): Result<SyncParsingRuleDto> {
-        return when (val response = safeApiCall(ioDispatcher) {
-            resourceApiService.syncParsingRule(
-                "${getUrl()}/resource/v2",
-                getHeader(),
-                ResourceApiService.PARSING_RULE,
-                clientVersion,
-                serverVersion
-            )
-        }) {
+        return when (
+            val response = safeApiCall(ioDispatcher) {
+                resourceApiService.syncParsingRule(
+                    "${getUrl()}/resource/v2",
+                    getHeader(),
+                    ResourceApiService.PARSING_RULE,
+                    clientVersion,
+                    serverVersion
+                )
+            }
+        ) {
             is ResultWrapper.Success -> {
                 Result.Success(response.value)
             }

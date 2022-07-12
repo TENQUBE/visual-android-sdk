@@ -13,7 +13,7 @@ class CurrencyServiceImpl(
 ) : CurrencyService {
 
     override suspend fun exchange(request: CurrencyRequest): Double {
-        if(request.isKorea()) {
+        if (request.isKorea()) {
             return 1.0
         }
 
@@ -29,7 +29,7 @@ class CurrencyServiceImpl(
     }
 
     private suspend fun getFromRemote(request: CurrencyRequest): Float {
-       return currencyRemoteDataSource.exchange(request).getValue().rate
+        return currencyRemoteDataSource.exchange(request).getValue().rate
     }
 
     private suspend fun getFromLocal(request: CurrencyRequest, currency: CurrencyModel): Float {

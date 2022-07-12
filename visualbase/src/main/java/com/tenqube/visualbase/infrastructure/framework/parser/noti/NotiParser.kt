@@ -17,17 +17,19 @@ object NotiParser {
         val bigCS = notification.extras.getCharSequence(NotificationCompat.EXTRA_BIG_TEXT)
 
         val title = titleCS?.toString() ?: ""
-        val content = contentCS?.toString()  ?: ""
+        val content = contentCS?.toString() ?: ""
         val bigContent = bigCS?.toString() ?: ""
 
-        return if(isTest(content)) {
+        return if (isTest(content)) {
             parseNotiRequest(content)
         } else {
-            val sms = NotiRequest(packageName,
+            val sms = NotiRequest(
+                packageName,
                 title,
                 content,
                 bigContent,
-                notification.`when`).toSMS(context)
+                notification.`when`
+            ).toSMS(context)
             SMS.fromParser(sms)
         }
     }

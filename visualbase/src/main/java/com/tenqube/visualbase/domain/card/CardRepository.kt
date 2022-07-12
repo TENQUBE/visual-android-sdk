@@ -11,5 +11,4 @@ interface CardRepository {
     suspend fun update(items: List<Card>): Result<Unit>
 
     suspend fun delete(items: List<Card>): Result<Unit>
-
 }

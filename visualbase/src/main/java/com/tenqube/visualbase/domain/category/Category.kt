@@ -8,4 +8,4 @@ data class Category(
     val large: String,
     val medium: String,
     val small: String
-    ): Entity
+) : Entity

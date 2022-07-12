@@ -9,15 +9,16 @@ import java.io.IOException
 import java.io.Serializable
 
 sealed class ResultWrapper<out T> {
-    data class Success<out T>(val value: T): ResultWrapper<T>()
-    data class GenericError(val code: Int? = null, val error: ErrorResponse? = null): ResultWrapper<Nothing>()
-    object NetworkError: ResultWrapper<Nothing>()
+    data class Success<out T>(val value: T) : ResultWrapper<T>()
+    data class GenericError(val code: Int? = null, val error: ErrorResponse? = null) : ResultWrapper<Nothing>()
+    object NetworkError : ResultWrapper<Nothing>()
 }
 
 data class ErrorResponse(
     @SerializedName("code") val code: String?,
     @SerializedName("name") val name: String?,
-    @SerializedName("message") val message: String) : Serializable
+    @SerializedName("message") val message: String
+) : Serializable
 
 suspend fun <T> safeApiCall(
     dispatcher: CoroutineDispatcher,

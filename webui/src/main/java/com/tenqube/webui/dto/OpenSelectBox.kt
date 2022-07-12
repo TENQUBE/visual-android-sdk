@@ -5,7 +5,7 @@ import java.io.Serializable
 data class OpenSelectBox(
     val request: SelectBoxRequest,
     val callback: (selectBox: SelectBoxItem) -> Unit
-): Serializable
+) : Serializable
 
 data class SelectBoxRequest(
     val title: String,

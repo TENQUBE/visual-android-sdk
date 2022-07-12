@@ -1,4 +1,3 @@
 package com.tenqube.visualbase.presentation
 
-interface VisualService {
-}
+interface VisualService

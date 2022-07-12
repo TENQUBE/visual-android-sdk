@@ -4,19 +4,17 @@ import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import com.tenqube.jb.bridge.VisualBridge
 import com.tenqube.jb.bridge.dto.request.*
+import com.tenqube.jb.bridge.dto.request.OpenConfirmRequest
 import com.tenqube.jb.bridge.dto.request.OpenNewViewRequest
 import com.tenqube.jb.bridge.dto.request.RefreshRequest
-import com.tenqube.jb.bridge.dto.request.OpenConfirmRequest
 import com.tenqube.jb.bridge.dto.response.WebResult
-import com.tenqube.webui.component.noticatch.ResourceAppService
 import com.tenqube.shared.webview.BridgeBase
 import com.tenqube.webui.UIService
 import com.tenqube.webui.component.dialog.DialogCallback
-import com.tenqube.webui.component.noticatch.dto.NotificationAppDto
 import com.tenqube.webui.dto.OpenDatePicker
-import com.tenqube.webui.dto.ShowDialog
 import com.tenqube.webui.dto.OpenSelectBox
 import com.tenqube.webui.dto.OpenTimePicker
+import com.tenqube.webui.dto.ShowDialog
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -108,11 +106,9 @@ class AndroidUIBridge(
                             request = it.asDomain(),
                             object : DialogCallback {
                                 override fun onClickPositiveButton() {
-
                                 }
 
                                 override fun onCLickNegativeButton() {
-
                                 }
                             }
                         )
