@@ -9,8 +9,7 @@ class UIServiceBuilder {
         this.activity = activity
     }
 
-    fun build(
-    ): UIService {
+    fun build(): UIService {
         return UiServiceImpl(
             activity
         )
