@@ -112,6 +112,7 @@ class VisualFragment : Fragment() {
     }
 
     private fun setupSwipeRefreshView() {
+        viewDataBinding.swipeRefreshLayout.isEnabled = true
         viewDataBinding.swipeRefreshLayout.setOnRefreshListener {
             viewDataBinding.swipeRefreshLayout.isRefreshing = false
             viewDataBinding.webView.reload()
