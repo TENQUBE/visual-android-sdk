@@ -36,10 +36,10 @@ android {
 }
 
 dependencies {
-    implementation project(":webui")
-    implementation project(":jb")
-    implementation project(":ibk")
-
+//    implementation project(":webui")
+//    implementation project(":jb")
+//    implementation project(":ibk")
+    implementation 'com.tenqube:jb:0.0.1-alpha02'
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'com.google.android.material:material:1.6.1'
