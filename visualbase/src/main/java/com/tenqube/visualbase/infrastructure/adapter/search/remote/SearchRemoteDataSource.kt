@@ -2,7 +2,7 @@ package com.tenqube.visualbase.infrastructure.adapter.search.remote
 
 import com.tenqube.visualbase.domain.search.SearchRequest
 import com.tenqube.visualbase.domain.search.SearchResult
-import com.tenqube.visualbase.domain.util.PrefStorage
+import com.tenqube.shared.prefs.PrefStorage
 import com.tenqube.visualbase.domain.util.Result
 import com.tenqube.visualbase.infrastructure.util.ErrorMsg
 import com.tenqube.visualbase.infrastructure.util.ResultWrapper

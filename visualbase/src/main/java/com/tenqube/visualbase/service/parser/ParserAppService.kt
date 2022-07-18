@@ -11,7 +11,7 @@ import com.tenqube.visualbase.domain.search.SearchService
 import com.tenqube.visualbase.domain.search.SearchTransaction
 import com.tenqube.visualbase.domain.search.TranCompany
 import com.tenqube.visualbase.domain.transaction.command.SaveTransactionDto
-import com.tenqube.visualbase.domain.util.PrefStorage
+import com.tenqube.shared.prefs.PrefStorage
 import com.tenqube.visualbase.service.transaction.TransactionAppService
 import java.util.*
 

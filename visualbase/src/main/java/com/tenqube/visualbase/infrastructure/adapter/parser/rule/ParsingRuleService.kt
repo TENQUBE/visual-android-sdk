@@ -1,7 +1,7 @@
 package com.tenqube.visualbase.infrastructure.adapter.parser.rule
 
 import com.tenqube.visualbase.domain.resource.dto.ParsingRuleDto
-import com.tenqube.visualbase.domain.util.PrefStorage
+import com.tenqube.shared.prefs.PrefStorage
 import com.tenqube.visualbase.service.resource.ResourceAppService
 
 class ParsingRuleService(
