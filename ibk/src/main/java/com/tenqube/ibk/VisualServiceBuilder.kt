@@ -33,7 +33,7 @@ class VisualServiceBuilder {
     }
 }
 
-enum class Layer {
-    DEV,
-    PROD
+enum class Layer(val value: String) {
+    DEV("dev"),
+    PROD("prod")
 }

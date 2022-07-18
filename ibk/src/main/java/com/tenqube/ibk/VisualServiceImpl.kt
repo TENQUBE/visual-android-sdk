@@ -11,7 +11,8 @@ class VisualServiceImpl(
 
     init {
         prefStorage.apiKey = arg.apiKey
-        prefStorage.layer = arg.layer.name
+        prefStorage.layer = arg.layer.value
+        prefStorage.service = "ibk"
     }
 
     override fun start() {
