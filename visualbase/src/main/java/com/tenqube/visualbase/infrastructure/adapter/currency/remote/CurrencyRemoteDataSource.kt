@@ -18,13 +18,13 @@ class CurrencyRemoteDataSource(
     private val baseUrl = ""
 
     private fun getUrl(path: String): String {
-        return "$baseUrl/${prefStorage.getLayer()}/$path"
+        return "$baseUrl/${prefStorage.layer}/$path"
     }
 
     private fun getHeader(): Map<String, String> {
         val map = HashMap<String, String>()
-        map["Authorization"] = prefStorage.getAccessToken()
-        map["x-api-key"] = prefStorage.getApiKey()
+        map["Authorization"] = prefStorage.accessToken
+        map["x-api-key"] = prefStorage.apiKey
 
         return map
     }

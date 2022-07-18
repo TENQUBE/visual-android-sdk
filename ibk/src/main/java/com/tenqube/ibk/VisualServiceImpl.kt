@@ -10,8 +10,8 @@ class VisualServiceImpl(
 ) : VisualService {
 
     init {
-        prefStorage.saveApiKey(arg.apiKey)
-        prefStorage.saveLayer(arg.layer.name)
+        prefStorage.apiKey = arg.apiKey
+        prefStorage.layer = arg.layer.name
     }
 
     override fun start() {

@@ -15,17 +15,14 @@ class SearchRemoteDataSource(
     private val prefStorage: PrefStorage,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
-
-    private val baseUrl = ""
-
     private fun getUrl(): String {
-        return prefStorage.getSearchUrl()
+        return prefStorage.searchUrl
     }
 
     private fun getHeader(): Map<String, String> {
         val map = HashMap<String, String>()
-        map["Authorization"] = prefStorage.getAccessToken()
-        map["x-api-key"] = prefStorage.getSearchApiKey()
+        map["Authorization"] = prefStorage.accessToken
+        map["x-api-key"] = prefStorage.searchApiKey
 
         return map
     }

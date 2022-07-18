@@ -24,13 +24,13 @@ class ParserAppService(
 ) {
 
     suspend fun parseRcsListAfterLastParsedTime() {
-        val lastTime = prefStorage.getLastRcsTime() ?: System.currentTimeMillis()
+        val lastTime = prefStorage.lastRcsTime
         val currentTime = Calendar.getInstance().timeInMillis
         val smsList = parserService.getRcsList(SmsFilter(lastTime, currentTime))
         smsList.forEach {
             parse(it)
         }
-        prefStorage.saveLastRcsTime(currentTime)
+        prefStorage.lastRcsTime = currentTime
     }
 
     suspend fun parse(sms: SMS): Result<Unit> {
@@ -55,7 +55,7 @@ class ParserAppService(
     suspend fun getSmsList(filter: SmsFilter): List<SMS> {
         return parserService.getSmsList(filter) +
             parserService.getRcsList(filter).also {
-                prefStorage.saveLastRcsTime(filter.toAt)
+                prefStorage.lastRcsTime = filter.toAt
             }
     }
 

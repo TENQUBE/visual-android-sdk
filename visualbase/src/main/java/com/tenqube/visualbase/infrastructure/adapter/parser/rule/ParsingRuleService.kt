@@ -10,7 +10,7 @@ class ParsingRuleService(
 ) {
 
     suspend fun getParsingRule(): ParsingRuleDto {
-        val clientVersion = prefStorage.getRuleVersion()
+        val clientVersion = prefStorage.ruleVersion
         val serverVersion = resourceAppService.getVersion()
 
         return resourceAppService.getParsingRule(
@@ -20,14 +20,14 @@ class ParsingRuleService(
     }
 
     suspend fun getParsingRuleWhenNoSender(): ParsingRuleDto? {
-        val cnt = prefStorage.getSyncCnt()
+        val cnt = prefStorage.syncCnt
         val newSyncCnt = cnt + 1
         return if (newSyncCnt == 10) {
             getParsingRule().also {
-                prefStorage.saveSyncCnt(0)
+                prefStorage.syncCnt = 0
             }
         } else {
-            prefStorage.saveSyncCnt(newSyncCnt)
+            prefStorage.syncCnt = newSyncCnt
             null
         }
     }

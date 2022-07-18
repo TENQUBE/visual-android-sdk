@@ -17,13 +17,13 @@ class ResourceRemoteDataSource(
 ) {
 
     private fun getUrl(): String {
-        return prefStorage.getResourceUrl()
+        return prefStorage.resourceUrl
     }
 
     private fun getHeader(): Map<String, String> {
         val map = HashMap<String, String>()
-        map["service"] = prefStorage.getService()
-        map["x-api-key"] = prefStorage.getResourceApiKey()
+        map["service"] = prefStorage.service
+        map["x-api-key"] = prefStorage.resourceApiKey
 
         return map
     }
