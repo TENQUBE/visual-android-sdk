@@ -3,11 +3,15 @@ package com.tenqube.ibk
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.tenqube.ibk.bridge.dto.request.*
+import com.tenqube.ibk.bridge.dto.response.BanksDto
+import com.tenqube.ibk.bridge.dto.response.TransactionsResponse
 import com.tenqube.ibk.service.CardAppService
 import com.tenqube.ibk.service.TransactionAppService
 import com.tenqube.ibk.service.UserAppService
 import com.tenqube.webui.UIService
+import kotlinx.coroutines.launch
 
 class VisualViewModel(
     private val transactionAppService: TransactionAppService,
@@ -22,8 +26,8 @@ class VisualViewModel(
     private val _openNotiSettings = MutableLiveData<Unit>()
     val openNotiSettings: LiveData<Unit> = _openNotiSettings
 
-    private val _banks = MutableLiveData<Unit>()
-    val banks: LiveData<Unit> = _banks
+    private val _banks = MutableLiveData<BanksDto>()
+    val banks: LiveData<BanksDto> = _banks
 
     private val _openDeepLink = MutableLiveData<OpenDeepLinkDto>()
     val openDeepLink: LiveData<OpenDeepLinkDto> = _openDeepLink
@@ -46,8 +50,8 @@ class VisualViewModel(
     private val _finish = MutableLiveData<Unit>()
     val finish: LiveData<Unit> = _finish
 
-    private val _transactions = MutableLiveData<GetTransactionsDto>()
-    val transactions: LiveData<GetTransactionsDto> = _transactions
+    private val _transactions = MutableLiveData<TransactionsResponse>()
+    val transactions: LiveData<TransactionsResponse> = _transactions
 
     private val _isPageLoaded = MutableLiveData<Boolean>()
     val isPageLoaded: LiveData<Boolean> = _isPageLoaded
@@ -61,9 +65,13 @@ class VisualViewModel(
     }
 
     fun openNotiSettings() {
+        _openNotiSettings.value = Unit
     }
 
     fun getBanks() {
+        viewModelScope.launch {
+            _banks.value = BanksDto(listOf())
+        }
     }
 
     fun openDeepLink(request: OpenDeepLinkDto) {
@@ -75,12 +83,15 @@ class VisualViewModel(
     }
 
     fun openSelectBox(request: OpenSelectBoxDto) {
+        _openSelectBox.value = request
     }
 
     fun showAd(request: ShowAdDto) {
+        _showAd.value = request
     }
 
     fun hideAd() {
+        _hideAd.value = Unit
     }
 
     fun openNewView(request: OpenNewViewDto) {
@@ -92,6 +103,8 @@ class VisualViewModel(
     }
 
     fun getTransactions(request: GetTransactionsDto) {
-        _transactions.value = request
+        viewModelScope.launch {
+            _transactions.value = TransactionsResponse(listOf())
+        }
     }
 }
