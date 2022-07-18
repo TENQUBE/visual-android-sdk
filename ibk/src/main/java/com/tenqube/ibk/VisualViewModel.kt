@@ -5,12 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tenqube.ibk.bridge.dto.request.*
+import com.tenqube.ibk.bridge.dto.response.BankDto
 import com.tenqube.ibk.bridge.dto.response.BanksDto
 import com.tenqube.ibk.bridge.dto.response.TransactionDto
 import com.tenqube.ibk.bridge.dto.response.TransactionsResponse
-import com.tenqube.ibk.service.card.CardAppService
 import com.tenqube.visualbase.service.transaction.dto.TransactionFilter
 import com.tenqube.ibk.service.user.UserAppService
+import com.tenqube.visualbase.service.card.CardAppService
 import com.tenqube.visualbase.service.transaction.TransactionAppService
 import com.tenqube.webui.UIService
 import com.tenqube.webui.dto.OpenSelectBox
@@ -98,7 +99,10 @@ class VisualViewModel(
 
     fun getBanks() {
         viewModelScope.launch {
-            _banks.value = BanksDto(listOf())
+            val cards = cardAppService.getCards().getOrDefault(listOf())
+            _banks.value = BanksDto(cards.map {
+                BankDto.fomDomain(it)
+            })
         }
     }
 
