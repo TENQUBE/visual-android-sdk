@@ -10,7 +10,6 @@ import com.tenqube.ibk.bridge.dto.response.BanksDto
 import com.tenqube.ibk.bridge.dto.response.TransactionDto
 import com.tenqube.ibk.bridge.dto.response.TransactionsResponse
 import com.tenqube.visualbase.service.transaction.dto.TransactionFilter
-import com.tenqube.ibk.service.user.UserAppService
 import com.tenqube.visualbase.service.card.CardAppService
 import com.tenqube.visualbase.service.transaction.TransactionAppService
 import com.tenqube.webui.UIService
@@ -22,7 +21,6 @@ import kotlinx.coroutines.launch
 class VisualViewModel(
     private val transactionAppService: TransactionAppService,
     private val cardAppService: CardAppService,
-    private val userAppService: UserAppService,
     private val uiService: UIService
 ) : ViewModel() {
 
