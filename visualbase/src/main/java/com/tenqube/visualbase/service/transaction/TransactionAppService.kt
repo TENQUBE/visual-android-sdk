@@ -5,6 +5,8 @@ import com.tenqube.visualbase.domain.category.CategoryRepository
 import com.tenqube.visualbase.domain.transaction.TransactionRepository
 import com.tenqube.visualbase.domain.transaction.command.SaveTransactionDto
 import com.tenqube.visualbase.domain.usercategoryconfig.UserCategoryConfigRepository
+import com.tenqube.visualbase.service.transaction.dto.JoinedTransaction
+import com.tenqube.visualbase.service.transaction.dto.TransactionFilter
 import com.tenqube.visualbase.service.user.UserAppService
 
 class TransactionAppService(
@@ -14,7 +16,7 @@ class TransactionAppService(
     private val userAppService: UserAppService,
     private val userCategoryConfigRepository: UserCategoryConfigRepository
 ) {
-    suspend fun getTransactions(): Result<List<JoinedTransaction>> {
+    suspend fun getTransactions(filter: TransactionFilter): Result<List<JoinedTransaction>> {
         val user = userAppService.getUser()
         val transactions = transactionRepository.findAll().getOrDefault(listOf())
         val cards = cardRepository.findAll().getOrDefault(listOf())

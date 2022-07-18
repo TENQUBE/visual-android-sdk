@@ -6,11 +6,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tenqube.ibk.bridge.dto.request.*
 import com.tenqube.ibk.bridge.dto.response.BanksDto
+import com.tenqube.ibk.bridge.dto.response.TransactionDto
 import com.tenqube.ibk.bridge.dto.response.TransactionsResponse
-import com.tenqube.ibk.service.CardAppService
-import com.tenqube.ibk.service.TransactionAppService
-import com.tenqube.ibk.service.UserAppService
+import com.tenqube.ibk.service.card.CardAppService
+import com.tenqube.visualbase.service.transaction.dto.TransactionFilter
+import com.tenqube.ibk.service.user.UserAppService
+import com.tenqube.visualbase.service.transaction.TransactionAppService
 import com.tenqube.webui.UIService
+import com.tenqube.webui.dto.OpenSelectBox
+import com.tenqube.webui.dto.SelectBoxItem
+import com.tenqube.webui.dto.SelectBoxRequest
 import kotlinx.coroutines.launch
 
 class VisualViewModel(
@@ -23,20 +28,8 @@ class VisualViewModel(
     private val _url = MutableLiveData<String>()
     val url: LiveData<String> = _url
 
-    private val _openNotiSettings = MutableLiveData<Unit>()
-    val openNotiSettings: LiveData<Unit> = _openNotiSettings
-
     private val _banks = MutableLiveData<BanksDto>()
     val banks: LiveData<BanksDto> = _banks
-
-    private val _openDeepLink = MutableLiveData<OpenDeepLinkDto>()
-    val openDeepLink: LiveData<OpenDeepLinkDto> = _openDeepLink
-
-    private val _showToast = MutableLiveData<String>()
-    val showToast: LiveData<String> = _showToast
-
-    private val _openSelectBox = MutableLiveData<OpenSelectBoxDto>()
-    val openSelectBox: LiveData<OpenSelectBoxDto> = _openSelectBox
 
     private val _showAd = MutableLiveData<ShowAdDto>()
     val showAd: LiveData<ShowAdDto> = _showAd
@@ -44,46 +37,45 @@ class VisualViewModel(
     private val _hideAd = MutableLiveData<Unit>()
     val hideAd: LiveData<Unit> = _hideAd
 
-    private val _openNewView = MutableLiveData<OpenNewViewDto>()
-    val openNewView: LiveData<OpenNewViewDto> = _openNewView
-
-    private val _finish = MutableLiveData<Unit>()
-    val finish: LiveData<Unit> = _finish
-
     private val _transactions = MutableLiveData<TransactionsResponse>()
     val transactions: LiveData<TransactionsResponse> = _transactions
-
-    private val _isPageLoaded = MutableLiveData<Boolean>()
-    val isPageLoaded: LiveData<Boolean> = _isPageLoaded
-
-    fun setPageLoaded(isPageLoaded: Boolean) {
-        this._isPageLoaded.value = isPageLoaded
-    }
 
     fun start(url: String) {
         _url.value = url
     }
 
     fun openNotiSettings() {
-        _openNotiSettings.value = Unit
-    }
-
-    fun getBanks() {
-        viewModelScope.launch {
-            _banks.value = BanksDto(listOf())
-        }
+        uiService.openNotiSettings()
     }
 
     fun openDeepLink(request: OpenDeepLinkDto) {
-        _openDeepLink.value = request
+        uiService.openNewView(
+            com.tenqube.webui.dto.OpenNewViewDto(
+                "external",
+                request.url
+            )
+        )
     }
 
     fun showToast(request: String) {
-        _showToast.value = request
+        uiService.showToast(request)
     }
 
-    fun openSelectBox(request: OpenSelectBoxDto) {
-        _openSelectBox.value = request
+    fun openSelectBox(request: OpenSelectBoxDto,
+                      callback: (selectBox: SelectBoxItem) -> Unit) {
+        uiService.openSelectBox(OpenSelectBox(
+            SelectBoxRequest(
+                request.title,
+                request.selectedColor,
+                request.data.map {
+                    SelectBoxItem(
+                        it.name, it.orderByType, it.isSelected
+                    )
+                }
+            )
+        ){
+            callback(it)
+        })
     }
 
     fun showAd(request: ShowAdDto) {
@@ -95,16 +87,34 @@ class VisualViewModel(
     }
 
     fun openNewView(request: OpenNewViewDto) {
-        _openNewView.value = request
+        uiService.openNewView(com.tenqube.webui.dto.OpenNewViewDto(
+            request.type, request.url
+        ))
     }
 
     fun finish() {
-        _finish.value = Unit
+        uiService.finish()
+    }
+
+    fun getBanks() {
+        viewModelScope.launch {
+            _banks.value = BanksDto(listOf())
+        }
     }
 
     fun getTransactions(request: GetTransactionsDto) {
         viewModelScope.launch {
-            _transactions.value = TransactionsResponse(listOf())
+            val transactions = transactionAppService.getTransactions(
+                TransactionFilter(
+                    request.year,
+                    request.month,
+                    request.periodByMonth
+                )
+            ).getOrDefault(listOf())
+
+            _transactions.value = TransactionsResponse(transactions.map {
+                TransactionDto.fromDomain(it)
+            })
         }
     }
 }

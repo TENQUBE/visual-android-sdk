@@ -4,6 +4,8 @@ import android.webkit.WebView
 import com.tenqube.ibk.VisualViewModel
 import com.tenqube.ibk.bridge.dto.request.*
 import com.tenqube.shared.webview.BridgeBase
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class AndroidUIBridge(
     webView: WebView,
@@ -26,13 +28,18 @@ class AndroidUIBridge(
     }
 
     override fun openSelectBox(params: String?) {
+        val funcName = this@AndroidUIBridge::openSelectBox.name
         execute(
-            funcName = this@AndroidUIBridge::openSelectBox.name,
+            funcName = funcName,
             params = params,
             classOfT = OpenSelectBoxRequest::class.java,
             body = {
                 it?.let {
-                    viewModel.openSelectBox(it.data)
+                    viewModel.openSelectBox(it.data) {
+                        GlobalScope.launch {
+                            onSuccess(funcName, it)
+                        }
+                    }
                 }
             }
         )

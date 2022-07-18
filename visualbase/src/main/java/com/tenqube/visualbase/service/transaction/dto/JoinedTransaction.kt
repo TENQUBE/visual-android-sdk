@@ -1,4 +1,4 @@
-package com.tenqube.visualbase.service.transaction
+package com.tenqube.visualbase.service.transaction.dto
 
 import com.tenqube.visualbase.domain.card.Card
 import com.tenqube.visualbase.domain.category.Category
