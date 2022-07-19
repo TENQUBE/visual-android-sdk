@@ -5,14 +5,14 @@ import androidx.room.*
 @Dao
 interface CardDao {
     @Query("SELECT * FROM cardModel")
-    fun getAll(): List<CardModel>
+    suspend fun getAll(): List<CardModel>
 
     @Insert
-    fun insertAll(vararg cards: CardModel)
+    suspend fun insertAll(vararg cards: CardModel)
 
     @Update
-    fun update(card: CardModel)
+    suspend fun update(card: CardModel)
 
     @Delete
-    fun delete(card: CardModel)
+    suspend fun delete(card: CardModel)
 }

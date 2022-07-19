@@ -5,14 +5,14 @@ import androidx.room.*
 @Dao
 interface UserDao {
     @Query("SELECT * FROM userModel")
-    fun getAll(): List<UserModel>
+    suspend fun getAll(): List<UserModel>
 
     @Insert
-    fun insertAll(vararg items: UserModel)
+    suspend fun insertAll(vararg items: UserModel)
 
     @Update
-    fun update(item: UserModel)
+    suspend fun update(item: UserModel)
 
     @Delete
-    fun delete(item: UserModel)
+    suspend fun delete(item: UserModel)
 }

@@ -5,14 +5,14 @@ import androidx.room.*
 @Dao
 interface TransactionDao {
     @Query("SELECT * FROM transactionModel")
-    fun getAll(): List<TransactionModel>
+    suspend fun getAll(): List<TransactionModel>
 
     @Insert
-    fun insertAll(vararg items: TransactionModel)
+    suspend fun insertAll(vararg items: TransactionModel)
 
     @Update
-    fun update(item: TransactionModel)
+    suspend fun update(item: TransactionModel)
 
     @Delete
-    fun delete(item: TransactionModel)
+    suspend fun delete(item: TransactionModel)
 }

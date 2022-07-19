@@ -5,14 +5,14 @@ import androidx.room.*
 @Dao
 interface CategoryDao {
     @Query("SELECT * FROM categoryModel")
-    fun getAll(): List<CategoryModel>
+    suspend fun getAll(): List<CategoryModel>
 
     @Insert
-    fun insertAll(vararg items: CategoryModel)
+    suspend fun insertAll(vararg items: CategoryModel)
 
     @Update
-    fun update(item: CategoryModel)
+    suspend fun update(item: CategoryModel)
 
     @Delete
-    fun delete(item: CategoryModel)
+    suspend fun delete(item: CategoryModel)
 }
