@@ -1,6 +1,7 @@
 package com.tenqube.shared.webview
 
 import android.webkit.WebView
+import androidx.lifecycle.LifecycleOwner
 import com.tenqube.shared.error.ParameterError
 import com.tenqube.shared.util.elapsedLog
 import com.tenqube.shared.util.fromJson
@@ -13,6 +14,7 @@ import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
 open class BridgeBase(
+    val lifecycleOwner: LifecycleOwner,
     private val webView: WebView
 ) : CoroutineScope {
 

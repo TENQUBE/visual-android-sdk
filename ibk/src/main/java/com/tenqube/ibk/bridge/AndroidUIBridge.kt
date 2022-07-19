@@ -1,16 +1,18 @@
 package com.tenqube.ibk.bridge
 
 import android.webkit.WebView
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import com.tenqube.ibk.VisualViewModel
 import com.tenqube.ibk.bridge.dto.request.*
 import com.tenqube.shared.webview.BridgeBase
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class AndroidUIBridge(
+    lifecycleOwner: LifecycleOwner,
     webView: WebView,
     private val viewModel: VisualViewModel
-) : BridgeBase(webView), Bridge.UI {
+) : BridgeBase(lifecycleOwner, webView), Bridge.UI {
     override val bridgeName: String
         get() = "visualUI"
 
@@ -35,14 +37,16 @@ class AndroidUIBridge(
             classOfT = OpenSelectBoxRequest::class.java,
             body = {
                 it?.let {
-                    viewModel.openSelectBox(it.data) {
-                        GlobalScope.launch {
-                            onSuccess(funcName, it)
-                        }
-                    }
+                    viewModel.openSelectBox(it.data)
                 }
             }
         )
+
+        viewModel.selectBoxItem.observe(lifecycleOwner, Observer {
+            launch {
+                onSuccess(funcName, it)
+            }
+        })
     }
 
     override fun showAd(params: String?) {
@@ -60,7 +64,7 @@ class AndroidUIBridge(
 
     override fun hideAd() {
         execute(
-            funcName = this@AndroidUIBridge::finish.name,
+            funcName = this@AndroidUIBridge::hideAd.name,
             params = null,
             classOfT = Any::class.java,
             body = {

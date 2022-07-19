@@ -1,5 +1,6 @@
 package com.tenqube.ibk
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,8 @@ import android.webkit.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.tenqube.ibk.bridge.AndroidUIBridge
+import com.tenqube.ibk.bridge.SystemBridge
+import com.tenqube.ibk.bridge.VisualRepositoryBridge
 import com.tenqube.ibk.databinding.FragmentMainIbkBinding
 import com.tenqube.shared.webview.WebViewManager
 import com.tenqube.shared.webview.WebViewParam
@@ -56,9 +59,16 @@ class VisualFragment : Fragment() {
         }
     }
 
+    @SuppressLint("JavascriptInterface")
     private fun setupBridges(webView: WebView) {
-        AndroidUIBridge(webView, viewModel).let { ui ->
-            webView.addJavascriptInterface(ui, ui.bridgeName)
+        with(AndroidUIBridge(this, webView, viewModel)) {
+            webView.addJavascriptInterface(this, this.bridgeName)
+        }
+        with(SystemBridge(this, webView, viewModel)) {
+            webView.addJavascriptInterface(this, this.bridgeName)
+        }
+        with(VisualRepositoryBridge(this, webView, viewModel)) {
+            webView.addJavascriptInterface(this, this.bridgeName)
         }
     }
 

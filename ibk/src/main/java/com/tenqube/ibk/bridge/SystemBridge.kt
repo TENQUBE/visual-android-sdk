@@ -1,14 +1,16 @@
 package com.tenqube.ibk.bridge
 
 import android.webkit.WebView
+import androidx.lifecycle.LifecycleOwner
 import com.tenqube.ibk.VisualViewModel
 import com.tenqube.ibk.bridge.dto.request.OpenDeepLinkRequest
 import com.tenqube.shared.webview.BridgeBase
 
 class SystemBridge(
+    lifecycleOwner: LifecycleOwner,
     webView: WebView,
     private val viewModel: VisualViewModel
-) : BridgeBase(webView), Bridge.System {
+) : BridgeBase(lifecycleOwner, webView), Bridge.System {
     override val bridgeName: String
         get() = "visualSystem"
 

@@ -39,6 +39,12 @@ class VisualViewModel(
     private val _transactions = MutableLiveData<TransactionsResponse>()
     val transactions: LiveData<TransactionsResponse> = _transactions
 
+    private val _error = MutableLiveData<String>()
+    val error: LiveData<String> = _error
+
+    private val _selectBoxItem = MutableLiveData<SelectBoxItem>()
+    val selectBoxItem: LiveData<SelectBoxItem> = _selectBoxItem
+
     fun start(url: String) {
         _url.value = url
     }
@@ -60,8 +66,7 @@ class VisualViewModel(
         uiService.showToast(request)
     }
 
-    fun openSelectBox(request: OpenSelectBoxDto,
-                      callback: (selectBox: SelectBoxItem) -> Unit) {
+    fun openSelectBox(request: OpenSelectBoxDto) {
         uiService.openSelectBox(OpenSelectBox(
             SelectBoxRequest(
                 request.title,
@@ -73,7 +78,7 @@ class VisualViewModel(
                 }
             )
         ){
-            callback(it)
+            _selectBoxItem.value = it
         })
     }
 
@@ -97,26 +102,34 @@ class VisualViewModel(
 
     fun getBanks() {
         viewModelScope.launch {
-            val cards = cardAppService.getCards().getOrDefault(listOf())
-            _banks.value = BanksDto(cards.map {
-                BankDto.fomDomain(it)
-            })
+            try {
+                val cards = cardAppService.getCards().getOrThrow()
+                _banks.value = BanksDto(cards.map {
+                    BankDto.fomDomain(it)
+                })
+            } catch (e: Exception) {
+                _error.value = e.toString()
+            }
         }
     }
 
     fun getTransactions(request: GetTransactionsDto) {
         viewModelScope.launch {
-            val transactions = transactionAppService.getTransactions(
-                TransactionFilter(
-                    request.year,
-                    request.month,
-                    request.periodByMonth
-                )
-            ).getOrDefault(listOf())
+            try {
+                val transactions = transactionAppService.getTransactions(
+                    TransactionFilter(
+                        request.year,
+                        request.month,
+                        request.periodByMonth
+                    )
+                ).getOrThrow()
 
-            _transactions.value = TransactionsResponse(transactions.map {
-                TransactionDto.fromDomain(it)
-            })
+                _transactions.value = TransactionsResponse(transactions.map {
+                    TransactionDto.fromDomain(it)
+                })
+            } catch (e: Exception) {
+                _error.value = e.toString()
+            }
         }
     }
 }

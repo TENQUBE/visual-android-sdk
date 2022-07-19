@@ -1,20 +1,25 @@
 package com.tenqube.ibk.bridge
 
 import android.webkit.WebView
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import com.tenqube.ibk.VisualViewModel
 import com.tenqube.ibk.bridge.dto.request.GetTransactionsRequest
 import com.tenqube.shared.webview.BridgeBase
+import kotlinx.coroutines.launch
 
 class VisualRepositoryBridge(
+    lifecycleOwner: LifecycleOwner,
     webView: WebView,
     private val viewModel: VisualViewModel
-) : BridgeBase(webView), Bridge.Repository {
+) : BridgeBase(lifecycleOwner, webView), Bridge.Repository {
     override val bridgeName: String
         get() = "visualRepository"
 
     override fun getBanks() {
+        val funcName = this@VisualRepositoryBridge::getBanks.name
         execute(
-            funcName = this@VisualRepositoryBridge::getBanks.name,
+            funcName = funcName,
             params = null,
             classOfT = Any::class.java,
             body = {
@@ -23,11 +28,18 @@ class VisualRepositoryBridge(
                 }
             }
         )
+
+        viewModel.banks.observe(lifecycleOwner, Observer {
+            launch {
+                onSuccess(funcName, it)
+            }
+        })
     }
 
     override fun getTransactions(params: String?) {
+        val funcName = this@VisualRepositoryBridge::getTransactions.name
         execute(
-            funcName = this@VisualRepositoryBridge::getTransactions.name,
+            funcName = funcName,
             params = params,
             classOfT = GetTransactionsRequest::class.java,
             body = {
@@ -36,5 +48,11 @@ class VisualRepositoryBridge(
                 }
             }
         )
+
+        viewModel.transactions.observe(lifecycleOwner, Observer {
+            launch {
+                onSuccess(funcName, it)
+            }
+        })
     }
 }
