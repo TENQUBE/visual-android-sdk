@@ -12,5 +12,7 @@ interface TransactionRepository {
 
     suspend fun save(item: Transaction): Result<Transaction>
 
+    suspend fun saveAll(items: List<Transaction>)
+
     suspend fun delete(item: Transaction): Result<Transaction>
 }

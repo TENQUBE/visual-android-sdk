@@ -12,6 +12,7 @@ import com.tenqube.visualbase.domain.usercategoryconfig.UserCategoryConfigReposi
 import com.tenqube.visualbase.service.transaction.dto.JoinedTransaction
 import com.tenqube.visualbase.service.transaction.dto.TransactionFilter
 import com.tenqube.visualbase.service.user.UserAppService
+import java.util.*
 
 class TransactionAppService(
     private val transactionRepository: TransactionRepository,
@@ -38,6 +39,7 @@ class TransactionAppService(
             categories,
             userCategories
         )
+
         return Result.success(results)
     }
 
@@ -76,7 +78,78 @@ class TransactionAppService(
         return card != null && category != null && userCategory != null
     }
 
-    suspend fun saveTransactions(transactions: List<SaveTransactionDto>): Result<Unit> {
+    suspend fun saveTransactions(items: List<SaveTransactionDto>): Result<Unit> {
+        val cardMap = saveCards(items)
+            .associateBy { it.getUniqueKey()}
+
+        val categoryMap = categoryRepository
+            .findAll()
+            .getOrDefault(listOf())
+            .associateBy { it.code.toString() }
+
+        val userCateMap = userCategoryConfigRepository
+            .findAll()
+            .getOrDefault(listOf())
+            .associateBy { it.code.toString() }
+
+        val transactions = items.mapNotNull {
+            val card = cardMap[it.getUniqueCardKey()]
+            val category = categoryMap[it.categoryCode]
+            val userCategory = userCateMap[it.categoryCode.substring(0, 2)]
+
+            if(hasMandatory(card, category, userCategory)) {
+                Transaction(
+                    id = it.id,
+                    categoryId = category!!.id,
+                    cardId = card!!.id,
+                    userCategoryConfigId = userCategory!!.id,
+                    company = it.company,
+                    spentDate = it.spentDate,
+                    finishDate = it.finishDate,
+                    spentMoney = it.spentMoney,
+                    oriSpentMoney = it.oriSpentMoney,
+                    installmentCnt = it.installmentCnt,
+                    keyword = it.keyword,
+                    currency = it.currency,
+                    dwType = it.dwType,
+                    memo = it.memo
+                )
+            } else {
+                null
+            }
+        }
+        transactionRepository.saveAll(transactions)
+
         return Result.success(Unit)
+    }
+
+    private suspend fun saveCards(items: List<SaveTransactionDto>) : List<Card> {
+        val cardMap = cardRepository
+            .findAll()
+            .getOrDefault(listOf())
+            .associateBy { it.getUniqueKey() }
+
+        val alreadyExistCards = items.mapNotNull {
+            cardMap[it.getUniqueCardKey()]
+        }
+
+        val newCards = items.mapNotNull {
+            if (cardMap[it.getUniqueCardKey()] == null) {
+                Card(
+                    UUID.randomUUID().toString(),
+                    "",
+                    it.cardName,
+                    it.cardType,
+                    it.cardSubType,
+                    it.cardName,
+                    it.cardType,
+                    it.cardSubType
+                )
+            } else {
+                null
+            }
+        }
+        cardRepository.save(newCards)
+        return newCards + alreadyExistCards
     }
 }
