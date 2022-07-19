@@ -8,7 +8,6 @@ data class User(
     val birth: Int = 0,
     val gender: Int = 0,
     val gaId: String = "",
-    val fcm: String? = null,
     val userConfig: UserConfig = UserConfig(userId = id)
 ) : Entity {
     companion object {
