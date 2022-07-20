@@ -96,7 +96,7 @@ class VisualFragment : Fragment() {
     }
 
     companion object {
-        const val URL = ""
+        const val URL = "https://d34db13xxji3zw.cloudfront.net/?v=1.0&dv=1.0"
         const val PROGRESS_URL = "${URL}loading/#type=bulk"
         const val VISUAL_IBK_ARG = "visual_ibk_arg"
         @JvmStatic
