@@ -21,4 +21,16 @@ data class CategoryModel(
             small
         )
     }
+
+    companion object {
+        fun fromDomain(category: Category): CategoryModel {
+            return CategoryModel(
+                category.id,
+                category.code,
+                category.large,
+                category.medium,
+                category.small
+            )
+        }
+    }
 }
