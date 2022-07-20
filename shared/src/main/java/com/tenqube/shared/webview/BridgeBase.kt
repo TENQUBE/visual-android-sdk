@@ -103,7 +103,7 @@ open class BridgeBase(
     companion object {
         const val ERROR_CALLBACK = "onError"
         const val ON_FINISH = "onFinish"
-        const val RESPONSE = "response."
+        const val RESPONSE = "responseSDK."
         const val JS = "javascript:window."
     }
 }
