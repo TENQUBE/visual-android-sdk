@@ -7,6 +7,9 @@ interface TransactionDao {
     @Query("SELECT * FROM transactionModel")
     suspend fun getAll(): List<TransactionModel>
 
+    @Query("SELECT * FROM transactionModel WHERE id = :id")
+    suspend fun getById(id: String): TransactionModel
+
     @Insert
     suspend fun insertAll(vararg items: TransactionModel)
 

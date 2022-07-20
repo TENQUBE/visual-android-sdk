@@ -10,9 +10,11 @@ interface TransactionRepository {
 
     suspend fun findByFilter(filter: TransactionFilter): Result<List<Transaction>>
 
-    suspend fun save(item: Transaction): Result<Transaction>
+    suspend fun save(item: Transaction): Result<Unit>
 
-    suspend fun saveAll(items: List<Transaction>)
+    suspend fun update(item: Transaction): Result<Unit>
 
-    suspend fun delete(item: Transaction): Result<Transaction>
+    suspend fun saveAll(items: List<Transaction>): Result<Unit>
+
+    suspend fun delete(item: Transaction): Result<Unit>
 }
