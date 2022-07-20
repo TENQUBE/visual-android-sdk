@@ -4,8 +4,8 @@ import androidx.room.*
 
 @Dao
 interface UserDao {
-    @Query("SELECT * FROM userModel")
-    suspend fun getAll(): List<UserModel>
+    @Query("SELECT * FROM userModel LIMIT 1")
+    suspend fun getUser(): UserModel
 
     @Insert
     suspend fun insertAll(vararg items: UserModel)

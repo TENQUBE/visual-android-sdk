@@ -2,26 +2,38 @@ package com.tenqube.visualbase.infrastructure.data.user
 
 import com.tenqube.visualbase.domain.user.User
 import com.tenqube.visualbase.domain.user.UserRepository
+import com.tenqube.visualbase.infrastructure.data.transaction.local.TransactionModel
 import com.tenqube.visualbase.infrastructure.data.user.local.UserDao
+import com.tenqube.visualbase.infrastructure.data.user.local.UserModel
 
 class UserRepositoryImpl(private val dao: UserDao) : UserRepository {
     override suspend fun findUser(): Result<User> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun findById(id: String): Result<User> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun findAll(): Result<List<User>> {
-        TODO("Not yet implemented")
+        return try {
+            Result.success(
+                dao.getUser().asDomain()
+            )
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 
     override suspend fun save(item: User): Result<Unit> {
-        TODO("Not yet implemented")
+        return try {
+            Result.success(
+                dao.insertAll(UserModel.fromDomain(item))
+            )
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 
     override suspend fun delete(item: User): Result<Unit> {
-        TODO("Not yet implemented")
+        return try {
+            Result.success(
+                dao.delete(UserModel.fromDomain(item))
+            )
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 }
