@@ -9,12 +9,13 @@ object IBKServiceLocator {
     fun provideVisualViewModel(): ViewModelProvider.Factory {
         val uiService = UIServiceBuilder().build()
 
+
         return VisualViewModel.Factory(
             userAppService = ServiceLocator.provideUserAppService(),
             transactionAppService = ServiceLocator.provideTransactionAppService(),
             cardAppService = ServiceLocator.provideCardAppService(),
             uiService = uiService,
-            bulkParserAppService = ServiceLocator.provideBulkParserAppService(),
+            bulkParserAppService = ServiceLocator.provideBulkParserAppService()
         )
     }
 }

@@ -4,6 +4,14 @@ import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.tenqube.shared.prefs.PrefStorage
+import com.tenqube.visualbase.domain.card.CardRepository
+import com.tenqube.visualbase.domain.category.CategoryRepository
+import com.tenqube.visualbase.domain.currency.CurrencyService
+import com.tenqube.visualbase.domain.parser.ParserService
+import com.tenqube.visualbase.domain.search.SearchService
+import com.tenqube.visualbase.domain.user.UserRepository
+import com.tenqube.visualbase.domain.usercategoryconfig.UserCategoryConfigRepository
 import com.tenqube.visualbase.infrastructure.adapter.currency.local.CurrencyDao
 import com.tenqube.visualbase.infrastructure.data.card.local.CardDao
 import com.tenqube.visualbase.infrastructure.data.category.local.CategoryDao
@@ -22,51 +30,47 @@ import com.tenqube.visualbase.service.user.UserAppService
 import kotlinx.coroutines.runBlocking
 
 object ServiceLocator {
-
-    private var parserAppService: ParserAppService? = null
-    private var userAppService: UserAppService? = null
-    private var transactionAppService: TransactionAppService? = null
-    private var cardAppService: CardAppService? = null
-    private var bulkParserAppService: BulkParserAppService? = null
-
-    fun provideParserAppService(): ParserAppService {
-        return parserAppService ?: createParserAppService()
+    fun provideParserAppService(
+        parserService: ParserService,
+        currencyService: CurrencyService,
+        searchService: SearchService,
+        transactionAppService: TransactionAppService,
+        prefStorage: PrefStorage
+    ): ParserAppService {
+        return ParserAppService(
+            parserService,
+            currencyService,
+            searchService,
+            transactionAppService,
+            prefStorage
+        )
     }
 
-    private fun createParserAppService(): ParserAppService {
-        return parserAppService!! // TODO 생성 모듈 만들기
-    }
+    fun provideUserAppService(
+        userRepository: UserRepository,
+        categoryRepository: CategoryRepository,
+        userCategoryConfigRepository: UserCategoryConfigRepository,
+        cardRepository: CardRepository
 
-    fun provideUserAppService(): UserAppService {
-        return userAppService?: createUserAppService()
-    }
-
-    private fun createUserAppService(): UserAppService {
-        return userAppService!!
+    ): UserAppService {
+        return UserAppService(
+            userRepository,
+            categoryRepository,
+            userCategoryConfigRepository,
+            cardRepository
+        )
     }
 
     fun provideTransactionAppService(): TransactionAppService {
         return transactionAppService?: createTransactionAppService()
     }
 
-    private fun createTransactionAppService(): TransactionAppService {
-        return transactionAppService!!
-    }
-
     fun provideCardAppService(): CardAppService {
         return cardAppService?: createCardAppService()
     }
 
-    private fun createCardAppService(): CardAppService {
-        return cardAppService!!
-    }
-
     fun provideBulkParserAppService(): BulkParserAppService {
         return bulkParserAppService?: createBulkParserAppService()
-    }
-
-    private fun createBulkParserAppService(): BulkParserAppService {
-        return bulkParserAppService!!
     }
 
     fun provideVisualDatabase(context: Context): VisualDatabase {
