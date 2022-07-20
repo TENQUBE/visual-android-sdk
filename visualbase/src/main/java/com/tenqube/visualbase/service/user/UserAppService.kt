@@ -10,8 +10,6 @@ import com.tenqube.visualbase.domain.user.UserRepository
 import com.tenqube.visualbase.domain.user.command.CreateUser
 import com.tenqube.visualbase.domain.usercategoryconfig.UserCategoryConfig
 import com.tenqube.visualbase.domain.usercategoryconfig.UserCategoryConfigRepository
-import com.tenqube.visualbase.infrastructure.data.usercategoryconfig.local.UserCategoryConfigModel
-import java.lang.Exception
 import java.util.*
 
 class UserAppService(
