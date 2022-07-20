@@ -4,6 +4,7 @@ import com.tenqube.visualbase.domain.Entity
 
 data class Card(
     override val id: String,
+    val userId: String,
     val name: String,
     val type: Int,
     val subType: Int = 0,

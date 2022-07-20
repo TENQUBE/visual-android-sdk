@@ -8,7 +8,7 @@ import com.tenqube.visualbase.domain.usercategoryconfig.UserCategoryConfig
 data class UserCategoryConfigModel(
     @PrimaryKey val id: String,
     val userId: String,
-    val code: Int,
+    val code: String,
     val type: String,
     val isExcept: Boolean,
     val isMain: Boolean
