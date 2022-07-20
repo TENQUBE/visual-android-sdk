@@ -9,9 +9,15 @@ import com.tenqube.ibk.bridge.dto.response.BankDto
 import com.tenqube.ibk.bridge.dto.response.BanksDto
 import com.tenqube.ibk.bridge.dto.response.TransactionDto
 import com.tenqube.ibk.bridge.dto.response.TransactionsResponse
-import com.tenqube.visualbase.service.transaction.dto.TransactionFilter
+import com.tenqube.ibk.progress.ProgressCount
+import com.tenqube.visualbase.domain.user.command.CreateUser
 import com.tenqube.visualbase.service.card.CardAppService
+import com.tenqube.visualbase.service.parser.BulkCallback
+import com.tenqube.visualbase.service.parser.BulkParserAppService
+import com.tenqube.visualbase.service.parser.BulkSmsAdapterImpl
 import com.tenqube.visualbase.service.transaction.TransactionAppService
+import com.tenqube.visualbase.service.transaction.dto.TransactionFilter
+import com.tenqube.visualbase.service.user.UserAppService
 import com.tenqube.webui.UIService
 import com.tenqube.webui.dto.OpenSelectBox
 import com.tenqube.webui.dto.SelectBoxItem
@@ -19,9 +25,11 @@ import com.tenqube.webui.dto.SelectBoxRequest
 import kotlinx.coroutines.launch
 
 class VisualViewModel(
+    private val userAppService: UserAppService,
     private val transactionAppService: TransactionAppService,
     private val cardAppService: CardAppService,
-    private val uiService: UIService
+    private val uiService: UIService,
+    private val bulkParserAppService: BulkParserAppService
 ) : ViewModel() {
 
     private val _url = MutableLiveData<String>()
@@ -45,8 +53,40 @@ class VisualViewModel(
     private val _selectBoxItem = MutableLiveData<SelectBoxItem>()
     val selectBoxItem: LiveData<SelectBoxItem> = _selectBoxItem
 
-    fun start(url: String) {
-        _url.value = url
+    private val _isProgress = MutableLiveData<Boolean>()
+    val isProgress: LiveData<Boolean> = _isProgress
+
+    private val _progressCount = MutableLiveData<ProgressCount>()
+    val progressCount: LiveData<ProgressCount> = _progressCount
+
+    fun start(url: String, user: CreateUser) {
+        viewModelScope.launch {
+            try {
+                userAppService.signUp(user).getOrThrow()
+                BulkSmsAdapterImpl(bulkParserAppService, object : BulkCallback {
+                    override fun onStart() {
+                        _isProgress.value = true
+                    }
+
+                    override fun onProgress(now: Int, total: Int) {
+                        _progressCount.value = ProgressCount(now, total)
+                    }
+
+                    override fun onCompleted() {
+                        _isProgress.value = false
+                    }
+
+                    override fun onError(code: Int) {
+                        _error.value = "내역을 불러오던 도중 에러가 발생하였습니다."
+                        _isProgress.value = false
+                    }
+                })
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
+                _url.value = url
+            }
+        }
     }
 
     fun openNotiSettings() {

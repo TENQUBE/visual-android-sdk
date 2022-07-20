@@ -3,6 +3,7 @@ package com.tenqube.ibk
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import com.tenqube.shared.prefs.PrefStorage
+import com.tenqube.visualbase.service.user.UserAppService
 
 class VisualServiceImpl(
     private val arg: VisualArg,

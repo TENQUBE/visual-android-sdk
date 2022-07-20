@@ -11,13 +11,21 @@ import tenqube.parser.model.Transaction
 import java.util.*
 import kotlin.collections.ArrayList
 
+interface BulkCallback {
+    fun onStart()
+    fun onProgress(now: Int, total: Int)
+    fun onCompleted()
+    fun onError(code: Int)
+}
 class BulkSmsAdapterImpl(
-    private val bulkParserAppService: BulkParserAppService
+    private val bulkParserAppService: BulkParserAppService,
+    private val callback: BulkCallback
 ) : BulkSmsAdapter {
 
-    private val smsList: List<SMS>
+    private var smsList: List<SMS> = mutableListOf()
 
     init {
+        callback.onStart()
         val calendar = Calendar.getInstance()
         calendar.add(Calendar.MONTH, -4)
         val smsFilter = SmsFilter(calendar.timeInMillis, System.currentTimeMillis())
@@ -33,6 +41,7 @@ class BulkSmsAdapterImpl(
     }
 
     override fun onProgress(now: Int, total: Int) {
+        callback.onProgress(now, total)
     }
 
     override fun sendToServerTransactions(
@@ -44,9 +53,11 @@ class BulkSmsAdapterImpl(
     }
 
     override fun onCompleted() {
+        callback.onCompleted()
     }
 
     override fun onError(resultCode: Int) {
+        callback.onError(resultCode)
     }
 }
 
