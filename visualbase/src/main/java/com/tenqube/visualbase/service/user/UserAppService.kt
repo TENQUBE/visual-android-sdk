@@ -38,7 +38,7 @@ class UserAppService(
         val largeCategoryMap = categories.groupBy { it.code.substring(0, 2) }
         userCategoryConfigRepository.save(
             largeCategoryMap.keys.toList().map {
-                UserCategoryConfigModel(
+                UserCategoryConfig(
                     UUID.randomUUID().toString(),
                     user.id,
                     it,
