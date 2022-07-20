@@ -7,6 +7,9 @@ interface CardDao {
     @Query("SELECT * FROM cardModel")
     suspend fun getAll(): List<CardModel>
 
+    @Query("SELECT * FROM cardModel WHERE id = :id")
+    suspend fun getById(id: String): CardModel
+
     @Insert
     suspend fun insertAll(vararg cards: CardModel)
 

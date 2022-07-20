@@ -3,6 +3,7 @@ package com.tenqube.visualbase.infrastructure.data.card.local
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.tenqube.visualbase.domain.card.Card
 
 @Entity
 data class CardModel(
@@ -19,4 +20,42 @@ data class CardModel(
     @ColumnInfo(name = "is_except") val isExcept: Boolean,
     @ColumnInfo(name = "is_custom") val isCustom: Boolean,
     @ColumnInfo(name = "is_deleted") val isDeleted: Boolean
-)
+) {
+    fun asDomain(): Card {
+        return Card(
+            id,
+            name,
+            type,
+            subType,
+            displayName,
+            displayType,
+            displaySubType,
+            billingDay,
+            balance,
+            memo,
+            isExcept,
+            isCustom,
+            isDeleted
+        )
+    }
+
+    companion object {
+        fun fromDomain(card: Card): CardModel {
+            return CardModel(
+                card.id,
+                card.name,
+                card.type,
+                card.subType,
+                card.displayName,
+                card.displayType,
+                card.displaySubType,
+                card.billingDay,
+                card.balance,
+                card.memo,
+                card.isExcept,
+                card.isCustom,
+                card.isDeleted
+            )
+        }
+    }
+}

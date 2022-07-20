@@ -2,8 +2,9 @@ package com.tenqube.visualbase.infrastructure.data.user
 
 import com.tenqube.visualbase.domain.user.User
 import com.tenqube.visualbase.domain.user.UserRepository
+import com.tenqube.visualbase.infrastructure.data.user.local.UserDao
 
-class UserRepositoryImpl : UserRepository {
+class UserRepositoryImpl(private val dao: UserDao) : UserRepository {
     override suspend fun findUser(): Result<User> {
         TODO("Not yet implemented")
     }

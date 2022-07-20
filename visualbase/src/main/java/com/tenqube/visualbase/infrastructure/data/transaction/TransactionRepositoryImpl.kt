@@ -2,9 +2,10 @@ package com.tenqube.visualbase.infrastructure.data.transaction
 
 import com.tenqube.visualbase.domain.transaction.Transaction
 import com.tenqube.visualbase.domain.transaction.TransactionRepository
+import com.tenqube.visualbase.infrastructure.data.transaction.local.TransactionDao
 import com.tenqube.visualbase.service.transaction.dto.TransactionFilter
 
-class TransactionRepositoryImpl : TransactionRepository {
+class TransactionRepositoryImpl(private val dao: TransactionDao) : TransactionRepository {
     override suspend fun findById(id: String): Result<Transaction> {
         TODO("Not yet implemented")
     }
