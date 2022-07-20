@@ -10,6 +10,7 @@ import com.tenqube.visualbase.domain.category.CategoryRepository
 import com.tenqube.visualbase.domain.currency.CurrencyService
 import com.tenqube.visualbase.domain.parser.ParserService
 import com.tenqube.visualbase.domain.search.SearchService
+import com.tenqube.visualbase.domain.transaction.TransactionRepository
 import com.tenqube.visualbase.domain.user.UserRepository
 import com.tenqube.visualbase.domain.usercategoryconfig.UserCategoryConfigRepository
 import com.tenqube.visualbase.infrastructure.adapter.currency.local.CurrencyDao
@@ -61,16 +62,27 @@ object ServiceLocator {
         )
     }
 
-    fun provideTransactionAppService(): TransactionAppService {
-        return transactionAppService?: createTransactionAppService()
+    fun provideTransactionAppService(
+        transactionRepository: TransactionRepository,
+        cardRepository: CardRepository,
+        categoryRepository: CategoryRepository,
+        userCategoryConfigRepository: UserCategoryConfigRepository
+
+    ): TransactionAppService {
+        return TransactionAppService(
+            transactionRepository,
+            cardRepository,
+            categoryRepository,
+            userCategoryConfigRepository
+        )
     }
 
-    fun provideCardAppService(): CardAppService {
-        return cardAppService?: createCardAppService()
+    fun provideCardAppService(cardRepository: CardRepository): CardAppService {
+        return CardAppService(cardRepository)
     }
 
-    fun provideBulkParserAppService(): BulkParserAppService {
-        return bulkParserAppService?: createBulkParserAppService()
+    fun provideBulkParserAppService(parserAppService: ParserAppService): BulkParserAppService {
+        return BulkParserAppService(parserAppService)
     }
 
     fun provideVisualDatabase(context: Context): VisualDatabase {
