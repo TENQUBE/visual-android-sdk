@@ -2,8 +2,9 @@ package com.tenqube.ibk
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
+import com.tenqube.ibk.VisualFragment.Companion.VISUAL_IBK_ARG
 import com.tenqube.shared.prefs.PrefStorage
-import com.tenqube.visualbase.service.user.UserAppService
+import com.tenqube.visualbase.domain.user.command.CreateUser
 
 class VisualServiceImpl(
     private val arg: VisualArg,
@@ -16,8 +17,14 @@ class VisualServiceImpl(
         prefStorage.service = "ibk"
     }
 
-    override fun start() {
+    override fun start(command: UserArg) {
         val intent = Intent(arg.activity, VisualActivity::class.java)
+        intent.putExtra(VISUAL_IBK_ARG, VisualIBKArg(
+            CreateUser(
+                uid = command.uid,
+                birth = command.birth,
+                gender = command.gender.ordinal
+            )))
         arg.activity.startActivity(intent)
     }
 }

@@ -14,17 +14,14 @@ import com.tenqube.ibk.bridge.VisualRepositoryBridge
 import com.tenqube.ibk.databinding.FragmentMainIbkBinding
 import com.tenqube.shared.webview.WebViewManager
 import com.tenqube.shared.webview.WebViewParam
+import com.tenqube.visualbase.domain.user.command.CreateUser
+import java.io.Serializable
 
 class VisualFragment : Fragment() {
 
     private lateinit var viewModel: VisualViewModel
     private lateinit var viewDataBinding: FragmentMainIbkBinding
     private lateinit var webViewManager: WebViewManager
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {}
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,6 +40,16 @@ class VisualFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupLifecycleOwner()
         setupWebView()
+        setupProgressEvents()
+        parseArg()?.let {
+            viewModel.start(URL, it.user)
+        } ?: requireActivity().finish()
+    }
+
+    private fun parseArg() : VisualIBKArg? {
+        return arguments?.let {
+            it.getSerializable(VISUAL_IBK_ARG) as VisualIBKArg
+        }
     }
 
     private fun setupLifecycleOwner() {
@@ -72,8 +79,37 @@ class VisualFragment : Fragment() {
         }
     }
 
+    private fun setupProgressEvents() {
+        viewModel.isProgress.observe(this.viewLifecycleOwner) {
+            if (it) {
+                viewDataBinding.webView.loadUrl(PROGRESS_URL)
+            } else {
+                viewDataBinding.webView.loadUrl(URL)
+            }
+        }
+
+        viewModel.progressCount.observe(this.viewLifecycleOwner) {
+            viewDataBinding.webView.loadUrl(
+                "javascript:window.onProgress(${it.now}, ${it.total});"
+            )
+        }
+    }
+
     companion object {
+        const val URL = ""
+        const val PROGRESS_URL = "${URL}loading/#type=bulk"
+        const val VISUAL_IBK_ARG = "visual_ibk_arg"
         @JvmStatic
-        fun newInstance() = VisualFragment()
+        fun newInstance(arg: VisualIBKArg): VisualFragment {
+            return VisualFragment().apply {
+                this.arguments = Bundle().apply {
+                    putSerializable(VISUAL_IBK_ARG, arg)
+                }
+            }
+        }
     }
 }
+
+data class VisualIBKArg(
+    val user: CreateUser
+) : Serializable
