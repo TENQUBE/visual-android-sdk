@@ -2,6 +2,7 @@ package com.tenqube.visualbase.infrastructure.data.category.local
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.tenqube.visualbase.domain.category.Category
 
 @Entity
 data class CategoryModel(
@@ -10,4 +11,14 @@ data class CategoryModel(
     val large: String,
     val medium: String,
     val small: String
-)
+) {
+    fun asDomain(): Category {
+        return Category(
+            id,
+            code,
+            large,
+            medium,
+            small
+        )
+    }
+}
