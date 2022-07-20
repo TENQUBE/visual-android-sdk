@@ -12,6 +12,7 @@ import com.tenqube.ibk.bridge.AndroidUIBridge
 import com.tenqube.ibk.bridge.SystemBridge
 import com.tenqube.ibk.bridge.VisualRepositoryBridge
 import com.tenqube.ibk.databinding.FragmentMainIbkBinding
+import com.tenqube.ibk.di.IBKServiceLocator
 import com.tenqube.shared.webview.WebViewManager
 import com.tenqube.shared.webview.WebViewParam
 import com.tenqube.visualbase.domain.user.command.CreateUser
@@ -28,7 +29,8 @@ class VisualFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProvider(this)[VisualViewModel::class.java]
+        viewModel = ViewModelProvider(this,
+            IBKServiceLocator.provideVisualViewModel())[VisualViewModel::class.java]
         viewDataBinding = FragmentMainIbkBinding.inflate(inflater, container, false)
             .apply {
                 viewmodel = viewModel

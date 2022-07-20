@@ -1,9 +1,6 @@
 package com.tenqube.ibk
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.tenqube.ibk.bridge.dto.request.*
 import com.tenqube.ibk.bridge.dto.response.BankDto
 import com.tenqube.ibk.bridge.dto.response.BanksDto
@@ -170,6 +167,22 @@ class VisualViewModel(
             } catch (e: Exception) {
                 _error.value = e.toString()
             }
+        }
+    }
+
+    class Factory(
+        private val userAppService: UserAppService,
+        private val transactionAppService: TransactionAppService,
+        private val cardAppService: CardAppService,
+        private val uiService: UIService,
+        private val bulkParserAppService: BulkParserAppService
+    ) : ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            return VisualViewModel(userAppService,
+                transactionAppService,
+                cardAppService,
+                uiService,
+                bulkParserAppService) as T
         }
     }
 }
