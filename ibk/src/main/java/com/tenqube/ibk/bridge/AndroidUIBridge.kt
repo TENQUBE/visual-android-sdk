@@ -1,5 +1,6 @@
 package com.tenqube.ibk.bridge
 
+import android.util.Log
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import androidx.lifecycle.LifecycleOwner
@@ -8,6 +9,7 @@ import com.tenqube.ibk.VisualViewModel
 import com.tenqube.ibk.bridge.dto.request.*
 import com.tenqube.shared.webview.BridgeBase
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class AndroidUIBridge(
@@ -139,15 +141,13 @@ class AndroidUIBridge(
             params = null,
             classOfT = Any::class.java,
             body = {
-                it?.let {
-                    viewModel.getBanks()
-                }
+                viewModel.getBanks()
             }
         )
 
         launch(Dispatchers.Main) {
             viewModel.banks.observe(lifecycleOwner, Observer {
-                launch {
+                GlobalScope.launch {
                     onSuccess(funcName, it)
                 }
             })
@@ -169,7 +169,7 @@ class AndroidUIBridge(
         )
         launch(Dispatchers.Main) {
             viewModel.transactions.observe(lifecycleOwner, Observer {
-                launch {
+                GlobalScope.launch {
                     onSuccess(funcName, it)
                 }
             })

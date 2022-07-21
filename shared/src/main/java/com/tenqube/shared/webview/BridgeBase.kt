@@ -1,5 +1,6 @@
 package com.tenqube.shared.webview
 
+import android.util.Log
 import android.webkit.WebView
 import androidx.lifecycle.LifecycleOwner
 import com.tenqube.shared.error.ParameterError
@@ -38,6 +39,8 @@ open class BridgeBase(
                 makeResponseCallback(funcName),
                 response.toJson()
             )
+            Log.i("KJTAG", "onSuccess$url")
+
             webView.loadUrl(url)
             return@withContext response
         }

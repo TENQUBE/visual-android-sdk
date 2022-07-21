@@ -1,5 +1,6 @@
 package com.tenqube.ibk
 
+import android.util.Log
 import androidx.lifecycle.*
 import com.tenqube.ibk.bridge.dto.request.*
 import com.tenqube.ibk.bridge.dto.response.BankDto
@@ -125,6 +126,8 @@ class VisualViewModel(
         viewModelScope.launch {
             try {
                 val cards = cardAppService.getCards().getOrThrow()
+                Log.i("KJTAG", "cards$cards")
+
                 _banks.value = BanksDto(cards.map {
                     BankDto.fomDomain(it)
                 })
