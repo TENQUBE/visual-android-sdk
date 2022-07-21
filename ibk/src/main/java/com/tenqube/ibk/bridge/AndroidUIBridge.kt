@@ -1,6 +1,5 @@
 package com.tenqube.ibk.bridge
 
-import android.util.Log
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import androidx.lifecycle.LifecycleOwner
@@ -44,7 +43,7 @@ class AndroidUIBridge(
             body = {
                 it?.let {
                     viewModel.openSelectBox(it) {
-                        launch {
+                        GlobalScope.launch {
                             onSuccess(funcName, it)
                         }
                     }
