@@ -205,7 +205,8 @@ object ServiceLocator {
         categoryRepository: CategoryRepository,
         userCategoryConfigRepository: UserCategoryConfigRepository,
         cardRepository: CardRepository,
-        currencyService: CurrencyService
+        currencyService: CurrencyService,
+        prefStorage: PrefStorage
     ): UserAppService {
         return UserAppService(
             context,
@@ -214,7 +215,8 @@ object ServiceLocator {
             categoryRepository,
             userCategoryConfigRepository,
             cardRepository,
-            currencyService
+            currencyService,
+            prefStorage
         )
     }
 

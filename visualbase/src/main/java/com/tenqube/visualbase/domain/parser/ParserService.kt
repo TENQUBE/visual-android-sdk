@@ -1,6 +1,5 @@
 package com.tenqube.visualbase.domain.parser
 
-import android.annotation.SuppressLint
 import android.database.Cursor
 import com.tenqube.shared.util.Constants
 import com.tenqube.shared.util.Utils
@@ -21,7 +20,8 @@ interface ParserService {
 
 data class SmsFilter(val fromAt: Long, val toAt: Long) {
     fun getQueryCondition(): String {
-        return "date >= $fromAt AND date <= $toAt"
+        return ""
+//        return "date >= $fromAt AND date <= $toAt"
     }
 }
 
@@ -49,7 +49,7 @@ data class SMS(
 
     companion object {
         fun from(cursor: Cursor): SMS {
-            val smsId = cursor.getInt(cursor.getColumnIndex("id"))
+            val smsId = cursor.getInt(cursor.getColumnIndex("_id"))
             val body = cursor.getString(cursor.getColumnIndex("body"))
             val address = cursor.getString(cursor.getColumnIndex("address"))
             val date = cursor.getLong(cursor.getColumnIndex("date"))

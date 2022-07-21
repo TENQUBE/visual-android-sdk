@@ -22,7 +22,6 @@ class BulkSmsAdapterImpl(
         smsList = bulkParserAppService.getSmsList(smsFilter)
     }
 
-
     override fun getSmsCount(): Int {
         return smsList.size
     }

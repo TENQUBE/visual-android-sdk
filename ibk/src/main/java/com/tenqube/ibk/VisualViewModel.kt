@@ -60,7 +60,7 @@ class VisualViewModel(
     fun start(url: String, user: CreateUser) {
         viewModelScope.launch {
             try {
-                userAppService.signUp(user).getOrThrow()
+                userAppService.signUp(user).getOrNull()
                 bulkParserAppService.start(
                     BulkSmsAdapterImpl(bulkParserAppService, object : BulkCallback {
                         override fun onStart() {

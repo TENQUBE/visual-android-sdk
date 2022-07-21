@@ -26,6 +26,7 @@ class ParserServiceImpl(
 ) : ParserService {
 
     override suspend fun parseBulk(adapter: BulkAdapter) {
+        sync()
         parserService.parseBulk(object : BulkSmsAdapter {
             override fun getSmsCount(): Int {
                 return adapter.getSmsCount()

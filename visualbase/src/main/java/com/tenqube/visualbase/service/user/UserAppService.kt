@@ -2,6 +2,7 @@ package com.tenqube.visualbase.service.user
 
 import android.content.Context
 import android.security.keystore.UserNotAuthenticatedException
+import com.tenqube.shared.prefs.PrefStorage
 import com.tenqube.shared.util.Constants
 import com.tenqube.visualbase.domain.auth.AuthService
 import com.tenqube.visualbase.domain.card.Card
@@ -14,6 +15,7 @@ import com.tenqube.visualbase.domain.user.command.CreateUser
 import com.tenqube.visualbase.domain.usercategoryconfig.UserCategoryConfig
 import com.tenqube.visualbase.domain.usercategoryconfig.UserCategoryConfigRepository
 import com.tenqube.visualbase.infrastructure.adapter.auth.remote.dto.UserRequestDto
+import com.tenqube.visualbase.infrastructure.adapter.auth.remote.dto.UserResultDto
 import com.tenqube.visualbase.infrastructure.data.category.local.CategoryModel
 import com.tenqube.visualbase.infrastructure.framework.db.category.CategoryGeneroator
 import com.tenqube.visualbase.infrastructure.framework.db.currency.CurrencyGenerator
@@ -27,13 +29,15 @@ class UserAppService(
     private val categoryRepository: CategoryRepository,
     private val userCategoryConfigRepository: UserCategoryConfigRepository,
     private val cardRepository: CardRepository,
-    private val currencyService: CurrencyService
+    private val currencyService: CurrencyService,
+    private val prefStorage: PrefStorage
 ) {
     suspend fun signUp(request: CreateUser): Result<Unit> {
         return try {
             checkNewUserOrThrow()
             val user = User.from(request)
-            authService.signUp(UserRequestDto(request.uid, ""))
+            val result = authService.signUp(UserRequestDto(request.uid, ""))
+            saveBaseConfig(result)
             currencyService.prepopulate()
             userRepository.save(user)
             saveCategoryConfig(user)
@@ -43,6 +47,15 @@ class UserAppService(
             Result.failure(e)
         }
     }
+
+    private fun saveBaseConfig(userResultDto: UserResultDto) {
+        prefStorage.service = "ibk"
+        prefStorage.accessToken = userResultDto.authorization.sdk.accessToken
+        prefStorage.refreshToken = userResultDto.authorization.sdk.refreshToken
+        prefStorage.resourceUrl = userResultDto.resource.url
+        prefStorage.resourceApiKey = "6RAiQu9TqM9Yc0VwnsVkp8DUYrppjP7G8hemWM76"
+        prefStorage.searchUrl = userResultDto.search.url
+        prefStorage.searchApiKey = userResultDto.search.apiKey }
 
     private suspend fun saveCategoryConfig(user: User) {
         CategoryGeneroator.generate(context).let {

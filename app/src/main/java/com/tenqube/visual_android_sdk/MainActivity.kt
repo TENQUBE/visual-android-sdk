@@ -17,13 +17,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val jbButton: Button = findViewById(R.id.jb)
-
         checkPermission()
-
         jbButton.setOnClickListener {
             VisualServiceBuilder()
                 .activity(this)
-                .apiKey("r8scLJTRdd8NgE1EEVkaU1hoyQDRr6G76kIskuyr")
+                .apiKey("8rbfmPLFN12RmDH4Bq73n7y7o1UUeP3R1D4Oon2q")
                 .layer(Layer.PROD)
                 .build()
                 .start(UserArg("uid", 1987, VisualGender.MALE))
@@ -37,13 +35,12 @@ class MainActivity : AppCompatActivity() {
             )
             != PackageManager.PERMISSION_GRANTED
         ) {
-
-            // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(
                     this@MainActivity,
                     Manifest.permission.READ_SMS
                 )
             ) {
+
             } else {
                 ActivityCompat.requestPermissions(
                     this@MainActivity,

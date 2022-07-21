@@ -66,7 +66,8 @@ object IBKServiceLocator {
                 categoryRepository,
                 userCategoryRepository,
                 cardRepository,
-                parserAppService.currencyService
+                parserAppService.currencyService,
+                prefStorage
             ),
             transactionAppService = transactionAppService,
             cardAppService = ServiceLocator.provideCardAppService(
