@@ -3,6 +3,7 @@ package com.tenqube.ibk.di
 import android.content.Context
 import androidx.lifecycle.ViewModelProvider
 import com.tenqube.ibk.VisualViewModel
+import com.tenqube.shared.prefs.SharedPreferenceStorage
 import com.tenqube.visualbase.infrastructure.adapter.parser.ParserServiceImpl
 import com.tenqube.visualbase.infrastructure.adapter.parser.rcs.RcsService
 import com.tenqube.visualbase.infrastructure.adapter.parser.rule.ParsingRuleService
@@ -18,6 +19,7 @@ import com.tenqube.webui.UIServiceBuilder
 
 object IBKServiceLocator {
     fun provideVisualViewModel(context: Context): ViewModelProvider.Factory {
+        val prefStorage = SharedPreferenceStorage(context)
         val db = ServiceLocator.provideVisualDatabase(context)
         val userDao = db.userDao()
         val cardDao = db.cardDao()
@@ -38,7 +40,11 @@ object IBKServiceLocator {
             categoryRepository,
             userCategoryRepository
         )
-        val parserAppService = ServiceLocator.provideParserAppService()
+        val parserAppService = ServiceLocator.provideParserAppService(
+            context,
+            transactionAppService,
+            prefStorage
+        )
         return VisualViewModel.Factory(
             userAppService = ServiceLocator.provideUserAppService(
                 userRepository,
@@ -51,7 +57,7 @@ object IBKServiceLocator {
                 cardRepository
             ),
             uiService = uiService,
-            bulkParserAppService = ServiceLocator.provideBulkParserAppService()
+            bulkParserAppService = ServiceLocator.provideBulkParserAppService(parserAppService)
         )
     }
 }

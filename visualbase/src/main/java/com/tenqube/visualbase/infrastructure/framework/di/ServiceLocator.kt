@@ -107,11 +107,11 @@ object ServiceLocator {
         return ResourceAppService(resourceService)
     }
 
-    fun provideParserAppService(context: Context) : ParserAppService {
+    fun provideParserAppService(context: Context,
+                                transactionAppService: TransactionAppService,
+                                prefStorage: PrefStorage) : ParserAppService {
         val okHttpClient = provideOkHttpClient()
         val retrofit = provideRetrofit(okHttpClient)
-
-        val prefStorage = SharedPreferenceStorage(context)
         val resourceAppService = provideResourceAppService(retrofit, prefStorage)
         val parsingRuleService = ParsingRuleService(resourceAppService, prefStorage)
 
@@ -139,21 +139,11 @@ object ServiceLocator {
         val searchRemote = SearchRemoteDataSource(searchApi, prefStorage)
         val searchService = SearchServiceImpl(searchRemote)
 
-        // transactions
-        val transactionRepository = TransactionRepositoryImpl(provideTransactionDao(db))
-        val cardRepository = CardRepositoryImpl(provideCardDao(db))
-        val categoryRepository = CategoryRepositoryImpl(provideCategoryDao(db))
-        val userCateConfigRepository = UserCategoryConfigRepositoryImpl(provideUserCategoryConfigDao(db))
         return ParserAppService(
             parserService = parserService,
             currencyService = currencyService,
             searchService = searchService,
-            provideTransactionAppService(
-                transactionRepository,
-                cardRepository,
-                categoryRepository,
-                userCateConfigRepository
-            ),
+            transactionAppService,
             prefStorage = prefStorage
         )
     }
