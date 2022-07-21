@@ -8,11 +8,8 @@ import android.view.ViewGroup
 import android.webkit.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.tenqube.ibk.bridge.AndroidUIBridge
-import com.tenqube.ibk.bridge.SystemBridge
-import com.tenqube.ibk.bridge.VisualRepositoryBridge
 import com.tenqube.ibk.databinding.FragmentMainIbkBinding
 import com.tenqube.ibk.di.IBKServiceLocator
 import com.tenqube.shared.webview.WebViewManager
@@ -80,12 +77,6 @@ class VisualFragment : Fragment() {
     @SuppressLint("JavascriptInterface")
     private fun setupBridges(webView: WebView) {
         with(AndroidUIBridge(this, webView, viewModel)) {
-            webView.addJavascriptInterface(this, this.bridgeName)
-        }
-        with(SystemBridge(this, webView, viewModel)) {
-            webView.addJavascriptInterface(this, this.bridgeName)
-        }
-        with(VisualRepositoryBridge(this, webView, viewModel)) {
             webView.addJavascriptInterface(this, this.bridgeName)
         }
     }

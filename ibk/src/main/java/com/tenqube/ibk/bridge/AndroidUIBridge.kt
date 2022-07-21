@@ -1,11 +1,13 @@
 package com.tenqube.ibk.bridge
 
+import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import com.tenqube.ibk.VisualViewModel
 import com.tenqube.ibk.bridge.dto.request.*
 import com.tenqube.shared.webview.BridgeBase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class AndroidUIBridge(
@@ -14,8 +16,9 @@ class AndroidUIBridge(
     private val viewModel: VisualViewModel
 ) : BridgeBase(lifecycleOwner, webView), Bridge.UI {
     override val bridgeName: String
-        get() = "visualUI"
+        get() = "visualSDK"
 
+    @JavascriptInterface
     override fun showToast(params: String?) {
         execute(
             funcName = this@AndroidUIBridge::showToast.name,
@@ -23,12 +26,13 @@ class AndroidUIBridge(
             classOfT = ShowToastRequest::class.java,
             body = {
                 it?.let {
-                    viewModel.showToast(it.data.message)
+                    viewModel.showToast(it.message)
                 }
             }
         )
     }
 
+    @JavascriptInterface
     override fun openSelectBox(params: String?) {
         val funcName = this@AndroidUIBridge::openSelectBox.name
         execute(
@@ -37,18 +41,17 @@ class AndroidUIBridge(
             classOfT = OpenSelectBoxRequest::class.java,
             body = {
                 it?.let {
-                    viewModel.openSelectBox(it.data)
+                    viewModel.openSelectBox(it) {
+                        launch {
+                            onSuccess(funcName, it)
+                        }
+                    }
                 }
             }
         )
-
-        viewModel.selectBoxItem.observe(lifecycleOwner, Observer {
-            launch {
-                onSuccess(funcName, it)
-            }
-        })
     }
 
+    @JavascriptInterface
     override fun showAd(params: String?) {
         execute(
             funcName = this@AndroidUIBridge::showAd.name,
@@ -62,6 +65,7 @@ class AndroidUIBridge(
         )
     }
 
+    @JavascriptInterface
     override fun hideAd() {
         execute(
             funcName = this@AndroidUIBridge::hideAd.name,
@@ -73,6 +77,7 @@ class AndroidUIBridge(
         )
     }
 
+    @JavascriptInterface
     override fun openNewView(params: String?) {
         execute(
             funcName = this@AndroidUIBridge::openNewView.name,
@@ -80,12 +85,13 @@ class AndroidUIBridge(
             classOfT = OpenNewViewRequest::class.java,
             body = {
                 it?.let {
-                    viewModel.openNewView(it.data)
+                    viewModel.openNewView(it)
                 }
             }
         )
     }
 
+    @JavascriptInterface
     override fun finish() {
         execute(
             funcName = this@AndroidUIBridge::finish.name,
@@ -95,5 +101,78 @@ class AndroidUIBridge(
                 viewModel.finish()
             }
         )
+    }
+
+    @JavascriptInterface
+    override fun openNotiSettings() {
+        execute(
+            funcName = this@AndroidUIBridge::openNotiSettings.name,
+            params = null,
+            classOfT = Any::class.java,
+            body = {
+                it?.let {
+                    viewModel.openNotiSettings()
+                }
+            }
+        )
+    }
+
+    @JavascriptInterface
+    override fun openDeepLink(params: String?) {
+        execute(
+            funcName = this@AndroidUIBridge::openDeepLink.name,
+            params = params,
+            classOfT = OpenDeepLinkRequest::class.java,
+            body = {
+                it?.let {
+                    viewModel.openDeepLink(it)
+                }
+            }
+        )
+    }
+
+    @JavascriptInterface
+    override fun getBanks() {
+        val funcName = this@AndroidUIBridge::getBanks.name
+        execute(
+            funcName = funcName,
+            params = null,
+            classOfT = Any::class.java,
+            body = {
+                it?.let {
+                    viewModel.getBanks()
+                }
+            }
+        )
+
+        launch(Dispatchers.Main) {
+            viewModel.banks.observe(lifecycleOwner, Observer {
+                launch {
+                    onSuccess(funcName, it)
+                }
+            })
+        }
+    }
+
+    @JavascriptInterface
+    override fun getTransactions(params: String?) {
+        val funcName = this@AndroidUIBridge::getTransactions.name
+        execute(
+            funcName = funcName,
+            params = params,
+            classOfT = GetTransactionsRequest::class.java,
+            body = {
+                it?.let {
+                    viewModel.getTransactions(it)
+                }
+            }
+        )
+        launch(Dispatchers.Main) {
+            viewModel.transactions.observe(lifecycleOwner, Observer {
+                launch {
+                    onSuccess(funcName, it)
+                }
+            })
+        }
     }
 }

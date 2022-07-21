@@ -4,26 +4,6 @@ import android.webkit.JavascriptInterface
 
 interface Bridge {
 
-    interface System {
-        val bridgeName: String
-
-        @JavascriptInterface
-        fun openNotiSettings()
-
-        @JavascriptInterface
-        fun openDeepLink(params: String?)
-    }
-
-    interface Repository {
-        val bridgeName: String
-
-        @JavascriptInterface
-        fun getBanks()
-
-        @JavascriptInterface
-        fun getTransactions(params: String?)
-    }
-
     interface UI {
         val bridgeName: String
 
@@ -44,5 +24,18 @@ interface Bridge {
 
         @JavascriptInterface
         fun finish()
+
+        @JavascriptInterface
+        fun openNotiSettings()
+
+        @JavascriptInterface
+        fun openDeepLink(params: String?)
+
+
+        @JavascriptInterface
+        fun getBanks()
+
+        @JavascriptInterface
+        fun getTransactions(params: String?)
     }
 }

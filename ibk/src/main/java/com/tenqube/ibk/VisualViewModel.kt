@@ -89,12 +89,9 @@ class VisualViewModel(
         uiService.openNotiSettings()
     }
 
-    fun openDeepLink(request: OpenDeepLinkDto) {
+    fun openDeepLink(request: OpenDeepLinkRequest) {
         uiService.openNewView(
-            com.tenqube.webui.dto.OpenNewViewDto(
-                "external",
-                request.url
-            )
+            request.asDomain()
         )
     }
 
@@ -102,20 +99,10 @@ class VisualViewModel(
         uiService.showToast(request)
     }
 
-    fun openSelectBox(request: OpenSelectBoxDto) {
+    fun openSelectBox(request: OpenSelectBoxRequest, callback: (selectBox: SelectBoxItem) -> Unit) {
         uiService.openSelectBox(OpenSelectBox(
-            SelectBoxRequest(
-                request.title,
-                request.selectedColor,
-                request.data.map {
-                    SelectBoxItem(
-                        it.name, it.orderByType, it.isSelected
-                    )
-                }
-            )
-        ){
-            _selectBoxItem.value = it
-        })
+            request.asDomain(), callback
+        ))
     }
 
     fun showAd(request: ShowAdDto) {
@@ -126,10 +113,8 @@ class VisualViewModel(
         _hideAd.value = Unit
     }
 
-    fun openNewView(request: OpenNewViewDto) {
-        uiService.openNewView(com.tenqube.webui.dto.OpenNewViewDto(
-            request.type, request.url
-        ))
+    fun openNewView(request: OpenNewViewRequest) {
+        uiService.openNewView(request.asDomain())
     }
 
     fun finish() {
@@ -149,14 +134,13 @@ class VisualViewModel(
         }
     }
 
-    fun getTransactions(request: GetTransactionsDto) {
+    fun getTransactions(request: GetTransactionsRequest) {
         viewModelScope.launch {
             try {
                 val transactions = transactionAppService.getTransactions(
                     TransactionFilter(
                         request.year,
                         request.month,
-                        request.periodByMonth
                     )
                 ).getOrThrow()
 

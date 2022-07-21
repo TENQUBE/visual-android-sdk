@@ -2,6 +2,7 @@ package com.tenqube.jb.bridge.ui
 
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
+import androidx.lifecycle.LifecycleOwner
 import com.tenqube.jb.bridge.VisualBridge
 import com.tenqube.jb.bridge.dto.request.*
 import com.tenqube.jb.bridge.dto.request.OpenConfirmRequest
@@ -19,9 +20,10 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class AndroidUIBridge(
+    lifecycleOwner: LifecycleOwner,
     webView: WebView,
     private val uiService: UIService
-) : BridgeBase(webView), VisualBridge.UI {
+) : BridgeBase(lifecycleOwner, webView), VisualBridge.UI {
 
     override val bridgeName: String
         get() = "visualSDK"
