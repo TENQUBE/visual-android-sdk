@@ -166,7 +166,7 @@ object ServiceLocator {
             currencyApi,
             prefStorage
         )
-        val currencyService = CurrencyServiceImpl(currencyRemote, currencyDao)
+        val currencyService = CurrencyServiceImpl(context, currencyRemote, currencyDao)
 
         // search
         val searchApi = retrofit.create(SearchApiService::class.java)
@@ -199,19 +199,22 @@ object ServiceLocator {
     }
 
     fun provideUserAppService(
+        context: Context,
         authService: AuthService,
         userRepository: UserRepository,
         categoryRepository: CategoryRepository,
         userCategoryConfigRepository: UserCategoryConfigRepository,
-        cardRepository: CardRepository
-
+        cardRepository: CardRepository,
+        currencyService: CurrencyService
     ): UserAppService {
         return UserAppService(
+            context,
             authService,
             userRepository,
             categoryRepository,
             userCategoryConfigRepository,
-            cardRepository
+            cardRepository,
+            currencyService
         )
     }
 
@@ -245,17 +248,6 @@ object ServiceLocator {
         ).addCallback(object : RoomDatabase.Callback() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
-                runBlocking {
-                    val visualDb = provideVisualDatabase(context)
-                    val categoryDao = visualDb.categoryDao()
-                    CategoryGeneroator.generate(context).forEach {
-                        categoryDao.insertAll(CategoryModel.fromDomain(it))
-                    }
-                    val currencyDao = visualDb.currencyDao()
-                    CurrencyGenerator.generate(context).forEach {
-                        currencyDao.save(it)
-                    }
-                }
             }
         })
         .build()

@@ -60,28 +60,23 @@ class VisualViewModel(
         viewModelScope.launch {
             try {
                 userAppService.signUp(user).getOrThrow()
-
                 bulkParserAppService.start(
                     BulkSmsAdapterImpl(bulkParserAppService, object : BulkCallback {
                         override fun onStart() {
                             _isProgress.value = true
                         }
-
                         override fun onProgress(now: Int, total: Int) {
                             _progressCount.value = ProgressCount(now, total)
                         }
-
                         override fun onCompleted() {
                             _isProgress.value = false
                         }
-
                         override fun onError(code: Int) {
                             _error.value = "내역을 불러오던 도중 에러가 발생하였습니다."
                             _isProgress.value = false
                         }
                     })
                 )
-
             } catch (e: Exception) {
                 e.printStackTrace()
             } finally {

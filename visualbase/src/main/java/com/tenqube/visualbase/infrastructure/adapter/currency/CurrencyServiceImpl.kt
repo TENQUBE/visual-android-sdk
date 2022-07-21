@@ -1,13 +1,16 @@
 package com.tenqube.visualbase.infrastructure.adapter.currency
 
+import android.content.Context
 import com.tenqube.visualbase.domain.currency.CurrencyRequest
 import com.tenqube.visualbase.domain.currency.CurrencyService
 import com.tenqube.visualbase.domain.util.getValue
 import com.tenqube.visualbase.infrastructure.adapter.currency.local.CurrencyDao
 import com.tenqube.visualbase.infrastructure.adapter.currency.local.CurrencyModel
 import com.tenqube.visualbase.infrastructure.adapter.currency.remote.CurrencyRemoteDataSource
+import com.tenqube.visualbase.infrastructure.framework.db.currency.CurrencyGenerator
 
 class CurrencyServiceImpl(
+    private val context: Context,
     private val currencyRemoteDataSource: CurrencyRemoteDataSource,
     private val currencyDao: CurrencyDao
 ) : CurrencyService {
@@ -26,6 +29,12 @@ class CurrencyServiceImpl(
         }
 
         return request.amount * rate.toDouble()
+    }
+
+    override suspend fun prepopulate() {
+        CurrencyGenerator.generate(context).forEach {
+            currencyDao.save(it)
+        }
     }
 
     private suspend fun getFromRemote(request: CurrencyRequest): Float {

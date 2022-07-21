@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.webkit.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.tenqube.ibk.bridge.AndroidUIBridge
 import com.tenqube.ibk.bridge.SystemBridge
@@ -47,6 +48,13 @@ class VisualFragment : Fragment() {
         parseArg()?.let {
             viewModel.start(URL, it.user)
         } ?: requireActivity().finish()
+        setupEvents()
+    }
+
+    private fun setupEvents() {
+        viewModel.url.observe(this.viewLifecycleOwner) {
+            viewDataBinding.webView.loadUrl(it)
+        }
     }
 
     private fun parseArg() : VisualIBKArg? {

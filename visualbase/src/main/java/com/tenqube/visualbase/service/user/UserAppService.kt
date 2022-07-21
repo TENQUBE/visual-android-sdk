@@ -1,31 +1,40 @@
 package com.tenqube.visualbase.service.user
 
+import android.content.Context
 import android.security.keystore.UserNotAuthenticatedException
 import com.tenqube.shared.util.Constants
 import com.tenqube.visualbase.domain.auth.AuthService
 import com.tenqube.visualbase.domain.card.Card
 import com.tenqube.visualbase.domain.card.CardRepository
 import com.tenqube.visualbase.domain.category.CategoryRepository
+import com.tenqube.visualbase.domain.currency.CurrencyService
 import com.tenqube.visualbase.domain.user.User
 import com.tenqube.visualbase.domain.user.UserRepository
 import com.tenqube.visualbase.domain.user.command.CreateUser
 import com.tenqube.visualbase.domain.usercategoryconfig.UserCategoryConfig
 import com.tenqube.visualbase.domain.usercategoryconfig.UserCategoryConfigRepository
 import com.tenqube.visualbase.infrastructure.adapter.auth.remote.dto.UserRequestDto
+import com.tenqube.visualbase.infrastructure.data.category.local.CategoryModel
+import com.tenqube.visualbase.infrastructure.framework.db.category.CategoryGeneroator
+import com.tenqube.visualbase.infrastructure.framework.db.currency.CurrencyGenerator
+import com.tenqube.visualbase.infrastructure.framework.di.ServiceLocator
 import java.util.*
 
 class UserAppService(
+    private val context: Context,
     private val authService: AuthService,
     private val userRepository: UserRepository,
     private val categoryRepository: CategoryRepository,
     private val userCategoryConfigRepository: UserCategoryConfigRepository,
-    private val cardRepository: CardRepository
+    private val cardRepository: CardRepository,
+    private val currencyService: CurrencyService
 ) {
     suspend fun signUp(request: CreateUser): Result<Unit> {
         return try {
             checkNewUserOrThrow()
             val user = User.from(request)
             authService.signUp(UserRequestDto(request.uid, ""))
+            currencyService.prepopulate()
             userRepository.save(user)
             saveCategoryConfig(user)
             saveCard(user)
@@ -36,6 +45,9 @@ class UserAppService(
     }
 
     private suspend fun saveCategoryConfig(user: User) {
+        CategoryGeneroator.generate(context).let {
+            categoryRepository.save(it)
+        }
         val categories = categoryRepository.findAll().getOrDefault(listOf())
         val largeCategoryMap = categories.groupBy { it.code.substring(0, 2) }
         userCategoryConfigRepository.save(

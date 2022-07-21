@@ -7,6 +7,7 @@ import com.tenqube.shared.prefs.SharedPreferenceStorage
 import com.tenqube.visualbase.infrastructure.adapter.auth.AuthServiceImpl
 import com.tenqube.visualbase.infrastructure.adapter.auth.remote.AuthApi
 import com.tenqube.visualbase.infrastructure.adapter.auth.remote.AuthRemoteDataSource
+import com.tenqube.visualbase.infrastructure.adapter.currency.CurrencyServiceImpl
 import com.tenqube.visualbase.infrastructure.data.card.CardRepositoryImpl
 import com.tenqube.visualbase.infrastructure.data.category.CategoryRepositoryImpl
 import com.tenqube.visualbase.infrastructure.data.transaction.TransactionRepositoryImpl
@@ -59,11 +60,13 @@ object IBKServiceLocator {
 
         return VisualViewModel.Factory(
             userAppService = ServiceLocator.provideUserAppService(
+                context,
                 authService,
                 userRepository,
                 categoryRepository,
                 userCategoryRepository,
-                cardRepository
+                cardRepository,
+                parserAppService.currencyService
             ),
             transactionAppService = transactionAppService,
             cardAppService = ServiceLocator.provideCardAppService(

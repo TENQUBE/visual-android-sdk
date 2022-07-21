@@ -17,7 +17,7 @@ import java.util.*
 
 class ParserAppService(
     private val parserService: ParserService,
-    private val currencyService: CurrencyService,
+    val currencyService: CurrencyService,
     private val searchService: SearchService,
     private val transactionAppService: TransactionAppService,
     private val prefStorage: PrefStorage
