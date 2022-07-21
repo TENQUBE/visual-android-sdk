@@ -5,7 +5,7 @@ import com.tenqube.visualbase.infrastructure.adapter.auth.remote.dto.UserRequest
 import com.tenqube.visualbase.infrastructure.adapter.auth.remote.dto.UserResultDto
 
 interface AuthService {
-    fun signUp(request: UserRequestDto): UserResultDto
-    fun reissue(refreshToken: String): Token
-    fun signOut()
+    suspend fun signUp(request: UserRequestDto): UserResultDto
+    suspend fun reissue(refreshToken: String): Token
+    suspend fun signOut()
 }

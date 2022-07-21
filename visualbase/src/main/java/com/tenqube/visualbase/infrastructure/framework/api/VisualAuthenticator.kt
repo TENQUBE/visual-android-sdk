@@ -2,6 +2,7 @@ package com.tenqube.visualbase.infrastructure.framework.api
 
 import com.tenqube.shared.prefs.PrefStorage
 import com.tenqube.visualbase.domain.auth.AuthService
+import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
 import okhttp3.Request
 import okhttp3.Response
@@ -16,7 +17,7 @@ class VisualAuthenticator(private val authService: AuthService, private val pref
     }
 
     @Throws(IOException::class)
-    override fun authenticate(route: Route?, response: Response): Request? {
+    override fun authenticate(route: Route?, response: Response): Request? = runBlocking {
         try {
             val token = authService.reissue(prefStorage.refreshToken)
             prefStorage.accessToken = token.accessToken
@@ -24,6 +25,6 @@ class VisualAuthenticator(private val authService: AuthService, private val pref
         } catch (e: Exception) {
             throw IOException(e.toString())
         }
-        return getRequest(response)
+        return@runBlocking getRequest(response)
     }
 }

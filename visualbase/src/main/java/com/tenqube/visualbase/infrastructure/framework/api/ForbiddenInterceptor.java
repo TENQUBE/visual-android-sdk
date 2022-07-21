@@ -20,7 +20,7 @@ public class ForbiddenInterceptor implements Interceptor {
         Request request = chain.request();
         Response response = chain.proceed(request);
         if(response.code() == 403) {
-            authService.signOut();
+//            authService.signOut();
         }
 
         return response;

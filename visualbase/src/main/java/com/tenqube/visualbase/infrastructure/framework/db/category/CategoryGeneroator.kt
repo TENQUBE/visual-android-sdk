@@ -16,21 +16,23 @@ object CategoryGeneroator {
         try {
             inStream = am.open("categories.tsv")
             val buffer = BufferedReader(InputStreamReader(inStream))
-            var line: String
+            var line: String?
             while (buffer.readLine().also { line = it } != null) {
                 if (i == 0) {
                     i++
                     continue
                 }
-                val colums = line.split("\t").toTypedArray()
-                val category = Category(
-                    colums[0],
-                    colums[1],
-                    colums[2],
-                    colums[3],
-                    colums[4]
-                )
-                categories.add(category)
+                line?.split("\t")?.toTypedArray()?.let {
+                    val category = Category(
+                        it[0],
+                        it[1],
+                        it[2],
+                        it[3],
+                        it[4]
+                    )
+                    categories.add(category)
+
+                }
                 i++
             }
         } catch (e: Exception) {
