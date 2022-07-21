@@ -2,6 +2,7 @@ package com.tenqube.visualbase.service.user
 
 import android.security.keystore.UserNotAuthenticatedException
 import com.tenqube.shared.util.Constants
+import com.tenqube.visualbase.domain.auth.AuthService
 import com.tenqube.visualbase.domain.card.Card
 import com.tenqube.visualbase.domain.card.CardRepository
 import com.tenqube.visualbase.domain.category.CategoryRepository
@@ -10,9 +11,11 @@ import com.tenqube.visualbase.domain.user.UserRepository
 import com.tenqube.visualbase.domain.user.command.CreateUser
 import com.tenqube.visualbase.domain.usercategoryconfig.UserCategoryConfig
 import com.tenqube.visualbase.domain.usercategoryconfig.UserCategoryConfigRepository
+import com.tenqube.visualbase.infrastructure.adapter.auth.remote.dto.UserRequestDto
 import java.util.*
 
 class UserAppService(
+    private val authService: AuthService,
     private val userRepository: UserRepository,
     private val categoryRepository: CategoryRepository,
     private val userCategoryConfigRepository: UserCategoryConfigRepository,
@@ -22,6 +25,7 @@ class UserAppService(
         return try {
             checkNewUserOrThrow()
             val user = User.from(request)
+            authService.signUp(UserRequestDto(request.uid, ""))
             userRepository.save(user)
             saveCategoryConfig(user)
             saveCard(user)

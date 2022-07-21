@@ -65,7 +65,7 @@ object ServiceLocator {
 
     private lateinit var transactionAppService: TransactionAppService
 
-    private fun provideOkHttpClient():
+    fun provideOkHttpClient():
             OkHttpClient {
         return OkHttpClient.Builder().apply {
             this.connectTimeout(5, TimeUnit.SECONDS)
@@ -77,7 +77,7 @@ object ServiceLocator {
         }.build()
     }
 
-    private fun provideRetrofit(client: OkHttpClient): Retrofit {
+    fun provideRetrofit(client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .client(client)
             .baseUrl("")
@@ -109,9 +109,8 @@ object ServiceLocator {
 
     fun provideParserAppService(context: Context,
                                 transactionAppService: TransactionAppService,
-                                prefStorage: PrefStorage) : ParserAppService {
-        val okHttpClient = provideOkHttpClient()
-        val retrofit = provideRetrofit(okHttpClient)
+                                prefStorage: PrefStorage,
+                                retrofit: Retrofit) : ParserAppService {
         val resourceAppService = provideResourceAppService(retrofit, prefStorage)
         val parsingRuleService = ParsingRuleService(resourceAppService, prefStorage)
 
@@ -165,6 +164,7 @@ object ServiceLocator {
     }
 
     fun provideUserAppService(
+        authService: AuthService,
         userRepository: UserRepository,
         categoryRepository: CategoryRepository,
         userCategoryConfigRepository: UserCategoryConfigRepository,
@@ -172,6 +172,7 @@ object ServiceLocator {
 
     ): UserAppService {
         return UserAppService(
+            authService,
             userRepository,
             categoryRepository,
             userCategoryConfigRepository,
