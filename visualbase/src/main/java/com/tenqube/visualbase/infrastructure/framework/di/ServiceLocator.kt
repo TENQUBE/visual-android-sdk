@@ -4,33 +4,160 @@ import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.tenqube.shared.prefs.PrefStorage
+import com.tenqube.shared.prefs.SharedPreferenceStorage
+import com.tenqube.visualbase.domain.auth.AuthService
 import com.tenqube.visualbase.domain.card.CardRepository
 import com.tenqube.visualbase.domain.category.CategoryRepository
 import com.tenqube.visualbase.domain.currency.CurrencyService
 import com.tenqube.visualbase.domain.parser.ParserService
+import com.tenqube.visualbase.domain.resource.ResourceService
 import com.tenqube.visualbase.domain.search.SearchService
 import com.tenqube.visualbase.domain.transaction.TransactionRepository
 import com.tenqube.visualbase.domain.user.UserRepository
 import com.tenqube.visualbase.domain.usercategoryconfig.UserCategoryConfigRepository
+import com.tenqube.visualbase.infrastructure.adapter.auth.AuthServiceImpl
+import com.tenqube.visualbase.infrastructure.adapter.auth.remote.AuthApi
+import com.tenqube.visualbase.infrastructure.adapter.auth.remote.AuthRemoteDataSource
+import com.tenqube.visualbase.infrastructure.adapter.currency.CurrencyServiceImpl
 import com.tenqube.visualbase.infrastructure.adapter.currency.local.CurrencyDao
+import com.tenqube.visualbase.infrastructure.adapter.currency.remote.CurrencyApiService
+import com.tenqube.visualbase.infrastructure.adapter.currency.remote.CurrencyRemoteDataSource
+import com.tenqube.visualbase.infrastructure.adapter.parser.ParserServiceImpl
+import com.tenqube.visualbase.infrastructure.adapter.parser.rcs.RcsService
+import com.tenqube.visualbase.infrastructure.adapter.parser.rule.ParsingRuleService
+import com.tenqube.visualbase.infrastructure.adapter.resource.ResourceServiceImpl
+import com.tenqube.visualbase.infrastructure.adapter.resource.remote.ResourceApiService
+import com.tenqube.visualbase.infrastructure.adapter.resource.remote.ResourceRemoteDataSource
+import com.tenqube.visualbase.infrastructure.adapter.search.SearchServiceImpl
+import com.tenqube.visualbase.infrastructure.adapter.search.remote.SearchApiService
+import com.tenqube.visualbase.infrastructure.adapter.search.remote.SearchRemoteDataSource
+import com.tenqube.visualbase.infrastructure.data.card.CardRepositoryImpl
 import com.tenqube.visualbase.infrastructure.data.card.local.CardDao
+import com.tenqube.visualbase.infrastructure.data.category.CategoryRepositoryImpl
 import com.tenqube.visualbase.infrastructure.data.category.local.CategoryDao
 import com.tenqube.visualbase.infrastructure.data.category.local.CategoryModel
+import com.tenqube.visualbase.infrastructure.data.transaction.TransactionRepositoryImpl
 import com.tenqube.visualbase.infrastructure.data.transaction.local.TransactionDao
 import com.tenqube.visualbase.infrastructure.data.user.local.UserDao
+import com.tenqube.visualbase.infrastructure.data.usercategoryconfig.UserCategoryConfigRepositoryImpl
 import com.tenqube.visualbase.infrastructure.data.usercategoryconfig.local.UserCategoryConfigDao
+import com.tenqube.visualbase.infrastructure.framework.api.VisualAuthenticator
 import com.tenqube.visualbase.infrastructure.framework.db.VisualDatabase
 import com.tenqube.visualbase.infrastructure.framework.db.category.CategoryGeneroator
 import com.tenqube.visualbase.infrastructure.framework.db.currency.CurrencyGenerator
 import com.tenqube.visualbase.service.card.CardAppService
 import com.tenqube.visualbase.service.parser.BulkParserAppService
 import com.tenqube.visualbase.service.parser.ParserAppService
+import com.tenqube.visualbase.service.resource.ResourceAppService
 import com.tenqube.visualbase.service.transaction.TransactionAppService
 import com.tenqube.visualbase.service.user.UserAppService
 import kotlinx.coroutines.runBlocking
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 object ServiceLocator {
+
+    private lateinit var transactionAppService: TransactionAppService
+
+    private fun provideOkHttpClient():
+            OkHttpClient {
+        return OkHttpClient.Builder().apply {
+            this.connectTimeout(5, TimeUnit.SECONDS)
+            this.readTimeout(5, TimeUnit.SECONDS)
+            this.writeTimeout(5, TimeUnit.SECONDS)
+            this.addInterceptor(
+                HttpLoggingInterceptor()
+                .setLevel(HttpLoggingInterceptor.Level.BODY))
+        }.build()
+    }
+
+    private fun provideRetrofit(client: OkHttpClient): Retrofit {
+        return Retrofit.Builder()
+            .client(client)
+            .baseUrl("")
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(CoroutineCallAdapterFactory())
+            .build()
+    }
+
+    private fun provideAuthService(
+        retrofit: Retrofit,
+        prefStorage: PrefStorage): AuthService {
+        val api = retrofit.create(AuthApi::class.java)
+        val remote = AuthRemoteDataSource(api, prefStorage)
+        return AuthServiceImpl(
+            remote
+        )
+    }
+
+    private fun provideResourceService(retrofit: Retrofit, prefStorage: PrefStorage): ResourceService {
+        val resourceApi = retrofit.create(ResourceApiService::class.java)
+        val remote = ResourceRemoteDataSource(resourceApi, prefStorage)
+        return ResourceServiceImpl(remote)
+    }
+
+    private fun provideResourceAppService(retrofit: Retrofit, prefStorage: PrefStorage): ResourceAppService {
+        val resourceService = provideResourceService(retrofit, prefStorage)
+        return ResourceAppService(resourceService)
+    }
+
+    fun provideParserAppService(context: Context) : ParserAppService {
+        val okHttpClient = provideOkHttpClient()
+        val retrofit = provideRetrofit(okHttpClient)
+
+        val prefStorage = SharedPreferenceStorage(context)
+        val resourceAppService = provideResourceAppService(retrofit, prefStorage)
+        val parsingRuleService = ParsingRuleService(resourceAppService, prefStorage)
+
+        val parser = tenqube.parser.core.ParserService.getInstance(context)
+        val rcsService = RcsService(context)
+        val parserService = ParserServiceImpl(
+            context,
+            parserService = parser,
+            parsingRuleService = parsingRuleService,
+            rcsService = rcsService)
+
+        val db = provideVisualDatabase(context)
+
+        // currency
+        val currencyDao = provideCurrencyDao(db)
+        val currencyApi = retrofit.create(CurrencyApiService::class.java)
+        val currencyRemote = CurrencyRemoteDataSource(
+            currencyApi,
+            prefStorage
+        )
+        val currencyService = CurrencyServiceImpl(currencyRemote, currencyDao)
+
+        // search
+        val searchApi = retrofit.create(SearchApiService::class.java)
+        val searchRemote = SearchRemoteDataSource(searchApi, prefStorage)
+        val searchService = SearchServiceImpl(searchRemote)
+
+        // transactions
+        val transactionRepository = TransactionRepositoryImpl(provideTransactionDao(db))
+        val cardRepository = CardRepositoryImpl(provideCardDao(db))
+        val categoryRepository = CategoryRepositoryImpl(provideCategoryDao(db))
+        val userCateConfigRepository = UserCategoryConfigRepositoryImpl(provideUserCategoryConfigDao(db))
+        return ParserAppService(
+            parserService = parserService,
+            currencyService = currencyService,
+            searchService = searchService,
+            provideTransactionAppService(
+                transactionRepository,
+                cardRepository,
+                categoryRepository,
+                userCateConfigRepository
+            ),
+            prefStorage = prefStorage
+        )
+    }
+
     fun provideParserAppService(
         parserService: ParserService,
         currencyService: CurrencyService,

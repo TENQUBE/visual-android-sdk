@@ -2,6 +2,7 @@ package com.tenqube.shared.prefs
 
 interface PrefStorage {
     var accessToken: String
+    var refreshToken: String
     var layer: String
     var apiKey: String
     var searchUrl: String

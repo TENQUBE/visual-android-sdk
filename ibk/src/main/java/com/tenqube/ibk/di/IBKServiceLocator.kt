@@ -38,17 +38,7 @@ object IBKServiceLocator {
             categoryRepository,
             userCategoryRepository
         )
-        val resourceService = ResourceAppService()
-        val parser =  tenqube.parser.core.ParserService()
-        val parsingRuleService = ParsingRuleService(resourceService)
-        val rcsService = RcsService(context)
-        val parserService = ParserServiceImpl(
-            context,
-        parserService = parser,
-        parsingRuleService = parsingRuleService,
-        rcsService = rcsService)
-        val parserAppService = ParserAppService(parserService)
-
+        val parserAppService = ServiceLocator.provideParserAppService()
         return VisualViewModel.Factory(
             userAppService = ServiceLocator.provideUserAppService(
                 userRepository,

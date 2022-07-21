@@ -4,15 +4,15 @@ import com.tenqube.visualbase.domain.resource.ResourceService
 import com.tenqube.visualbase.domain.resource.dto.ParsingRuleDto
 
 class ResourceAppService(
-    private val resourceRepository: ResourceService
+    private val resourceService: ResourceService
 ) {
     suspend fun getVersion(): Int {
-        return resourceRepository.getVersion().parsingRule
+        return resourceService.getVersion().parsingRule
     }
 
     suspend fun getParsingRule(clientVersion: Int, serverVersion: Int):
         ParsingRuleDto {
-        return resourceRepository
+        return resourceService
             .getParsingRule(
                 clientVersion,
                 serverVersion
