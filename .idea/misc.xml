@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="ibk/src/main/res/drawable/round_popup.xml" value="0.1875" />
         <entry key="ibk/src/main/res/drawable/visual_circular.xml" value="0.1875" />
         <entry key="ibk/src/main/res/layout/activity_visual_ibk.xml" value="0.1609375" />
