@@ -40,7 +40,7 @@ class BulkParserAppService(
 }
 
 interface BulkAdapter {
-    val smsCount: Int
+    fun getSmsCount(): Int
     fun getSmsAt(n: Int): SMS
     fun onProgress(now: Int, total: Int)
     fun sendToServerTransactions(

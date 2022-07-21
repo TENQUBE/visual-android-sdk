@@ -3,16 +3,14 @@ package com.tenqube.visualbase.service.parser
 import com.tenqube.visualbase.domain.parser.SmsFilter
 import kotlinx.coroutines.runBlocking
 import tenqube.parser.OnNetworkResultListener
-import tenqube.parser.model.FinancialProduct
 import tenqube.parser.model.SMS
 import tenqube.parser.model.Transaction
 import java.util.*
-import kotlin.collections.ArrayList
 
 class BulkSmsAdapterImpl(
     private val bulkParserAppService: BulkParserAppService,
     private val callback: BulkCallback
-) {
+) : BulkAdapter {
 
     private var smsList: List<SMS> = mutableListOf()
 
@@ -25,31 +23,30 @@ class BulkSmsAdapterImpl(
     }
 
 
-    fun getSmsCount(): Int {
+    override fun getSmsCount(): Int {
         return smsList.size
     }
 
-    fun getSmsAt(n: Int): SMS {
+    override fun getSmsAt(n: Int): SMS {
         return smsList[n]
     }
 
-    fun onProgress(now: Int, total: Int) {
+    override fun onProgress(now: Int, total: Int) {
         callback.onProgress(now, total)
     }
 
-    fun sendToServerTransactions(
+    override fun sendToServerTransactions(
         transactions: ArrayList<Transaction>,
-        products: ArrayList<FinancialProduct>,
         callback: OnNetworkResultListener
     ) = runBlocking {
         bulkParserAppService.saveTransactions(transactions)
     }
 
-    fun onCompleted() {
+    override fun onCompleted() {
         callback.onCompleted()
     }
 
-    fun onError(resultCode: Int) {
+    override fun onError(resultCode: Int) {
         callback.onError(resultCode)
     }
 }

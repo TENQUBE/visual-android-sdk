@@ -26,7 +26,7 @@ class ParserServiceImpl(
     override suspend fun parseBulk(adapter: BulkAdapter) {
         parserService.parseBulk(object : BulkSmsAdapter {
             override fun getSmsCount(): Int {
-                return adapter.smsCount
+                return adapter.getSmsCount()
             }
 
             override fun getSmsAt(n: Int): tenqube.parser.model.SMS {
