@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.tenqube.ibk.bridge.AndroidUIBridge
@@ -30,7 +31,7 @@ class VisualFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewModel = ViewModelProvider(this,
-            IBKServiceLocator.provideVisualViewModel(context!!))[VisualViewModel::class.java]
+            IBKServiceLocator.provideVisualViewModel(requireActivity() as AppCompatActivity))[VisualViewModel::class.java]
         viewDataBinding = FragmentMainIbkBinding.inflate(inflater, container, false)
             .apply {
                 viewmodel = viewModel

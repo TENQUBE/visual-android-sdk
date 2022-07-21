@@ -1,29 +1,22 @@
 package com.tenqube.ibk.di
 
-import android.content.Context
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.tenqube.ibk.VisualViewModel
 import com.tenqube.shared.prefs.SharedPreferenceStorage
 import com.tenqube.visualbase.infrastructure.adapter.auth.AuthServiceImpl
 import com.tenqube.visualbase.infrastructure.adapter.auth.remote.AuthApi
 import com.tenqube.visualbase.infrastructure.adapter.auth.remote.AuthRemoteDataSource
-import com.tenqube.visualbase.infrastructure.adapter.parser.ParserServiceImpl
-import com.tenqube.visualbase.infrastructure.adapter.parser.rcs.RcsService
-import com.tenqube.visualbase.infrastructure.adapter.parser.rule.ParsingRuleService
-import com.tenqube.visualbase.infrastructure.adapter.resource.remote.ResourceApiService
 import com.tenqube.visualbase.infrastructure.data.card.CardRepositoryImpl
 import com.tenqube.visualbase.infrastructure.data.category.CategoryRepositoryImpl
 import com.tenqube.visualbase.infrastructure.data.transaction.TransactionRepositoryImpl
 import com.tenqube.visualbase.infrastructure.data.user.UserRepositoryImpl
 import com.tenqube.visualbase.infrastructure.data.usercategoryconfig.UserCategoryConfigRepositoryImpl
 import com.tenqube.visualbase.infrastructure.framework.di.ServiceLocator
-import com.tenqube.visualbase.service.parser.ParserAppService
-import com.tenqube.visualbase.service.resource.ResourceAppService
 import com.tenqube.webui.UIServiceBuilder
-import retrofit2.create
 
 object IBKServiceLocator {
-    fun provideVisualViewModel(context: Context): ViewModelProvider.Factory {
+    fun provideVisualViewModel(context: AppCompatActivity): ViewModelProvider.Factory {
         val okHttpClient = ServiceLocator.provideOkHttpClient()
         val retrofit = ServiceLocator.provideRetrofit(okHttpClient)
 
@@ -40,7 +33,12 @@ object IBKServiceLocator {
         val categoryRepository = CategoryRepositoryImpl(categoryDao)
         val transactionRepository = TransactionRepositoryImpl(transactionDao)
         val userCategoryRepository = UserCategoryConfigRepositoryImpl(userCategoryConfigDao)
-        val uiService = UIServiceBuilder().build()
+        val uiService = UIServiceBuilder()
+            .activity(context)
+            .refreshCallback {
+
+            }
+            .build()
 
         val transactionAppService = ServiceLocator.provideTransactionAppService(
             transactionRepository,
