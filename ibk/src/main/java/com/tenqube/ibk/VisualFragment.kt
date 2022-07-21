@@ -30,7 +30,7 @@ class VisualFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         viewModel = ViewModelProvider(this,
-            IBKServiceLocator.provideVisualViewModel())[VisualViewModel::class.java]
+            IBKServiceLocator.provideVisualViewModel(context!!))[VisualViewModel::class.java]
         viewDataBinding = FragmentMainIbkBinding.inflate(inflater, container, false)
             .apply {
                 viewmodel = viewModel

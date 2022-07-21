@@ -29,11 +29,11 @@ object IBKServiceLocator {
 
         val prefStorage = SharedPreferenceStorage(context)
         val db = ServiceLocator.provideVisualDatabase(context)
-        val userDao = db.userDao()
-        val cardDao = db.cardDao()
-        val categoryDao = db.categoryDao()
-        val transactionDao = db.transactionDao()
-        val userCategoryConfigDao = db.userCategoryConfigDao()
+        val userDao = ServiceLocator.provideUserDao(db)
+        val cardDao = ServiceLocator.provideCardDao(db)
+        val categoryDao = ServiceLocator.provideCategoryDao(db)
+        val transactionDao = ServiceLocator.provideTransactionDao(db)
+        val userCategoryConfigDao = ServiceLocator.provideUserCategoryConfigDao(db)
 
         val userRepository = UserRepositoryImpl(userDao)
         val cardRepository = CardRepositoryImpl(cardDao)

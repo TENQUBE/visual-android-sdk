@@ -1,5 +1,6 @@
 package com.tenqube.visualbase.infrastructure.data.transaction.local
 
+import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -13,7 +14,7 @@ data class TransactionModel(
     val cardId: String,
     val userCategoryConfigId: String,
     @Embedded
-    val company: Company,
+    val company: CompanyModel,
     val spentDate: String,
     val finishDate: String,
     val lat: Double = 0.0,
@@ -38,7 +39,7 @@ data class TransactionModel(
             categoryId,
             cardId,
             userCategoryConfigId,
-            company,
+            company.asDomain(),
             spentDate,
             finishDate,
             lat,
@@ -61,7 +62,7 @@ data class TransactionModel(
                 item.categoryId,
                 item.cardId,
                 item.userCategoryConfigId,
-                item.company,
+                CompanyModel.fromDomain(item.company),
                 item.spentDate,
                 item.finishDate,
                 item.lat,
@@ -75,6 +76,22 @@ data class TransactionModel(
                 item.dwType,
                 item.memo
             )
+        }
+    }
+}
+
+data class CompanyModel(
+    @ColumnInfo(name = "company_id") val id: String,
+    val name: String,
+    val address: String
+) {
+    fun asDomain(): Company {
+        return Company(id, name, address)
+    }
+
+    companion object {
+        fun fromDomain(item: Company): CompanyModel {
+            return CompanyModel(item.id, item.name, item.address)
         }
     }
 }

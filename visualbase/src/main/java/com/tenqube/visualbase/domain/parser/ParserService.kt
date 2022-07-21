@@ -4,11 +4,14 @@ import android.annotation.SuppressLint
 import android.database.Cursor
 import com.tenqube.shared.util.Constants
 import com.tenqube.shared.util.Utils
+import com.tenqube.visualbase.service.parser.BulkAdapter
 import tenqube.parser.model.Transaction
 import java.io.Serializable
 import java.util.*
 
 interface ParserService {
+    suspend fun parseBulk(adapter: BulkAdapter)
+
     suspend fun parse(sms: SMS): List<ParsedTransaction>
 
     suspend fun getSmsList(filter: SmsFilter): List<SMS>

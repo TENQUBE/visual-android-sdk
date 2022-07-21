@@ -20,7 +20,7 @@ class SmsMmsService : IntentService("SmsParsingService"), CoroutineScope {
                 val sms = intent.getSerializableExtra(ARG_SMS) as SMS?
                 if (sms != null) {
                     withContext(Dispatchers.Default) {
-                        ServiceLocator.provideParserAppService().parse(sms)
+                        ServiceLocator.provideParserAppService(context = applicationContext).parse(sms)
                     }
                 }
             }

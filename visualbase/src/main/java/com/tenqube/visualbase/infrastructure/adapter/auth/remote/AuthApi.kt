@@ -7,9 +7,6 @@ import com.tenqube.visualbase.infrastructure.framework.api.dto.ResultBody
 import retrofit2.http.*
 
 interface AuthApi {
-    companion object {
-        const val BASE_URL = ""
-    }
     @POST
     suspend fun signUp(@Url url: String, @HeaderMap header: Map<String, String>,
                        @Body request: UserRequestDto

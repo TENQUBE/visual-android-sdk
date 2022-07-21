@@ -22,6 +22,9 @@ class ParserAppService(
     private val transactionAppService: TransactionAppService,
     private val prefStorage: PrefStorage
 ) {
+    suspend fun parseBulk(adapter: BulkAdapter) {
+        parserService.parseBulk(adapter)
+    }
 
     suspend fun parseRcsListAfterLastParsedTime() {
         val lastTime = prefStorage.lastRcsTime

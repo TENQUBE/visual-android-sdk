@@ -44,6 +44,7 @@ import com.tenqube.visualbase.infrastructure.data.user.local.UserDao
 import com.tenqube.visualbase.infrastructure.data.usercategoryconfig.UserCategoryConfigRepositoryImpl
 import com.tenqube.visualbase.infrastructure.data.usercategoryconfig.local.UserCategoryConfigDao
 import com.tenqube.visualbase.infrastructure.framework.api.VisualAuthenticator
+import com.tenqube.visualbase.infrastructure.framework.api.dto.VisualApiConfig
 import com.tenqube.visualbase.infrastructure.framework.db.VisualDatabase
 import com.tenqube.visualbase.infrastructure.framework.db.category.CategoryGeneroator
 import com.tenqube.visualbase.infrastructure.framework.db.currency.CurrencyGenerator
@@ -63,7 +64,7 @@ import java.util.concurrent.TimeUnit
 
 object ServiceLocator {
 
-    private lateinit var transactionAppService: TransactionAppService
+    private var parserAppService: ParserAppService? = null
 
     fun provideOkHttpClient():
             OkHttpClient {
@@ -80,7 +81,7 @@ object ServiceLocator {
     fun provideRetrofit(client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .client(client)
-            .baseUrl("")
+            .baseUrl(VisualApiConfig.URL)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .build()
@@ -105,6 +106,40 @@ object ServiceLocator {
     private fun provideResourceAppService(retrofit: Retrofit, prefStorage: PrefStorage): ResourceAppService {
         val resourceService = provideResourceService(retrofit, prefStorage)
         return ResourceAppService(resourceService)
+    }
+
+    fun provideParserAppService(context: Context) : ParserAppService {
+        return parserAppService ?: createParserAppService(context).apply {
+            parserAppService = this
+        }
+    }
+
+    private fun createParserAppService(context: Context): ParserAppService {
+        val retrofit = provideRetrofit(provideOkHttpClient())
+
+        val db = provideVisualDatabase(context)
+        val transactionDao = provideTransactionDao(db)
+        val cardDao = provideCardDao(db)
+        val categoryDao = provideCategoryDao(db)
+        val userCategoryDao = provideUserCategoryConfigDao(db)
+
+        val transactionRepository = TransactionRepositoryImpl(transactionDao)
+        val cardRepository = CardRepositoryImpl(cardDao)
+        val categoryRepository = CategoryRepositoryImpl(categoryDao)
+        val userCategoryRepository = UserCategoryConfigRepositoryImpl(userCategoryDao)
+        val transactionAppService = TransactionAppService(
+            transactionRepository,
+            cardRepository,
+            categoryRepository,
+            userCategoryRepository
+        )
+        val prefStorage = SharedPreferenceStorage(context)
+        return provideParserAppService(
+            context,
+            transactionAppService,
+            prefStorage,
+            retrofit
+        )
     }
 
     fun provideParserAppService(context: Context,
@@ -230,7 +265,7 @@ object ServiceLocator {
         return db.userDao()
     }
 
-    fun provideCurrencyDao(db: VisualDatabase): CurrencyDao {
+    private fun provideCurrencyDao(db: VisualDatabase): CurrencyDao {
         return db.currencyDao()
     }
 

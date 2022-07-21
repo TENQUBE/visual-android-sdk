@@ -9,7 +9,13 @@ import com.tenqube.visualbase.domain.parser.SMS
 import com.tenqube.visualbase.domain.parser.SmsFilter
 import com.tenqube.visualbase.infrastructure.adapter.parser.rcs.RcsService
 import com.tenqube.visualbase.infrastructure.adapter.parser.rule.ParsingRuleService
+import com.tenqube.visualbase.service.parser.BulkAdapter
+import tenqube.parser.BulkSmsAdapter
+import tenqube.parser.OnNetworkResultListener
+import tenqube.parser.model.FinancialProduct
 import tenqube.parser.model.ResultCode
+import tenqube.parser.model.Transaction
+import java.util.ArrayList
 
 class ParserServiceImpl(
     private val context: Context,
@@ -17,6 +23,37 @@ class ParserServiceImpl(
     private val parsingRuleService: ParsingRuleService,
     private val rcsService: RcsService
 ) : ParserService {
+    override suspend fun parseBulk(adapter: BulkAdapter) {
+        parserService.parseBulk(object : BulkSmsAdapter {
+            override fun getSmsCount(): Int {
+                return adapter.smsCount
+            }
+
+            override fun getSmsAt(n: Int): tenqube.parser.model.SMS {
+                return adapter.getSmsAt(n)
+            }
+
+            override fun onProgress(now: Int, total: Int) {
+                adapter.onProgress(now, total)
+            }
+
+            override fun sendToServerTransactions(
+                transactions: ArrayList<Transaction>,
+                products: ArrayList<FinancialProduct>,
+                callback: OnNetworkResultListener
+            ) {
+                adapter.sendToServerTransactions(transactions, callback)
+            }
+
+            override fun onCompleted() {
+                adapter.onCompleted()
+            }
+
+            override fun onError(resultCode: Int) {
+                adapter.onError(resultCode)
+            }
+        })
+    }
 
     override suspend fun parse(sms: SMS): List<ParsedTransaction> {
         val results = mutableListOf<ParsedTransaction>()

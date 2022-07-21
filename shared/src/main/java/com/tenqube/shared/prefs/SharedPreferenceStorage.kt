@@ -16,6 +16,12 @@ class SharedPreferenceStorage constructor(context: Context
         ""
     )
 
+    override var refreshToken by StringPreference(
+        prefs,
+        PREF_ACCESS_TOKEN,
+        ""
+    )
+
     override var layer by StringPreference(
         prefs,
         PREF_LAYER,
@@ -79,6 +85,7 @@ class SharedPreferenceStorage constructor(context: Context
     companion object {
         const val PREFS_NAME = "visual"
         const val PREF_ACCESS_TOKEN = "PREF_ACCESS_TOKEN"
+        const val PREF_REFRESH_TOKEN = "PREF_REFRESH_TOKEN"
         const val PREF_LAYER = "PREF_LAYER"
         const val PREF_API_KEY = "PREF_API_KEY"
         const val PREF_SEARCH_URL = "PREF_SEARCH_URL"

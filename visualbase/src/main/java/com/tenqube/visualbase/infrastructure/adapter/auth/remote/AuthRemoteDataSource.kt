@@ -5,6 +5,7 @@ import com.tenqube.visualbase.domain.util.Result
 import com.tenqube.visualbase.infrastructure.adapter.auth.remote.dto.Token
 import com.tenqube.visualbase.infrastructure.adapter.auth.remote.dto.UserRequestDto
 import com.tenqube.visualbase.infrastructure.adapter.auth.remote.dto.UserResultDto
+import com.tenqube.visualbase.infrastructure.framework.api.dto.VisualApiConfig
 import com.tenqube.visualbase.infrastructure.util.ErrorMsg
 import com.tenqube.visualbase.infrastructure.util.ResultWrapper
 import com.tenqube.visualbase.infrastructure.util.safeApiCall
@@ -17,7 +18,7 @@ class AuthRemoteDataSource(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
     private fun getUrl(path: String): String {
-        return "${AuthApi.BASE_URL}/${prefStorage.layer}/$path"
+        return "${VisualApiConfig.URL}/${prefStorage.layer}/$path"
     }
 
     private fun getHeader(authorization: String): Map<String, String> {

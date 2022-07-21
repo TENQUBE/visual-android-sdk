@@ -60,6 +60,7 @@ class VisualViewModel(
         viewModelScope.launch {
             try {
                 userAppService.signUp(user).getOrThrow()
+
                 BulkSmsAdapterImpl(bulkParserAppService, object : BulkCallback {
                     override fun onStart() {
                         _isProgress.value = true
@@ -178,7 +179,8 @@ class VisualViewModel(
         private val bulkParserAppService: BulkParserAppService
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return VisualViewModel(userAppService,
+            return VisualViewModel(
+                userAppService,
                 transactionAppService,
                 cardAppService,
                 uiService,

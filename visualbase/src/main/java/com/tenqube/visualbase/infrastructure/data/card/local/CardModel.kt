@@ -8,6 +8,7 @@ import com.tenqube.visualbase.domain.card.Card
 @Entity
 data class CardModel(
     @PrimaryKey val id: String,
+    @ColumnInfo(name = "userId") val userId: String,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "type") val type: Int,
     @ColumnInfo(name = "sub_type") val subType: Int,
@@ -24,6 +25,7 @@ data class CardModel(
     fun asDomain(): Card {
         return Card(
             id,
+            userId,
             name,
             type,
             subType,
@@ -43,6 +45,7 @@ data class CardModel(
         fun fromDomain(card: Card): CardModel {
             return CardModel(
                 card.id,
+                card.userId,
                 card.name,
                 card.type,
                 card.subType,
