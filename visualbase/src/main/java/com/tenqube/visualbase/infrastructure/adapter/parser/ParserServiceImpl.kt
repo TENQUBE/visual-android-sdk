@@ -1,6 +1,7 @@
 package com.tenqube.visualbase.infrastructure.adapter.parser
 
 import android.content.Context
+import android.database.Cursor
 import android.net.Uri
 import com.tenqube.shared.util.getValue
 import com.tenqube.visualbase.domain.parser.ParsedTransaction
@@ -23,6 +24,7 @@ class ParserServiceImpl(
     private val parsingRuleService: ParsingRuleService,
     private val rcsService: RcsService
 ) : ParserService {
+
     override suspend fun parseBulk(adapter: BulkAdapter) {
         parserService.parseBulk(object : BulkSmsAdapter {
             override fun getSmsCount(): Int {
@@ -90,9 +92,10 @@ class ParserServiceImpl(
 
     override suspend fun getSmsList(filter: SmsFilter): List<SMS> {
         val results = mutableListOf<SMS>()
+        var cursor: Cursor? = null
         try {
             val uri = Uri.parse("content://sms/inbox")
-            val cursor = context.contentResolver.query(
+            cursor = context.contentResolver.query(
                 uri,
                 null,
                 filter.getQueryCondition(),
@@ -109,6 +112,8 @@ class ParserServiceImpl(
             }
         } catch (e: Exception) {
             e.printStackTrace()
+        } finally {
+            cursor?.close()
         }
 
         return results

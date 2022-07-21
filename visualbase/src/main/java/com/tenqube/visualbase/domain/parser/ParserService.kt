@@ -48,7 +48,6 @@ data class SMS(
     }
 
     companion object {
-        @SuppressLint("Range")
         fun from(cursor: Cursor): SMS {
             val smsId = cursor.getInt(cursor.getColumnIndex("id"))
             val body = cursor.getString(cursor.getColumnIndex("body"))

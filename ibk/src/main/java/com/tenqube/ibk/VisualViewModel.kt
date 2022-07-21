@@ -126,8 +126,6 @@ class VisualViewModel(
         viewModelScope.launch {
             try {
                 val cards = cardAppService.getCards().getOrThrow()
-                Log.i("KJTAG", "cards$cards")
-
                 _banks.value = BanksDto(cards.map {
                     BankDto.fomDomain(it)
                 })
@@ -146,7 +144,6 @@ class VisualViewModel(
                         request.month,
                     )
                 ).getOrThrow()
-
                 _transactions.value = TransactionsResponse(transactions.map {
                     TransactionDto.fromDomain(it)
                 })
