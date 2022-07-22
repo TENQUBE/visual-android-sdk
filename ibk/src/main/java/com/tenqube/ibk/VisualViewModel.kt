@@ -1,6 +1,5 @@
 package com.tenqube.ibk
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.tenqube.ibk.bridge.dto.request.*
 import com.tenqube.ibk.bridge.dto.response.BankDto
@@ -8,7 +7,6 @@ import com.tenqube.ibk.bridge.dto.response.BanksDto
 import com.tenqube.ibk.bridge.dto.response.TransactionDto
 import com.tenqube.ibk.bridge.dto.response.TransactionsResponse
 import com.tenqube.ibk.progress.ProgressCount
-import com.tenqube.visualbase.domain.transaction.Transaction
 import com.tenqube.visualbase.domain.user.command.CreateUser
 import com.tenqube.visualbase.service.card.CardAppService
 import com.tenqube.visualbase.service.parser.BulkCallback
@@ -20,7 +18,6 @@ import com.tenqube.visualbase.service.user.UserAppService
 import com.tenqube.webui.UIService
 import com.tenqube.webui.dto.OpenSelectBox
 import com.tenqube.webui.dto.SelectBoxItem
-import com.tenqube.webui.dto.SelectBoxRequest
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -63,10 +60,9 @@ class VisualViewModel(
         viewModelScope.launch {
             try {
                 userAppService.signUp(user).getOrThrow()
+                _url.value = VisualFragment.PROGRESS_URL
                 startBulk()
             } catch (e: Exception) {
-                e.printStackTrace()
-            } finally {
                 _url.value = url
             }
         }

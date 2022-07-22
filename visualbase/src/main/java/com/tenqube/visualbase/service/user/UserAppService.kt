@@ -49,7 +49,6 @@ class UserAppService(
     }
 
     private fun saveBaseConfig(userResultDto: UserResultDto) {
-        prefStorage.service = "ibk"
         prefStorage.accessToken = userResultDto.authorization.sdk.accessToken
         prefStorage.refreshToken = userResultDto.authorization.sdk.refreshToken
         prefStorage.resourceUrl = userResultDto.resource.url
