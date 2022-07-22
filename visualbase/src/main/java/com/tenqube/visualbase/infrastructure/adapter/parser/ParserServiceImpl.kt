@@ -81,8 +81,9 @@ class ParserServiceImpl(
     }
 
     private suspend fun sync() {
-        val parsingRule = parsingRuleService.getParsingRule()
-        parserService.syncParsingRule(parsingRule.parsingRule)
+        parsingRuleService.getParsingRule()?.let {
+            parserService.syncParsingRule(it.parsingRule)
+        }
     }
 
     private suspend fun syncWhenNoSender() {

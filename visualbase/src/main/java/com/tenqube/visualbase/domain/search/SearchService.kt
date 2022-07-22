@@ -23,7 +23,7 @@ data class SearchRequest(
 }
 
 data class SearchTransaction(
-    @SerializedName("id")
+//    @SerializedName("id")
     val identifier: String,
     val keyword: String,
     val type: String,
