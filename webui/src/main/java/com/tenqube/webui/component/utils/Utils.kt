@@ -18,7 +18,6 @@ object Utils {
     val fullDF = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
 
     val DECIMAL_FORMAT = DecimalFormat("00")
-    private val THREE_COMMA_FORMAT = DecimalFormat("###,###")
 
     fun getDeviceHeight(activity: Activity): Int {
         val dm = DisplayMetrics()

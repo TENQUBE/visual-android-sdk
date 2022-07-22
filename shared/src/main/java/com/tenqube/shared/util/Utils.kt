@@ -3,6 +3,7 @@ package com.tenqube.shared.util
 import android.util.Log
 import com.google.gson.Gson
 import com.tenqube.shared.error.FormatNotMatchedException
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -10,6 +11,7 @@ object Utils {
 
     var isDebug = false
     const val TAG = "VisualSDK"
+    private val THREE_COMMA_FORMAT = DecimalFormat("###,###")
 
     fun logD(className: Class<Any>, msg: String) {
 //        if (isDebug) {
@@ -87,5 +89,16 @@ object Utils {
     fun String.toDateTime(): Long? {
         val fullDF = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
         return fullDF.parse(this)?.time
+    }
+
+    fun threeComma(value: Double): String {
+        return THREE_COMMA_FORMAT.format(value.toLong()) + "원"
+    }
+
+    fun installment(amount: Int): String {
+        return when(amount) {
+            1 -> "일시불"
+            else -> "${amount}개월"
+        }
     }
 }

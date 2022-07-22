@@ -126,6 +126,8 @@ class UiServiceImpl(
         notiCatchDialogFragment.setCallback(
             callback = object : NotiCatchDialogFragment.Callback {
                 override fun onClickNext() {
+                    val i = Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS")
+                    activity.startActivity(i)
                 }
             }
         )

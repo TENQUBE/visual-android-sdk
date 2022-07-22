@@ -1,5 +1,6 @@
 package com.tenqube.ibk.bridge
 
+import android.util.Log
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import androidx.lifecycle.LifecycleOwner
@@ -44,7 +45,7 @@ class AndroidUIBridge(
                 it?.let {
                     viewModel.openSelectBox(it) {
                         GlobalScope.launch {
-                            onSuccess(funcName, it)
+                            onSuccess(funcName, it.copy(isSelected = true))
                         }
                     }
                 }
@@ -112,9 +113,7 @@ class AndroidUIBridge(
             params = null,
             classOfT = Any::class.java,
             body = {
-                it?.let {
-                    viewModel.openNotiSettings()
-                }
+                viewModel.openNotiSettings()
             }
         )
     }

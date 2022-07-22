@@ -88,12 +88,15 @@ open class BridgeBase(
                     request = parseRequest(params, classOfT)
                     request.checkParams()
                 }
+                val result = body(request as? T?)
+
                 if(!isSkip) {
                     response = onSuccess(
                         funcName = funcName,
-                        any = body(request as? T?)
+                        any = result
                     )
                 }
+
             } catch (e: Exception) {
                 onResultError(funcName, e.toString())
             } finally {

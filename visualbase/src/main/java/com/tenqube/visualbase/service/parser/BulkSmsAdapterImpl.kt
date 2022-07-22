@@ -17,7 +17,7 @@ class BulkSmsAdapterImpl(
     init {
         callback.onStart()
         val calendar = Calendar.getInstance()
-        calendar.add(Calendar.YEAR, -4)
+        calendar.add(Calendar.MONTH, -4)
         val smsFilter = SmsFilter(calendar.timeInMillis, System.currentTimeMillis())
         smsList = bulkParserAppService.getSmsList(smsFilter)
     }

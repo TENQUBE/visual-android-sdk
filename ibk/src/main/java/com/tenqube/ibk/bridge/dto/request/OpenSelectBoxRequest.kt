@@ -5,13 +5,13 @@ import com.tenqube.shared.webview.dto.RequestBody
 data class OpenSelectBoxRequest(
     val title: String,
     val selectedColor: String,
-    val data: List<SelectBoxItemDto>
+    val body: List<SelectBoxItemDto>
 ) : RequestBody {
     fun asDomain(): com.tenqube.webui.dto.SelectBoxRequest {
         return com.tenqube.webui.dto.SelectBoxRequest(
             title,
             selectedColor,
-            data.map { it.asDomain() }
+            body.map { it.asDomain() }
         )
     }
 

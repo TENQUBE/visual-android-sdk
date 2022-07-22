@@ -12,6 +12,9 @@ import com.tenqube.visualbase.domain.search.SearchTransaction
 import com.tenqube.visualbase.domain.search.TranCompany
 import com.tenqube.visualbase.domain.transaction.command.SaveTransactionDto
 import com.tenqube.shared.prefs.PrefStorage
+import com.tenqube.shared.util.Utils
+import com.tenqube.visualbase.domain.notification.NotificationService
+import com.tenqube.visualbase.domain.notification.dto.NotificationDto
 import com.tenqube.visualbase.service.transaction.TransactionAppService
 import java.util.*
 
@@ -20,7 +23,8 @@ class ParserAppService(
     val currencyService: CurrencyService,
     private val searchService: SearchService,
     private val transactionAppService: TransactionAppService,
-    private val prefStorage: PrefStorage
+    private val prefStorage: PrefStorage,
+    private val notificationService: NotificationService
 ) {
     suspend fun parseBulk(adapter: BulkAdapter) {
         parserService.parseBulk(adapter)
@@ -38,7 +42,21 @@ class ParserAppService(
 
     suspend fun parse(sms: SMS): Result<Unit> {
         val parsedTransactions = parserService.parse(sms)
+        parsedTransactions.firstOrNull { it.transaction.isCurrentTran }?.let {
+            showNotification(it)
+        }
         return saveTransactions(parsedTransactions)
+    }
+
+    private fun showNotification(transaction: ParsedTransaction) {
+        notificationService.show(
+            NotificationDto(
+                msg = "${Utils.threeComma(transaction.transaction.spentMoney)} 결제 | " +
+                        "${transaction.transaction.cardName}(${Utils.installment(transaction.transaction.installmentCount)})",
+                title = "i-ONE영수증 - ${transaction.transaction.keyword}",
+                date = System.currentTimeMillis()
+            )
+        )
     }
 
     suspend fun saveTransactions(
