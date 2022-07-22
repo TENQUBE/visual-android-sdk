@@ -1,5 +1,6 @@
 package com.tenqube.visualbase.domain.search
 
+import com.google.gson.annotations.SerializedName
 import com.tenqube.visualbase.domain.parser.ParsedTransaction
 import com.tenqube.visualbase.domain.transaction.Company
 
@@ -22,6 +23,7 @@ data class SearchRequest(
 }
 
 data class SearchTransaction(
+    @SerializedName("id")
     val identifier: String,
     val keyword: String,
     val type: String,
@@ -29,10 +31,8 @@ data class SearchTransaction(
     val method: String,
     val amount: Double,
     val amountType: String,
-    val lat: Double,
-    val long: Double,
-    val lCode: Int,
-    val mCode: Int
+    val lat: Double = -1.0,
+    val long: Double = -1.0,
 ) {
     companion object {
         fun from(transaction: ParsedTransaction): SearchTransaction {
@@ -43,11 +43,7 @@ data class SearchTransaction(
                 at = transaction.transaction.spentDate,
                 method = getMethod(transaction.transaction.cardType),
                 amount = transaction.transaction.spentMoney,
-                amountType = getAmountType(transaction.transaction.currency),
-                lat = 0.0,
-                long = 0.0,
-                lCode = 0,
-                mCode = 0
+                amountType = getAmountType(transaction.transaction.currency)
             )
         }
 
@@ -81,6 +77,7 @@ data class SearchResult(
 )
 
 data class TranCompany(
+    @SerializedName("id")
     val identifier: String,
     val classCode: String,
     val company: Company,

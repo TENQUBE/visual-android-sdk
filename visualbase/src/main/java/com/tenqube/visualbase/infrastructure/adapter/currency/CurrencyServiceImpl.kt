@@ -17,7 +17,7 @@ class CurrencyServiceImpl(
 
     override suspend fun exchange(request: CurrencyRequest): Double {
         if (request.isKorea()) {
-            return 1.0
+            return request.amount
         }
 
         val rate = currencyDao.findByFromAndTo(request.from, request.to)?.let {

@@ -10,18 +10,14 @@ import java.util.*
 
 interface ParserService {
     suspend fun parseBulk(adapter: BulkAdapter)
-
     suspend fun parse(sms: SMS): List<ParsedTransaction>
-
     suspend fun getSmsList(filter: SmsFilter): List<SMS>
-
     suspend fun getRcsList(filter: SmsFilter): List<SMS>
 }
 
 data class SmsFilter(val fromAt: Long, val toAt: Long) {
     fun getQueryCondition(): String {
-        return ""
-//        return "date >= $fromAt AND date <= $toAt"
+        return "date >= $fromAt AND date <= $toAt"
     }
 }
 

@@ -85,12 +85,12 @@ class TransactionAppService(
         val categoryMap = categoryRepository
             .findAll()
             .getOrDefault(listOf())
-            .associateBy { it.code.toString() }
+            .associateBy { it.code }
 
         val userCateMap = userCategoryConfigRepository
             .findAll()
             .getOrDefault(listOf())
-            .associateBy { it.code.toString() }
+            .associateBy { it.code }
 
         val transactions = items.mapNotNull {
             val card = cardMap[it.getUniqueCardKey()]
@@ -131,7 +131,7 @@ class TransactionAppService(
 
         val alreadyExistCards = items.mapNotNull {
             cardMap[it.getUniqueCardKey()]
-        }
+        }.distinctBy { it.getUniqueKey() }
 
         val newCards = items.mapNotNull {
             if (cardMap[it.getUniqueCardKey()] == null) {
@@ -148,7 +148,7 @@ class TransactionAppService(
             } else {
                 null
             }
-        }
+        }.distinctBy { it.getUniqueKey() }
         cardRepository.save(newCards)
         return newCards + alreadyExistCards
     }
