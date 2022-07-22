@@ -48,7 +48,8 @@ class AndroidUIBridge(
                         }
                     }
                 }
-            }
+            },
+            isSkip = true
         )
     }
 
@@ -143,14 +144,6 @@ class AndroidUIBridge(
                 viewModel.getBanks()
             }
         )
-
-        launch(Dispatchers.Main) {
-            viewModel.banks.observe(lifecycleOwner, Observer {
-                GlobalScope.launch {
-                    onSuccess(funcName, it)
-                }
-            })
-        }
     }
 
     @JavascriptInterface
@@ -166,12 +159,5 @@ class AndroidUIBridge(
                 }
             }
         )
-        launch(Dispatchers.Main) {
-            viewModel.transactions.observe(lifecycleOwner, Observer {
-                GlobalScope.launch {
-                    onSuccess(funcName, it)
-                }
-            })
-        }
     }
 }

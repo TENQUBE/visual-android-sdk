@@ -8,6 +8,7 @@ import com.tenqube.ibk.bridge.dto.response.BanksDto
 import com.tenqube.ibk.bridge.dto.response.TransactionDto
 import com.tenqube.ibk.bridge.dto.response.TransactionsResponse
 import com.tenqube.ibk.progress.ProgressCount
+import com.tenqube.visualbase.domain.transaction.Transaction
 import com.tenqube.visualbase.domain.user.command.CreateUser
 import com.tenqube.visualbase.service.card.CardAppService
 import com.tenqube.visualbase.service.parser.BulkCallback
@@ -21,6 +22,7 @@ import com.tenqube.webui.dto.OpenSelectBox
 import com.tenqube.webui.dto.SelectBoxItem
 import com.tenqube.webui.dto.SelectBoxRequest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class VisualViewModel(
     private val userAppService: UserAppService,
@@ -60,38 +62,34 @@ class VisualViewModel(
     fun start(url: String, user: CreateUser) {
         viewModelScope.launch {
             try {
-                userAppService.signUp(user).getOrNull()
-                bulkParserAppService.start(
-                    BulkSmsAdapterImpl(bulkParserAppService, object : BulkCallback {
-                        override fun onStart() {
-                            launch {
-                                _isProgress.value = true
-                            }
-                        }
-                        override fun onProgress(now: Int, total: Int) {
-                            launch {
-                                _progressCount.value = ProgressCount(now, total)
-                            }
-                        }
-                        override fun onCompleted() {
-                            launch {
-                                _isProgress.value = false
-                            }
-                        }
-                        override fun onError(code: Int) {
-                            launch {
-                                _error.value = "내역을 불러오던 도중 에러가 발생하였습니다."
-                                _isProgress.value = false
-                            }
-                        }
-                    })
-                )
+                userAppService.signUp(user).getOrThrow()
+                startBulk()
             } catch (e: Exception) {
                 e.printStackTrace()
             } finally {
                 _url.value = url
             }
         }
+    }
+
+    private suspend fun startBulk() {
+        bulkParserAppService.start(
+            BulkSmsAdapterImpl(bulkParserAppService, object : BulkCallback {
+                override fun onStart() {
+                    _isProgress.postValue(true)
+                }
+                override fun onProgress(now: Int, total: Int) {
+                    _progressCount.postValue(ProgressCount(now, total))
+                }
+                override fun onCompleted() {
+                    _isProgress.postValue(false)
+                }
+                override fun onError(code: Int) {
+                    _error.postValue("내역을 불러오던 도중 에러가 발생하였습니다.")
+                    _isProgress.postValue(false)
+                }
+            })
+        )
     }
 
     fun openNotiSettings() {
@@ -130,34 +128,30 @@ class VisualViewModel(
         uiService.finish()
     }
 
-    fun getBanks() {
-        viewModelScope.launch {
-            try {
-                val cards = cardAppService.getCards().getOrThrow()
-                _banks.value = BanksDto(cards.map {
-                    BankDto.fomDomain(it)
-                })
-            } catch (e: Exception) {
-                _error.value = e.toString()
-            }
+    fun getBanks() : BanksDto = runBlocking {
+        return@runBlocking try {
+            val cards = cardAppService.getCards().getOrThrow()
+            BanksDto(cards.map {
+                BankDto.fomDomain(it)
+            })
+        } catch (e: Exception) {
+            BanksDto(listOf())
         }
     }
 
-    fun getTransactions(request: GetTransactionsRequest) {
-        viewModelScope.launch {
-            try {
-                val transactions = transactionAppService.getTransactions(
-                    TransactionFilter(
-                        request.year,
-                        request.month,
-                    )
-                ).getOrThrow()
-                _transactions.value = TransactionsResponse(transactions.map {
-                    TransactionDto.fromDomain(it)
-                })
-            } catch (e: Exception) {
-                _error.value = e.toString()
-            }
+    fun getTransactions(request: GetTransactionsRequest) : TransactionsResponse = runBlocking {
+        return@runBlocking try {
+            val transactions = transactionAppService.getTransactions(
+                TransactionFilter(
+                    request.year,
+                    request.month,
+                )
+            ).getOrThrow()
+            TransactionsResponse(transactions.map {
+                TransactionDto.fromDomain(it)
+            })
+        } catch (e: Exception) {
+            TransactionsResponse(listOf())
         }
     }
 

@@ -12,9 +12,9 @@ object Utils {
     const val TAG = "VisualSDK"
 
     fun logD(className: Class<Any>, msg: String) {
-        if (isDebug) {
+//        if (isDebug) {
             Log.d(TAG, "${className.simpleName} $msg")
-        }
+//        }
     }
 
     fun convertDateToDateTimeStr(date: Date): String {

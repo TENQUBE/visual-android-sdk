@@ -95,11 +95,17 @@ class VisualFragment : Fragment() {
                 "javascript:window.onProgress(${it.now}, ${it.total});"
             )
         }
+
+        viewModel.error.observe(this.viewLifecycleOwner) {
+            viewDataBinding.webView.loadUrl(
+                "javascript:window.onSyncError();"
+            )
+        }
     }
 
     companion object {
         const val URL = "https://d34db13xxji3zw.cloudfront.net/?v=1.0&dv=1.0"
-        const val PROGRESS_URL = "${URL}loading/#type=bulk"
+        const val PROGRESS_URL = "https://d34db13xxji3zw.cloudfront.net/loading#type=bulk"
         const val VISUAL_IBK_ARG = "visual_ibk_arg"
         @JvmStatic
         fun newInstance(arg: VisualIBKArg): VisualFragment {
