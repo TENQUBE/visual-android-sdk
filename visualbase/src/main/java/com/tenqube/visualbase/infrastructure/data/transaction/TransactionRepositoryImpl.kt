@@ -30,8 +30,9 @@ class TransactionRepositoryImpl(private val dao: TransactionDao) : TransactionRe
 
     override suspend fun findByFilter(filter: TransactionFilter): Result<List<Transaction>> {
         return try {
+            val query = filter.toQuery()
             Result.success(
-                dao.getAll().map { it.asDomain() }
+                dao.getByFilter(from = query[0], to = query[1]).map { it.asDomain() }
             )
         } catch (e: Exception) {
             Result.failure(e)

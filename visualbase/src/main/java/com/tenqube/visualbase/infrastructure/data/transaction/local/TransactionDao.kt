@@ -4,6 +4,10 @@ import androidx.room.*
 
 @Dao
 interface TransactionDao {
+
+    @Query("SELECT * FROM transactionModel WHERE spentDate BETWEEN :from ANd :to")
+    suspend fun getByFilter(from: String, to: String): List<TransactionModel>
+
     @Query("SELECT * FROM transactionModel")
     suspend fun getAll(): List<TransactionModel>
 
