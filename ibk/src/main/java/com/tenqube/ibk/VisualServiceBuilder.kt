@@ -8,10 +8,15 @@ class VisualServiceBuilder {
     private lateinit var activity: AppCompatActivity
     private lateinit var apiKey: String
     private lateinit var layer: Layer
+    private lateinit var service: Service
     private lateinit var notification: NotificationArg
 
     fun activity(activity: AppCompatActivity): VisualServiceBuilder = apply {
         this.activity = activity
+    }
+
+    fun service(service: Service) = apply {
+        this.service = service
     }
 
     fun apiKey(apiKey: String) = apply {
@@ -30,6 +35,7 @@ class VisualServiceBuilder {
         val prefStorage = SharedPreferenceStorage(activity)
         return VisualServiceImpl(
             VisualArg(
+                service,
                 activity,
                 apiKey,
                 layer,
@@ -38,6 +44,10 @@ class VisualServiceBuilder {
             prefStorage
         )
     }
+}
+
+enum class Service(val value: String) {
+    IBK("ibk")
 }
 
 enum class Layer(val value: String) {

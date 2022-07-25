@@ -8,13 +8,17 @@ import com.tenqube.visualbase.domain.user.command.CreateUser
 
 class VisualServiceImpl(
     private val arg: VisualArg,
-    prefStorage: PrefStorage
+    private val prefStorage: PrefStorage
 ) : VisualService {
 
     init {
+        saveSDKConfig(arg)
+    }
+
+    private fun saveSDKConfig(arg: VisualArg) {
         prefStorage.apiKey = arg.apiKey
         prefStorage.layer = arg.layer.value
-        prefStorage.service = "ibk"
+        prefStorage.service = arg.service.value
         prefStorage.notiChannelId = arg.notification.channelId
         prefStorage.notiIcon = arg.notification.icon
         prefStorage.notiChannelName = arg.notification.channelName
@@ -23,7 +27,7 @@ class VisualServiceImpl(
     override fun start(command: UserArg) {
         val intent = Intent(arg.activity, VisualActivity::class.java)
         intent.putExtra(VISUAL_IBK_ARG, VisualIBKArg(
-            CreateUser(
+            user=CreateUser(
                 uid = command.uid,
                 birth = command.birth,
                 gender = command.gender.ordinal
@@ -33,6 +37,7 @@ class VisualServiceImpl(
 }
 
 data class VisualArg(
+    val service: Service,
     val activity: AppCompatActivity,
     val apiKey: String,
     val layer: Layer,

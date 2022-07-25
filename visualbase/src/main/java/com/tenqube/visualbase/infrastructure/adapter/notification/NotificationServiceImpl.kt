@@ -17,22 +17,24 @@ import com.tenqube.visualbase.domain.notification.dto.NotificationDto
 class NotificationServiceImpl(
     private val context: Context,
     private val prefStorage: PrefStorage) : NotificationService{
+
     override fun show(command: NotificationDto) {
         createNotificationChannel()
+        val receipt = VisualIBKReceiptDto.from(command)
         val builder = NotificationCompat.Builder(context, prefStorage.notiChannelId)
             .setSmallIcon(prefStorage.notiIcon)
             .setContentTitle(command.getTitle())
             .setContentText(command.getMsg())
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setContentIntent(createIntent(context))
+            .setContentIntent(createIntent(context, receipt.toLink()))
 
         with(NotificationManagerCompat.from(context)) {
             notify(1000, builder.build())
         }
     }
 
-    private fun createIntent(context: Context): PendingIntent {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("visual://ibk-receipt")).apply {
+    private fun createIntent(context: Context, link: String): PendingIntent {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("visual://ibk-receipt?link=${link}")).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         return PendingIntent.getActivity(

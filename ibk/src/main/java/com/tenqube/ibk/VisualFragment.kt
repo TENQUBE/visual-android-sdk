@@ -43,7 +43,10 @@ class VisualFragment : Fragment() {
         setupWebView()
         setupProgressEvents()
         parseArg()?.let {
-            viewModel.start(URL, it.user)
+            it.url?.let {  url ->
+                viewModel.start("$BASE_URL$url")
+            } ?: viewModel.start(URL, it.user!!)
+
         } ?: requireActivity().finish()
         setupEvents()
     }
@@ -104,8 +107,9 @@ class VisualFragment : Fragment() {
     }
 
     companion object {
-        const val URL = "https://d34db13xxji3zw.cloudfront.net/?v=1.0&dv=1.0"
-        const val PROGRESS_URL = "https://d34db13xxji3zw.cloudfront.net/loading#type=bulk"
+        const val BASE_URL = "https://d34db13xxji3zw.cloudfront.net/"
+        const val URL = "${BASE_URL}?v=1.0&dv=1.0"
+        const val PROGRESS_URL = "${BASE_URL}loading#type=bulk"
         const val VISUAL_IBK_ARG = "visual_ibk_arg"
         @JvmStatic
         fun newInstance(arg: VisualIBKArg): VisualFragment {
@@ -119,5 +123,6 @@ class VisualFragment : Fragment() {
 }
 
 data class VisualIBKArg(
-    val user: CreateUser
+    val url: String? = null,
+    val user: CreateUser? = null
 ) : Serializable

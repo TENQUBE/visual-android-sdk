@@ -56,6 +56,10 @@ class VisualViewModel(
     private val _progressCount = MutableLiveData<ProgressCount>()
     val progressCount: LiveData<ProgressCount> = _progressCount
 
+    fun start(url: String) {
+        _url.value = url
+    }
+
     fun start(url: String, user: CreateUser) {
         viewModelScope.launch {
             try {
