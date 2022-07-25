@@ -1,5 +1,6 @@
 package com.tenqube.shared.util
 
+import android.content.res.Resources
 import android.util.Log
 import com.google.gson.Gson
 import com.tenqube.shared.error.FormatNotMatchedException
@@ -101,4 +102,10 @@ object Utils {
             else -> "${amount}개월"
         }
     }
+
+
+    fun dpToPx(dp: Int): Int {
+        return (dp * Resources.getSystem().displayMetrics.density).toInt()
+    }
+
 }

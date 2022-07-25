@@ -1,17 +1,23 @@
 package com.tenqube.ibk
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.*
+import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
+import androidx.core.view.allViews
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.tenqube.ibk.bridge.AndroidUIBridge
 import com.tenqube.ibk.databinding.FragmentMainIbkBinding
 import com.tenqube.ibk.di.IBKServiceLocator
+import com.tenqube.shared.util.Utils
 import com.tenqube.shared.webview.WebViewManager
 import com.tenqube.shared.webview.WebViewParam
 import com.tenqube.visualbase.domain.user.command.CreateUser
@@ -46,7 +52,6 @@ class VisualFragment : Fragment() {
             it.url?.let {  url ->
                 viewModel.start("$BASE_URL$url")
             } ?: viewModel.start(URL, it.user!!)
-
         } ?: requireActivity().finish()
         setupEvents()
     }
@@ -55,6 +60,33 @@ class VisualFragment : Fragment() {
         viewModel.url.observe(this.viewLifecycleOwner) {
             viewDataBinding.webView.loadUrl(it)
         }
+
+        viewModel.showAd.observe(this.viewLifecycleOwner) {
+            viewDataBinding.container.addView(createCardView(it))
+        }
+
+        viewModel.hideAd.observe(this.viewLifecycleOwner) {
+            viewDataBinding.container.allViews.firstOrNull { it is CardView }?.let {
+                viewDataBinding.container.removeView(
+                    it
+                )
+            }
+        }
+    }
+
+    private fun createCardView(view: View): CardView? {
+        val adContainer = CardView(requireContext())
+        val params = FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.WRAP_CONTENT,
+            FrameLayout.LayoutParams.WRAP_CONTENT
+        )
+        params.setMargins(Utils.dpToPx(10), Utils.dpToPx(16), Utils.dpToPx(10), Utils.dpToPx(16))
+        params.gravity = Gravity.BOTTOM
+        adContainer.layoutParams = params
+        adContainer.radius = Utils.dpToPx(13).toFloat()
+        adContainer.setCardBackgroundColor(Color.parseColor("#00000000"))
+        adContainer.addView(view)
+        return adContainer
     }
 
     private fun parseArg() : VisualIBKArg? {

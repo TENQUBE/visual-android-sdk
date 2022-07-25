@@ -1,14 +1,11 @@
 package com.tenqube.ibk.bridge
 
-import android.util.Log
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
 import com.tenqube.ibk.VisualViewModel
 import com.tenqube.ibk.bridge.dto.request.*
 import com.tenqube.shared.webview.BridgeBase
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 

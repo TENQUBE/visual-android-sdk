@@ -113,22 +113,16 @@ class AdService(private val context: Context) {
     }
 
     private fun setBgColor(view: View, bgColor: String) {
-        try {
-            if (bgColor.isNotEmpty()) {
-                view.setBackgroundResource(R.drawable.round)
-                val drawable = view.background as GradientDrawable
-                drawable.setColor(Color.parseColor(bgColor))
-            }
-        } catch (e: Exception) {
+        if (bgColor.isNotEmpty()) {
+            view.setBackgroundResource(R.drawable.round)
+            val drawable = view.background as GradientDrawable
+            drawable.setColor(Color.parseColor(bgColor))
         }
     }
 
     private fun setTextColor(view: TextView, textColor: String) {
-        try {
-            if (textColor.isNotEmpty()) {
-                view.setTextColor(Color.parseColor(textColor))
-            }
-        } catch (e: Exception) {
+        if (textColor.isNotEmpty()) {
+            view.setTextColor(Color.parseColor(textColor))
         }
     }
 

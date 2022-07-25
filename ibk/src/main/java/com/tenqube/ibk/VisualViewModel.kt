@@ -1,5 +1,6 @@
 package com.tenqube.ibk
 
+import android.view.View
 import androidx.lifecycle.*
 import com.tenqube.ibk.bridge.dto.request.*
 import com.tenqube.ibk.bridge.dto.response.BankDto
@@ -18,6 +19,7 @@ import com.tenqube.visualbase.service.user.UserAppService
 import com.tenqube.webui.UIService
 import com.tenqube.webui.dto.OpenSelectBox
 import com.tenqube.webui.dto.SelectBoxItem
+import com.tenqube.webui.dto.ShowAd
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -35,8 +37,8 @@ class VisualViewModel(
     private val _banks = MutableLiveData<BanksDto>()
     val banks: LiveData<BanksDto> = _banks
 
-    private val _showAd = MutableLiveData<ShowAdDto>()
-    val showAd: LiveData<ShowAdDto> = _showAd
+    private val _showAd = MutableLiveData<View>()
+    val showAd: LiveData<View> = _showAd
 
     private val _hideAd = MutableLiveData<Unit>()
     val hideAd: LiveData<Unit> = _hideAd
@@ -113,7 +115,14 @@ class VisualViewModel(
     }
 
     fun showAd(request: ShowAdDto) {
-        _showAd.value = request
+        uiService.showAd(ShowAd(
+            request.unitId,
+            request.container.asDomain(),
+            request.button.asDomain(),
+            callback = {
+                _showAd.value = it
+            }
+        ))
     }
 
     fun hideAd() {
