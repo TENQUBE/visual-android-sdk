@@ -15,6 +15,9 @@ class VisualServiceImpl(
         prefStorage.apiKey = arg.apiKey
         prefStorage.layer = arg.layer.value
         prefStorage.service = "ibk"
+        prefStorage.notiChannelId = arg.notification.channelId
+        prefStorage.notiIcon = arg.notification.icon
+        prefStorage.notiChannelName = arg.notification.channelName
     }
 
     override fun start(command: UserArg) {
@@ -32,5 +35,6 @@ class VisualServiceImpl(
 data class VisualArg(
     val activity: AppCompatActivity,
     val apiKey: String,
-    val layer: Layer
+    val layer: Layer,
+    val notification: NotificationArg
 )
