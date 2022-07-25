@@ -10,7 +10,7 @@ import com.tenqube.visualbase.service.transaction.dto.TransactionFilter
 class TransactionRepositoryImpl(private val dao: TransactionDao) : TransactionRepository {
 
     override suspend fun findCountByNoti(): List<CountByNoti> {
-        TODO("Not yet implemented")
+        return dao.getGroupByNoti()
     }
 
     override suspend fun findById(id: String): Transaction? {

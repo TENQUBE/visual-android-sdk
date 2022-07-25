@@ -1,5 +1,6 @@
 package com.tenqube.visualbase.service.transaction
 
+import android.content.pm.PackageManager
 import android.content.res.Resources
 import com.tenqube.visualbase.domain.card.Card
 import com.tenqube.visualbase.domain.card.CardRepository
@@ -19,14 +20,20 @@ class TransactionAppService(
     private val transactionRepository: TransactionRepository,
     private val cardRepository: CardRepository,
     private val categoryRepository: CategoryRepository,
-    private val userCategoryConfigRepository: UserCategoryConfigRepository
+    private val userCategoryConfigRepository: UserCategoryConfigRepository,
+    private val packageManager: PackageManager
 ) {
-
     suspend fun getCountByNoti(): Result<List<CountByNoti>> {
         return try {
             val countByNotis = transactionRepository
                 .findCountByNoti()
-                .sortedByDescending { it.count }
+                .mapNotNull {
+                    packageManager.getPackageInfo(it.name, 0)?.let { pkg ->
+                        it.copy(name = packageManager.getApplicationLabel(
+                            pkg.applicationInfo).toString()
+                        )
+                    }
+                }.sortedByDescending { it.count }
             Result.success(countByNotis)
         } catch (e: Exception) {
             Result.failure(e)

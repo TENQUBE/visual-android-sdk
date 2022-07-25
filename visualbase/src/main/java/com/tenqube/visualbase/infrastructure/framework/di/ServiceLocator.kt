@@ -1,6 +1,7 @@
 package com.tenqube.visualbase.infrastructure.framework.di
 
 import android.content.Context
+import android.content.pm.PackageManager
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
@@ -11,9 +12,7 @@ import com.tenqube.visualbase.domain.auth.AuthService
 import com.tenqube.visualbase.domain.card.CardRepository
 import com.tenqube.visualbase.domain.category.CategoryRepository
 import com.tenqube.visualbase.domain.currency.CurrencyService
-import com.tenqube.visualbase.domain.parser.ParserService
 import com.tenqube.visualbase.domain.resource.ResourceService
-import com.tenqube.visualbase.domain.search.SearchService
 import com.tenqube.visualbase.domain.transaction.TransactionRepository
 import com.tenqube.visualbase.domain.user.UserRepository
 import com.tenqube.visualbase.domain.usercategoryconfig.UserCategoryConfigRepository
@@ -38,25 +37,19 @@ import com.tenqube.visualbase.infrastructure.data.card.CardRepositoryImpl
 import com.tenqube.visualbase.infrastructure.data.card.local.CardDao
 import com.tenqube.visualbase.infrastructure.data.category.CategoryRepositoryImpl
 import com.tenqube.visualbase.infrastructure.data.category.local.CategoryDao
-import com.tenqube.visualbase.infrastructure.data.category.local.CategoryModel
 import com.tenqube.visualbase.infrastructure.data.transaction.TransactionRepositoryImpl
 import com.tenqube.visualbase.infrastructure.data.transaction.local.TransactionDao
 import com.tenqube.visualbase.infrastructure.data.user.local.UserDao
 import com.tenqube.visualbase.infrastructure.data.usercategoryconfig.UserCategoryConfigRepositoryImpl
 import com.tenqube.visualbase.infrastructure.data.usercategoryconfig.local.UserCategoryConfigDao
-import com.tenqube.visualbase.infrastructure.framework.api.VisualAuthenticator
 import com.tenqube.visualbase.infrastructure.framework.api.dto.VisualApiConfig
 import com.tenqube.visualbase.infrastructure.framework.db.VisualDatabase
-import com.tenqube.visualbase.infrastructure.framework.db.category.CategoryGeneroator
-import com.tenqube.visualbase.infrastructure.framework.db.currency.CurrencyGenerator
 import com.tenqube.visualbase.service.card.CardAppService
 import com.tenqube.visualbase.service.parser.BulkParserAppService
 import com.tenqube.visualbase.service.parser.ParserAppService
 import com.tenqube.visualbase.service.resource.ResourceAppService
 import com.tenqube.visualbase.service.transaction.TransactionAppService
 import com.tenqube.visualbase.service.user.UserAppService
-import kotlinx.coroutines.runBlocking
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -117,13 +110,11 @@ object ServiceLocator {
 
     private fun createParserAppService(context: Context): ParserAppService {
         val retrofit = provideRetrofit(provideOkHttpClient())
-
         val db = provideVisualDatabase(context)
         val transactionDao = provideTransactionDao(db)
         val cardDao = provideCardDao(db)
         val categoryDao = provideCategoryDao(db)
         val userCategoryDao = provideUserCategoryConfigDao(db)
-
         val transactionRepository = TransactionRepositoryImpl(transactionDao)
         val cardRepository = CardRepositoryImpl(cardDao)
         val categoryRepository = CategoryRepositoryImpl(categoryDao)
@@ -132,7 +123,8 @@ object ServiceLocator {
             transactionRepository,
             cardRepository,
             categoryRepository,
-            userCategoryRepository
+            userCategoryRepository,
+            context.packageManager
         )
         val prefStorage = SharedPreferenceStorage(context)
         return provideParserAppService(
@@ -211,14 +203,16 @@ object ServiceLocator {
         transactionRepository: TransactionRepository,
         cardRepository: CardRepository,
         categoryRepository: CategoryRepository,
-        userCategoryConfigRepository: UserCategoryConfigRepository
+        userCategoryConfigRepository: UserCategoryConfigRepository,
+        packageManager: PackageManager
 
     ): TransactionAppService {
         return TransactionAppService(
             transactionRepository,
             cardRepository,
             categoryRepository,
-            userCategoryConfigRepository
+            userCategoryConfigRepository,
+            packageManager
         )
     }
 
