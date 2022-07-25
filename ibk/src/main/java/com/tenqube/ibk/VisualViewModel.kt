@@ -3,10 +3,7 @@ package com.tenqube.ibk
 import android.view.View
 import androidx.lifecycle.*
 import com.tenqube.ibk.bridge.dto.request.*
-import com.tenqube.ibk.bridge.dto.response.BankDto
-import com.tenqube.ibk.bridge.dto.response.BanksDto
-import com.tenqube.ibk.bridge.dto.response.TransactionDto
-import com.tenqube.ibk.bridge.dto.response.TransactionsResponse
+import com.tenqube.ibk.bridge.dto.response.*
 import com.tenqube.ibk.progress.ProgressCount
 import com.tenqube.visualbase.domain.user.command.CreateUser
 import com.tenqube.visualbase.service.card.CardAppService
@@ -14,6 +11,7 @@ import com.tenqube.visualbase.service.parser.BulkCallback
 import com.tenqube.visualbase.service.parser.BulkParserAppService
 import com.tenqube.visualbase.service.parser.BulkSmsAdapterImpl
 import com.tenqube.visualbase.service.transaction.TransactionAppService
+import com.tenqube.visualbase.service.transaction.dto.CountByCard
 import com.tenqube.visualbase.service.transaction.dto.TransactionFilter
 import com.tenqube.visualbase.service.user.UserAppService
 import com.tenqube.webui.UIService
@@ -146,6 +144,13 @@ class VisualViewModel(
         } catch (e: Exception) {
             BanksDto(listOf())
         }
+    }
+
+    fun getNotiBanks() : NotiBanksDto = runBlocking {
+        val countByCard = transactionAppService.getCountByCard().getOrDefault(listOf())
+        return@runBlocking NotiBanksDto(countByCard.map {
+            NotiBankDto.fromDomain(it)
+        })
     }
 
     fun getTransactions(request: GetTransactionsRequest) : TransactionsResponse = runBlocking {

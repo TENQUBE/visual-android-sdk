@@ -143,6 +143,19 @@ class AndroidUIBridge(
     }
 
     @JavascriptInterface
+    override fun getNotiBanks() {
+        val funcName = this@AndroidUIBridge::getNotiBanks.name
+        execute(
+            funcName = funcName,
+            params = null,
+            classOfT = Any::class.java,
+            body = {
+                viewModel.getNotiBanks()
+            }
+        )
+    }
+
+    @JavascriptInterface
     override fun getTransactions(params: String?) {
         val funcName = this@AndroidUIBridge::getTransactions.name
         execute(

@@ -10,7 +10,7 @@ import com.tenqube.visualbase.domain.search.SearchRequest
 import com.tenqube.visualbase.domain.search.SearchService
 import com.tenqube.visualbase.domain.search.SearchTransaction
 import com.tenqube.visualbase.domain.search.TranCompany
-import com.tenqube.visualbase.domain.transaction.command.SaveTransactionDto
+import com.tenqube.visualbase.domain.transaction.dto.SaveTransactionDto
 import com.tenqube.shared.prefs.PrefStorage
 import com.tenqube.visualbase.domain.notification.NotificationService
 import com.tenqube.visualbase.domain.notification.dto.NotificationDto

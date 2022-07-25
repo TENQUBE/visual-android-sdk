@@ -7,13 +7,12 @@ import com.tenqube.visualbase.domain.category.Category
 import com.tenqube.visualbase.domain.category.CategoryRepository
 import com.tenqube.visualbase.domain.transaction.Transaction
 import com.tenqube.visualbase.domain.transaction.TransactionRepository
-import com.tenqube.visualbase.domain.transaction.command.SaveTransactionDto
+import com.tenqube.visualbase.domain.transaction.dto.SaveTransactionDto
 import com.tenqube.visualbase.domain.usercategoryconfig.UserCategoryConfig
 import com.tenqube.visualbase.domain.usercategoryconfig.UserCategoryConfigRepository
+import com.tenqube.visualbase.service.transaction.dto.CountByCard
 import com.tenqube.visualbase.service.transaction.dto.JoinedTransaction
 import com.tenqube.visualbase.service.transaction.dto.TransactionFilter
-import com.tenqube.visualbase.service.user.UserAppService
-import org.intellij.lang.annotations.Identifier
 import java.util.*
 
 class TransactionAppService(
@@ -22,6 +21,22 @@ class TransactionAppService(
     private val categoryRepository: CategoryRepository,
     private val userCategoryConfigRepository: UserCategoryConfigRepository
 ) {
+
+    suspend fun getCountByCard(): Result<List<CountByCard>> {
+        return try {
+            val countByCardId = transactionRepository
+                .findCountByCardId()
+                .sortedByDescending { it.count }
+            val cards = cardRepository.findAll().associateBy { it.id }
+            Result.success(countByCardId.mapNotNull {
+                cards[it.cardId]?.let { card ->
+                    CountByCard(card.name, it.count)
+                }
+            })
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 
     suspend fun getByIdentifier(identifier: String): Result<JoinedTransaction> {
         return try {

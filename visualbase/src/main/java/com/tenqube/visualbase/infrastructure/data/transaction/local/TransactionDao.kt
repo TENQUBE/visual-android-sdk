@@ -8,7 +8,7 @@ interface TransactionDao {
     @Query("SELECT * FROM transactionModel WHERE spentDate BETWEEN :from ANd :to")
     suspend fun getByFilter(from: String, to: String): List<TransactionModel>
 
-    @Query("SELECT * FROM transactionModel")
+    @Query("SELECT * FROM transactionModel ORDER BY spentDate DESC")
     suspend fun getAll(): List<TransactionModel>
 
     @Query("SELECT * FROM transactionModel WHERE id = :id")

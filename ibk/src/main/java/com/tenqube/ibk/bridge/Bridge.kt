@@ -37,5 +37,8 @@ interface Bridge {
 
         @JavascriptInterface
         fun getTransactions(params: String?)
+
+        @JavascriptInterface
+        fun getNotiBanks()
     }
 }

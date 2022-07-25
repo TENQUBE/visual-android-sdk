@@ -1,4 +1,4 @@
-package com.tenqube.visualbase.domain.transaction.command
+package com.tenqube.visualbase.domain.transaction.dto
 
 import com.tenqube.visualbase.domain.parser.SMS
 import com.tenqube.visualbase.domain.transaction.Company

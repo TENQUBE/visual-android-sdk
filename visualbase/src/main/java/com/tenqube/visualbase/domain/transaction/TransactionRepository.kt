@@ -1,8 +1,11 @@
 package com.tenqube.visualbase.domain.transaction
 
+import com.tenqube.visualbase.domain.transaction.dto.CountByCardId
 import com.tenqube.visualbase.service.transaction.dto.TransactionFilter
 
 interface TransactionRepository {
+
+    suspend fun findCountByCardId(): List<CountByCardId>
 
     suspend fun findById(id: String): Transaction?
 
