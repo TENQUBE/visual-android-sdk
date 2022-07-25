@@ -1,5 +1,6 @@
 package com.tenqube.visualbase.domain.parser
 
+import android.annotation.SuppressLint
 import android.database.Cursor
 import com.tenqube.shared.util.Constants
 import com.tenqube.shared.util.Utils
@@ -44,6 +45,7 @@ data class SMS(
     }
 
     companion object {
+        @SuppressLint("Range")
         fun from(cursor: Cursor): SMS {
             val smsId = cursor.getInt(cursor.getColumnIndex("_id"))
             val body = cursor.getString(cursor.getColumnIndex("body"))

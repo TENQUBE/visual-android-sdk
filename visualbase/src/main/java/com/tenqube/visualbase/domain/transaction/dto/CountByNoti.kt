@@ -1,6 +1,6 @@
 package com.tenqube.visualbase.domain.transaction.dto
 
-data class CountByCardId(
-    val cardId: String,
+data class CountByNoti(
+    val name: String,
     val count: Int
     )

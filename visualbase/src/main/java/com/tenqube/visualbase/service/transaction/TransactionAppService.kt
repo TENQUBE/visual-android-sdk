@@ -7,10 +7,10 @@ import com.tenqube.visualbase.domain.category.Category
 import com.tenqube.visualbase.domain.category.CategoryRepository
 import com.tenqube.visualbase.domain.transaction.Transaction
 import com.tenqube.visualbase.domain.transaction.TransactionRepository
+import com.tenqube.visualbase.domain.transaction.dto.CountByNoti
 import com.tenqube.visualbase.domain.transaction.dto.SaveTransactionDto
 import com.tenqube.visualbase.domain.usercategoryconfig.UserCategoryConfig
 import com.tenqube.visualbase.domain.usercategoryconfig.UserCategoryConfigRepository
-import com.tenqube.visualbase.service.transaction.dto.CountByCard
 import com.tenqube.visualbase.service.transaction.dto.JoinedTransaction
 import com.tenqube.visualbase.service.transaction.dto.TransactionFilter
 import java.util.*
@@ -22,17 +22,12 @@ class TransactionAppService(
     private val userCategoryConfigRepository: UserCategoryConfigRepository
 ) {
 
-    suspend fun getCountByCard(): Result<List<CountByCard>> {
+    suspend fun getCountByNoti(): Result<List<CountByNoti>> {
         return try {
-            val countByCardId = transactionRepository
-                .findCountByCardId()
+            val countByNotis = transactionRepository
+                .findCountByNoti()
                 .sortedByDescending { it.count }
-            val cards = cardRepository.findAll().associateBy { it.id }
-            Result.success(countByCardId.mapNotNull {
-                cards[it.cardId]?.let { card ->
-                    CountByCard(card.name, it.count)
-                }
-            })
+            Result.success(countByNotis)
         } catch (e: Exception) {
             Result.failure(e)
         }
@@ -156,7 +151,8 @@ class TransactionAppService(
                        keyword = it.keyword,
                        currency = it.currency,
                        dwType = it.dwType,
-                       memo = it.memo
+                       memo = it.memo,
+                       sms = it.sms
                    )
                } else {
                    null

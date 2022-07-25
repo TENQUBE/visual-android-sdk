@@ -1,6 +1,6 @@
 package com.tenqube.ibk.bridge.dto.response
 
-import com.tenqube.visualbase.service.transaction.dto.CountByCard
+import com.tenqube.visualbase.domain.transaction.dto.CountByNoti
 
 data class NotiBanksDto(
     val banks: List<NotiBankDto>
@@ -11,7 +11,7 @@ data class NotiBankDto(
     val count: Int
 ) {
     companion object {
-        fun fromDomain(item: CountByCard): NotiBankDto {
+        fun fromDomain(item: CountByNoti): NotiBankDto {
             return NotiBankDto(
                 item.name,
                 item.count

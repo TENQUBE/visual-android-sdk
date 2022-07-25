@@ -11,7 +11,6 @@ import com.tenqube.visualbase.service.parser.BulkCallback
 import com.tenqube.visualbase.service.parser.BulkParserAppService
 import com.tenqube.visualbase.service.parser.BulkSmsAdapterImpl
 import com.tenqube.visualbase.service.transaction.TransactionAppService
-import com.tenqube.visualbase.service.transaction.dto.CountByCard
 import com.tenqube.visualbase.service.transaction.dto.TransactionFilter
 import com.tenqube.visualbase.service.user.UserAppService
 import com.tenqube.webui.UIService
@@ -147,7 +146,7 @@ class VisualViewModel(
     }
 
     fun getNotiBanks() : NotiBanksDto = runBlocking {
-        val countByCard = transactionAppService.getCountByCard().getOrDefault(listOf())
+        val countByCard = transactionAppService.getCountByNoti().getOrDefault(listOf())
         return@runBlocking NotiBanksDto(countByCard.map {
             NotiBankDto.fromDomain(it)
         })

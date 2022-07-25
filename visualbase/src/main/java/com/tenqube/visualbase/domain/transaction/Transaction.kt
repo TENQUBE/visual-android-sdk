@@ -1,6 +1,7 @@
 package com.tenqube.visualbase.domain.transaction
 
 import com.tenqube.visualbase.domain.Entity
+import com.tenqube.visualbase.domain.parser.SMS
 import java.util.*
 
 data class Transaction(
@@ -21,6 +22,7 @@ data class Transaction(
     val currency: String,
     val dwType: Int,
     val memo: String,
+    val sms: SMS,
     val isDeleted: Boolean = false,
     val isOffset: Boolean = false,
     val isCustom: Boolean = false,

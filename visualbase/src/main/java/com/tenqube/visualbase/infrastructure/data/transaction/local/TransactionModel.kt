@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.tenqube.visualbase.domain.parser.SMS
 import com.tenqube.visualbase.domain.transaction.Company
 import com.tenqube.visualbase.domain.transaction.Transaction
 
@@ -27,6 +28,8 @@ data class TransactionModel(
     val currency: String,
     val dwType: Int,
     val memo: String,
+    @Embedded
+    val sms: SMSModel,
     val isDeleted: Boolean = false,
     val isOffset: Boolean = false,
     val isCustom: Boolean = false,
@@ -51,7 +54,8 @@ data class TransactionModel(
             repeatType,
             currency,
             dwType,
-            memo
+            memo,
+            sms.asDomain()
         )
     }
 
@@ -74,7 +78,8 @@ data class TransactionModel(
                 item.repeatType,
                 item.currency,
                 item.dwType,
-                item.memo
+                item.memo,
+                SMSModel.fromDomain(item.sms)
             )
         }
     }
@@ -92,6 +97,42 @@ data class CompanyModel(
     companion object {
         fun fromDomain(item: Company): CompanyModel {
             return CompanyModel(item.id, item.name, item.address)
+        }
+    }
+}
+
+data class SMSModel(
+    @ColumnInfo(name = "sms_id") val id: Int,
+    val fullSms: String,
+    val originTel: String,
+    val displayTel: String,
+    val smsDate: String,
+    val smsType: Int,
+    val title: String
+) {
+    fun asDomain(): SMS {
+        return SMS(
+            id,
+            fullSms,
+            originTel,
+            displayTel,
+            smsDate,
+            smsType,
+            title
+        )
+    }
+
+    companion object {
+        fun fromDomain(item: SMS): SMSModel {
+            return SMSModel(
+                item.smsId,
+                item.fullSms,
+                item.originTel,
+                item.displayTel,
+                item.smsDate,
+                item.smsType,
+                item.title
+            )
         }
     }
 }
