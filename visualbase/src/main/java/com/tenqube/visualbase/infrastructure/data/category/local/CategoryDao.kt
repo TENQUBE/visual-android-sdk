@@ -7,6 +7,9 @@ interface CategoryDao {
     @Query("SELECT * FROM categoryModel")
     suspend fun getAll(): List<CategoryModel>
 
+    @Query("SELECT * FROM categoryModel WHERE id = :id")
+    suspend fun getById(id: String): CategoryModel?
+
     @Insert
     suspend fun insertAll(vararg items: CategoryModel)
 

@@ -12,7 +12,7 @@ class SearchServiceImpl(
 ) : SearchService {
     override suspend fun search(request: SearchRequest): SearchResult {
         return try {
-            searchRemoteDataSource.search(request).getValue()
+            searchRemoteDataSource.search(request)
         } catch (e: Exception) {
             SearchResult(
                 request.transactions.map {

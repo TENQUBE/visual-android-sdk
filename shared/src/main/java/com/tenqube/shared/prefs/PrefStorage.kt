@@ -13,4 +13,7 @@ interface PrefStorage {
     var syncCnt: Int
     var service: String
     var lastRcsTime: Long
+    var notiIcon: Int
+    var notiChannelName: String
+    var notiChannelId: String
 }

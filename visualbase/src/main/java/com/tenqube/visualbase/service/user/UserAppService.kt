@@ -60,7 +60,7 @@ class UserAppService(
         CategoryGeneroator.generate(context).let {
             categoryRepository.save(it)
         }
-        val categories = categoryRepository.findAll().getOrDefault(listOf())
+        val categories = categoryRepository.findAll()
         val largeCategoryMap = categories.groupBy { it.code.substring(0, 2) }
         userCategoryConfigRepository.save(
             largeCategoryMap.keys.toList().map {

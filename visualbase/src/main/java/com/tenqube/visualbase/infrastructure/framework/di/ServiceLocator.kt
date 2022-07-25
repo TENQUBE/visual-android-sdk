@@ -173,7 +173,7 @@ object ServiceLocator {
         val searchApi = retrofit.create(SearchApiService::class.java)
         val searchRemote = SearchRemoteDataSource(searchApi, prefStorage)
         val searchService = SearchServiceImpl(searchRemote)
-        val notificationService = NotificationServiceImpl()
+        val notificationService = NotificationServiceImpl(context, prefStorage)
 
         return ParserAppService(
             parserService = parserService,

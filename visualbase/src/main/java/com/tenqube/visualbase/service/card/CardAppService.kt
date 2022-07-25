@@ -7,6 +7,10 @@ class CardAppService(
     private val cardRepository: CardRepository
 ) {
     suspend fun getCards(): Result<List<Card>> {
-        return cardRepository.findAll()
+        return try {
+            Result.success(cardRepository.findAll())
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 }

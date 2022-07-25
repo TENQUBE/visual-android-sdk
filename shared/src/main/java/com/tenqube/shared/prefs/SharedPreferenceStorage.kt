@@ -82,6 +82,24 @@ class SharedPreferenceStorage constructor(context: Context
         0
     )
 
+    override var notiIcon by IntPreference(
+        prefs,
+        PREF_ACCESS_TOKEN,
+        0
+    )
+
+    override var notiChannelId by StringPreference(
+        prefs,
+        PREF_NOTI_CHANNEL_ID,
+        ""
+    )
+
+    override var notiChannelName by StringPreference(
+        prefs,
+        PREF_NOTI_CHANNEL_NAME,
+        ""
+    )
+
     companion object {
         const val PREFS_NAME = "visual"
         const val PREF_ACCESS_TOKEN = "PREF_ACCESS_TOKEN"
@@ -96,5 +114,9 @@ class SharedPreferenceStorage constructor(context: Context
         const val PREF_SYNC_CNT = "PREF_SYNC_CNT"
         const val PREF_SERVICE = "PREF_SERVICE"
         const val PREF_LAST_RCS_TIME = "PREF_LAST_RCS_TIME"
+        const val PREF_NOTI_ICON = "PREF_NOTI_ICON"
+        const val PREF_NOTI_CHANNEL_ID = "PREF_NOTI_CHANNEL_ID"
+        const val PREF_NOTI_CHANNEL_NAME = "PREF_NOTI_CHANNEL_NAME"
+
     }
 }

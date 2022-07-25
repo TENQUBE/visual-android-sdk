@@ -28,7 +28,7 @@ class ResourceRemoteDataSource(
         return map
     }
 
-    suspend fun getVersion(): Result<VersionDto> {
+    suspend fun getVersion(): VersionDto {
         return when (
             val response = safeApiCall(ioDispatcher) {
                 resourceApiService.syncVersion(
@@ -38,13 +38,13 @@ class ResourceRemoteDataSource(
             }
         ) {
             is ResultWrapper.Success -> {
-                Result.Success(response.value)
+                response.value
             }
             is ResultWrapper.NetworkError -> {
-                Result.Error(Exception(ErrorMsg.NETWORK.msg))
+                throw Exception(ErrorMsg.NETWORK.msg)
             }
             is ResultWrapper.GenericError -> {
-                Result.Error(Exception(response.error?.toString() ?: ErrorMsg.GENERIC.msg))
+                throw Exception(response.error?.toString() ?: ErrorMsg.GENERIC.msg)
             }
         }
     }
@@ -52,7 +52,7 @@ class ResourceRemoteDataSource(
     suspend fun getParsingRule(
         clientVersion: Int,
         serverVersion: Int
-    ): Result<SyncParsingRuleDto> {
+    ): SyncParsingRuleDto {
         return when (
             val response = safeApiCall(ioDispatcher) {
                 resourceApiService.syncParsingRule(
@@ -65,13 +65,13 @@ class ResourceRemoteDataSource(
             }
         ) {
             is ResultWrapper.Success -> {
-                Result.Success(response.value)
+                response.value
             }
             is ResultWrapper.NetworkError -> {
-                Result.Error(Exception(ErrorMsg.NETWORK.msg))
+                throw Exception(ErrorMsg.NETWORK.msg)
             }
             is ResultWrapper.GenericError -> {
-                Result.Error(Exception(response.error?.toString() ?: ErrorMsg.GENERIC.msg))
+                throw Exception(response.error?.toString() ?: ErrorMsg.GENERIC.msg)
             }
         }
     }

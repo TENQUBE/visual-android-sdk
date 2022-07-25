@@ -29,7 +29,7 @@ class CurrencyRemoteDataSource(
         return map
     }
 
-    suspend fun exchange(request: CurrencyRequest): Result<CurrencyResponse> {
+    suspend fun exchange(request: CurrencyRequest): CurrencyResponse {
         return when (
             val response = safeApiCall(ioDispatcher) {
                 currencyApiService.exchange(
@@ -39,13 +39,13 @@ class CurrencyRemoteDataSource(
             }
         ) {
             is ResultWrapper.Success -> {
-                Result.Success(response.value)
+                response.value
             }
             is ResultWrapper.NetworkError -> {
-                Result.Error(Exception(ErrorMsg.NETWORK.msg))
+                throw Exception(ErrorMsg.NETWORK.msg)
             }
             is ResultWrapper.GenericError -> {
-                Result.Error(Exception(response.error?.toString() ?: ErrorMsg.GENERIC.msg))
+                throw Exception(response.error?.toString() ?: ErrorMsg.GENERIC.msg)
             }
         }
     }

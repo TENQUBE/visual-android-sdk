@@ -12,10 +12,10 @@ import com.tenqube.visualbase.domain.search.SearchTransaction
 import com.tenqube.visualbase.domain.search.TranCompany
 import com.tenqube.visualbase.domain.transaction.command.SaveTransactionDto
 import com.tenqube.shared.prefs.PrefStorage
-import com.tenqube.shared.util.Utils
 import com.tenqube.visualbase.domain.notification.NotificationService
 import com.tenqube.visualbase.domain.notification.dto.NotificationDto
 import com.tenqube.visualbase.service.transaction.TransactionAppService
+import com.tenqube.visualbase.service.transaction.dto.JoinedTransaction
 import java.util.*
 
 class ParserAppService(
@@ -41,20 +41,24 @@ class ParserAppService(
     }
 
     suspend fun parse(sms: SMS): Result<Unit> {
-        val parsedTransactions = parserService.parse(sms)
-        parsedTransactions.firstOrNull { it.transaction.isCurrentTran }?.let {
-            showNotification(it)
+        return try {
+            val parsedTransactions = parserService.parse(sms)
+            saveTransactions(parsedTransactions)
+            parsedTransactions.firstOrNull { it.transaction.isCurrentTran }?.let {
+                val transaction = transactionAppService.getByIdentifier(it.transaction.identifier)
+                    .getOrThrow()
+                showNotification(transaction)
+            }
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
         }
-        return saveTransactions(parsedTransactions)
     }
 
-    private fun showNotification(transaction: ParsedTransaction) {
+    private fun showNotification(transaction: JoinedTransaction) {
         notificationService.show(
             NotificationDto(
-                msg = "${Utils.threeComma(transaction.transaction.spentMoney)} 결제 | " +
-                        "${transaction.transaction.cardName}(${Utils.installment(transaction.transaction.installmentCount)})",
-                title = "i-ONE영수증 - ${transaction.transaction.keyword}",
-                date = System.currentTimeMillis()
+                transaction
             )
         )
     }

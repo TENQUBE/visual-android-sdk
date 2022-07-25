@@ -12,7 +12,7 @@ interface TransactionDao {
     suspend fun getAll(): List<TransactionModel>
 
     @Query("SELECT * FROM transactionModel WHERE id = :id")
-    suspend fun getById(id: String): TransactionModel
+    suspend fun getById(id: String): TransactionModel?
 
     @Insert
     suspend fun insertAll(vararg items: TransactionModel)

@@ -1,7 +1,6 @@
 package com.tenqube.visualbase.infrastructure.adapter.auth.remote
 
 import com.tenqube.shared.prefs.PrefStorage
-import com.tenqube.visualbase.domain.util.Result
 import com.tenqube.visualbase.infrastructure.adapter.auth.remote.dto.Token
 import com.tenqube.visualbase.infrastructure.adapter.auth.remote.dto.UserRequestDto
 import com.tenqube.visualbase.infrastructure.adapter.auth.remote.dto.UserResultDto
@@ -29,36 +28,36 @@ class AuthRemoteDataSource(
         return map
     }
 
-    suspend fun signUp(request: UserRequestDto): Result<UserResultDto> {
+    suspend fun signUp(request: UserRequestDto): UserResultDto {
         return when (val response =
             safeApiCall(ioDispatcher) {
                 api.signUp(getUrl("users/sign-up"), getHeader(""), request)
             }) {
             is ResultWrapper.Success -> {
-                Result.Success(response.value.results!!)
+                response.value.results!!
             }
             is ResultWrapper.NetworkError -> {
-                Result.Error(Exception(ErrorMsg.NETWORK.msg))
+                throw Exception(ErrorMsg.NETWORK.msg)
             }
             is ResultWrapper.GenericError -> {
-                Result.Error(Exception(response.error?.toString() ?: ErrorMsg.GENERIC.msg))
+                throw Exception(response.error?.toString() ?: ErrorMsg.GENERIC.msg)
             }
         }
     }
 
-    suspend fun reissueToken(refreshToken: String): Result<Token> {
+    suspend fun reissueToken(refreshToken: String): Token {
         return when (val response =
             safeApiCall(ioDispatcher) {
                 api.reissueToken(getUrl("users/reissue"), getHeader(refreshToken))
             }) {
             is ResultWrapper.Success -> {
-                Result.Success(response.value.results!!)
+                response.value.results!!
             }
             is ResultWrapper.NetworkError -> {
-                Result.Error(Exception(ErrorMsg.NETWORK.msg))
+                throw Exception(ErrorMsg.NETWORK.msg)
             }
             is ResultWrapper.GenericError -> {
-                Result.Error(Exception(response.error?.toString() ?: ErrorMsg.GENERIC.msg))
+                throw Exception(response.error?.toString() ?: ErrorMsg.GENERIC.msg)
             }
         }
     }

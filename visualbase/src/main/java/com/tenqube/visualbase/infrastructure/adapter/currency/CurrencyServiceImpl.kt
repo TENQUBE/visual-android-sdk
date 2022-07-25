@@ -38,7 +38,7 @@ class CurrencyServiceImpl(
     }
 
     private suspend fun getFromRemote(request: CurrencyRequest): Float {
-        return currencyRemoteDataSource.exchange(request).getValue().rate
+        return currencyRemoteDataSource.exchange(request).rate
     }
 
     private suspend fun getFromLocal(request: CurrencyRequest, currency: CurrencyModel): Float {

@@ -9,11 +9,11 @@ import com.tenqube.visualbase.infrastructure.adapter.auth.remote.dto.UserResultD
 
 class AuthServiceImpl(private val remote: AuthRemoteDataSource) : AuthService {
     override suspend fun signUp(request: UserRequestDto): UserResultDto {
-        return remote.signUp(request).getValue()
+        return remote.signUp(request)
     }
 
     override suspend fun reissue(refreshToken: String): Token {
-        return remote.reissueToken(refreshToken).getValue()
+        return remote.reissueToken(refreshToken)
     }
 
     override suspend fun signOut() {

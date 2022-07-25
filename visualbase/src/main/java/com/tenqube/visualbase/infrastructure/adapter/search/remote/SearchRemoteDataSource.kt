@@ -27,7 +27,7 @@ class SearchRemoteDataSource(
         return map
     }
 
-    suspend fun search(request: SearchRequest): Result<SearchResult> {
+    suspend fun search(request: SearchRequest): SearchResult {
         return when (
             val response = safeApiCall(ioDispatcher) {
                 searchApiService.searchCompany(
@@ -38,13 +38,13 @@ class SearchRemoteDataSource(
             }
         ) {
             is ResultWrapper.Success -> {
-                Result.Success(response.value)
+                response.value
             }
             is ResultWrapper.NetworkError -> {
-                Result.Error(Exception(ErrorMsg.NETWORK.msg))
+                throw Exception(ErrorMsg.NETWORK.msg)
             }
             is ResultWrapper.GenericError -> {
-                Result.Error(Exception(response.error?.toString() ?: ErrorMsg.GENERIC.msg))
+               throw Exception(response.error?.toString() ?: ErrorMsg.GENERIC.msg)
             }
         }
     }
