@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPopupGrey">#cccccc</color>
+    <color name="colorAdGrey">#6b7985</color>
+    <color name="colorAdButton">#3684ff</color>
+    <color name="white">#ffffff</color>
 </resources>
