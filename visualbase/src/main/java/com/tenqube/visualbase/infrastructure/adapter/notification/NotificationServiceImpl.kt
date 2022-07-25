@@ -11,12 +11,16 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.tenqube.shared.prefs.PrefStorage
+import com.tenqube.visualbase.domain.notification.NotificationApp
 import com.tenqube.visualbase.domain.notification.NotificationService
 import com.tenqube.visualbase.domain.notification.dto.NotificationDto
+import com.tenqube.visualbase.infrastructure.adapter.notification.local.NotificationAppLocalDataSource
 
 class NotificationServiceImpl(
     private val context: Context,
-    private val prefStorage: PrefStorage) : NotificationService{
+    private val prefStorage: PrefStorage,
+    private val notificationAppLocalDataSource: NotificationAppLocalDataSource
+) : NotificationService{
 
     override fun show(command: NotificationDto) {
         createNotificationChannel()
@@ -31,6 +35,10 @@ class NotificationServiceImpl(
         with(NotificationManagerCompat.from(context)) {
             notify(1000, builder.build())
         }
+    }
+
+    override suspend fun getNotifications(): List<NotificationApp> {
+        return notificationAppLocalDataSource.getNotiCatchApps()
     }
 
     private fun createIntent(context: Context, link: String): PendingIntent {

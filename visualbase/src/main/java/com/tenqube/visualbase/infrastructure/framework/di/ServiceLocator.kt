@@ -24,6 +24,7 @@ import com.tenqube.visualbase.infrastructure.adapter.currency.local.CurrencyDao
 import com.tenqube.visualbase.infrastructure.adapter.currency.remote.CurrencyApiService
 import com.tenqube.visualbase.infrastructure.adapter.currency.remote.CurrencyRemoteDataSource
 import com.tenqube.visualbase.infrastructure.adapter.notification.NotificationServiceImpl
+import com.tenqube.visualbase.infrastructure.adapter.notification.local.NotificationAppLocalDataSource
 import com.tenqube.visualbase.infrastructure.adapter.parser.ParserServiceImpl
 import com.tenqube.visualbase.infrastructure.adapter.parser.rcs.RcsService
 import com.tenqube.visualbase.infrastructure.adapter.parser.rule.ParsingRuleService
@@ -165,7 +166,12 @@ object ServiceLocator {
         val searchApi = retrofit.create(SearchApiService::class.java)
         val searchRemote = SearchRemoteDataSource(searchApi, prefStorage)
         val searchService = SearchServiceImpl(searchRemote)
-        val notificationService = NotificationServiceImpl(context, prefStorage)
+        val notificationAppLocalDataSource = NotificationAppLocalDataSource(context)
+        val notificationService = NotificationServiceImpl(
+            context,
+            prefStorage,
+            notificationAppLocalDataSource
+        )
 
         return ParserAppService(
             parserService = parserService,

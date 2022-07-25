@@ -45,7 +45,8 @@ object IBKServiceLocator {
             transactionRepository,
             cardRepository,
             categoryRepository,
-            userCategoryRepository
+            userCategoryRepository,
+            context.packageManager
         )
         val parserAppService = ServiceLocator.provideParserAppService(
             context,
