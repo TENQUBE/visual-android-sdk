@@ -31,29 +31,23 @@ class VisualViewModel(
     private val _url = MutableLiveData<String>()
     val url: LiveData<String> = _url
 
-    private val _banks = MutableLiveData<BanksDto>()
-    val banks: LiveData<BanksDto> = _banks
-
     private val _showAd = MutableLiveData<View>()
     val showAd: LiveData<View> = _showAd
 
     private val _hideAd = MutableLiveData<Unit>()
     val hideAd: LiveData<Unit> = _hideAd
 
-    private val _transactions = MutableLiveData<TransactionsResponse>()
-    val transactions: LiveData<TransactionsResponse> = _transactions
-
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
-
-    private val _selectBoxItem = MutableLiveData<SelectBoxItem>()
-    val selectBoxItem: LiveData<SelectBoxItem> = _selectBoxItem
 
     private val _isProgress = MutableLiveData<Boolean>()
     val isProgress: LiveData<Boolean> = _isProgress
 
     private val _progressCount = MutableLiveData<ProgressCount>()
     val progressCount: LiveData<ProgressCount> = _progressCount
+
+    private val _refreshEnabled = MutableLiveData<Boolean>()
+    val refreshEnabled: LiveData<Boolean> = _refreshEnabled
 
     fun start(url: String) {
         _url.value = url
@@ -103,6 +97,10 @@ class VisualViewModel(
 
     fun showToast(request: String) {
         uiService.showToast(request)
+    }
+
+    fun setRefreshEnabled(request: Boolean) {
+        _refreshEnabled.value = request
     }
 
     fun openSelectBox(request: OpenSelectBoxRequest, callback: (selectBox: SelectBoxItem) -> Unit) {

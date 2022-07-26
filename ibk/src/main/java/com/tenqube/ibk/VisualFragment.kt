@@ -11,6 +11,7 @@ import androidx.cardview.widget.CardView
 import androidx.core.view.allViews
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.tenqube.ibk.bridge.AndroidUIBridge
 import com.tenqube.ibk.databinding.FragmentMainIbkBinding
 import com.tenqube.ibk.di.IBKServiceLocator
@@ -43,6 +44,7 @@ class VisualFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupLifecycleOwner()
+        setupSwipeRefreshView()
         setupWebView()
         setupProgressEvents()
         parseArg()?.let {
@@ -51,6 +53,21 @@ class VisualFragment : Fragment() {
             } ?: viewModel.start(URL, it.user!!)
         } ?: requireActivity().finish()
         setupEvents()
+    }
+
+    private fun setupSwipeRefreshView() {
+        with(viewDataBinding.swipeRefreshLayout) {
+            this.isEnabled = false
+            this.setColorSchemeResources(
+                R.color.colorPopupRed,
+                R.color.colorPopupRed,
+                R.color.colorPopupRed
+            )
+            this.setOnRefreshListener {
+                this.isRefreshing = false
+                viewDataBinding.webView.reload()
+            }
+        }
     }
 
     private fun setupEvents() {
@@ -68,6 +85,9 @@ class VisualFragment : Fragment() {
                     it
                 )
             }
+        }
+        viewModel.refreshEnabled.observe(this.viewLifecycleOwner) {
+            viewDataBinding.swipeRefreshLayout.isEnabled = it
         }
     }
 

@@ -32,6 +32,20 @@ class AndroidUIBridge(
     }
 
     @JavascriptInterface
+    override fun setRefreshEnabled(params: String?) {
+        execute(
+            funcName = this@AndroidUIBridge::setRefreshEnabled.name,
+            params = params,
+            classOfT = SetRefreshEnabledRequest::class.java,
+            body = {
+                it?.let {
+                    viewModel.setRefreshEnabled(it.request)
+                }
+            }
+        )
+    }
+
+    @JavascriptInterface
     override fun openSelectBox(params: String?) {
         val funcName = this@AndroidUIBridge::openSelectBox.name
         execute(

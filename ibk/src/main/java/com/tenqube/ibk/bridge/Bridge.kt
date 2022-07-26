@@ -11,6 +11,9 @@ interface Bridge {
         fun showToast(params: String?)
 
         @JavascriptInterface
+        fun setRefreshEnabled(params: String?)
+
+        @JavascriptInterface
         fun openSelectBox(params: String?)
 
         @JavascriptInterface
@@ -30,7 +33,6 @@ interface Bridge {
 
         @JavascriptInterface
         fun openDeepLink(params: String?)
-
 
         @JavascriptInterface
         fun getBanks()
