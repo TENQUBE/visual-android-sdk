@@ -47,7 +47,7 @@ class BottomViewHolder internal constructor(
                 name.setTextColor(ContextCompat.getColor(itemView.context, android.R.color.black))
             }
         }
-        name.text = bottomSheetData.name
+        name.text = "${bottomSheetData.name.replace("-", "년 ")}월"
     }
 
     private fun changeColor(container: LinearLayout, color: Int) {

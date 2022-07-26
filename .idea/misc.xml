@@ -9,6 +9,9 @@
         <entry key="ibk/src/main/res/layout/activity_visual_ibk.xml" value="0.1609375" />
         <entry key="ibk/src/main/res/layout/fragment_main_ibk.xml" value="0.1" />
         <entry key="ibk/src/main/res/layout/visual_dialog_progress.xml" value="0.17916666666666667" />
+        <entry key="webui/src/main/res/drawable/round_bottom_seet.xml" value="0.1635" />
+        <entry key="webui/src/main/res/layout/fragment_bottom_sheet_view.xml" value="0.375" />
+        <entry key="webui/src/main/res/layout/fragment_item_list_dialog_list_dialog_item.xml" value="0.1524822695035461" />
         <entry key="webui/src/main/res/layout/visual_ad_content_view.xml" value="0.1" />
         <entry key="webui/src/main/res/layout/visual_admob_view.xml" value="0.13355048859934854" />
       </map>

@@ -176,12 +176,13 @@ object ServiceLocator {
         )
 
         return ParserAppService(
+            context = context,
             parserService = parserService,
             currencyService = currencyService,
             searchService = searchService,
-            transactionAppService,
+            transactionAppService = transactionAppService,
             prefStorage = prefStorage,
-            notificationService
+            notificationService = notificationService
         )
     }
 

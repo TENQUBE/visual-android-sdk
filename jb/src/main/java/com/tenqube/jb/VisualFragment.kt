@@ -94,8 +94,8 @@ class VisualFragment : Fragment() {
                 }
                 .build()
 
-            val ui = AndroidUIBridge(this, uiService)
-            this.addJavascriptInterface(ui, ui.bridgeName)
+//            val ui = AndroidUIBridge(this, uiService)
+//            this.addJavascriptInterface(ui, ui.bridgeName)
         }
     }
 

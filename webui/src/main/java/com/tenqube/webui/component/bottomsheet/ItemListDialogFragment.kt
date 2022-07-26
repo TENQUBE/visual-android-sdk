@@ -19,12 +19,17 @@ class ItemListDialogFragment : BottomSheetDialogFragment() {
 
     lateinit var callback: (SelectBoxItem) -> Unit
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NORMAL, R.style.BottomSheetDialogStyle);
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_bottom_sheet_view, container, false)
+         return inflater.inflate(R.layout.fragment_bottom_sheet_view, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

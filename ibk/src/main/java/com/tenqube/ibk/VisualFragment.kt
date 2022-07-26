@@ -1,18 +1,20 @@
 package com.tenqube.ibk
 
 import android.annotation.SuppressLint
-import android.content.IntentFilter
 import android.graphics.Color
 import android.os.Bundle
-import android.view.*
-import android.webkit.*
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.webkit.WebView
 import android.widget.FrameLayout
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.view.allViews
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.tenqube.ibk.bridge.AndroidUIBridge
 import com.tenqube.ibk.databinding.FragmentMainIbkBinding
 import com.tenqube.ibk.di.IBKServiceLocator
@@ -20,8 +22,6 @@ import com.tenqube.shared.util.Utils
 import com.tenqube.shared.webview.WebViewManager
 import com.tenqube.shared.webview.WebViewParam
 import com.tenqube.visualbase.domain.user.command.CreateUser
-import com.tenqube.visualbase.infrastructure.framework.parser.rcs.RcsCatchReceiver
-import com.tenqube.visualbase.infrastructure.framework.parser.sms.SMSCatchReceiver
 import java.io.Serializable
 
 class VisualFragment : Fragment() {
@@ -47,6 +47,7 @@ class VisualFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupLifecycleOwner()
+        setupOnBackPressedDispatcher()
         setupSwipeRefreshView()
         setupWebView()
         setupProgressEvents()
@@ -56,18 +57,11 @@ class VisualFragment : Fragment() {
             } ?: viewModel.start(URL, it.user!!)
         } ?: requireActivity().finish()
         setupEvents()
-
-        viewModel.openNotiSettings()
     }
 
     private fun setupSwipeRefreshView() {
         with(viewDataBinding.swipeRefreshLayout) {
             this.isEnabled = false
-            this.setColorSchemeResources(
-                R.color.colorPopupRed,
-                R.color.colorPopupRed,
-                R.color.colorPopupRed
-            )
             this.setOnRefreshListener {
                 this.isRefreshing = false
                 viewDataBinding.webView.reload()
@@ -159,6 +153,18 @@ class VisualFragment : Fragment() {
                 "javascript:window.onSyncError();"
             )
         }
+    }
+
+    private fun setupOnBackPressedDispatcher() {
+        activity?.onBackPressedDispatcher?.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (viewDataBinding.webView.canGoBack()) {
+                    viewDataBinding.webView.goBack()
+                } else {
+                    activity?.finish()
+                }
+            }
+        })
     }
 
     companion object {

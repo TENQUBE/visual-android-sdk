@@ -3,4 +3,12 @@
     <style name="PickerTheme" parent="Theme.AppCompat.Light.Dialog">
         <item name="colorAccent">@android:color/black</item>
     </style>
+
+    <style name="BottomSheetDialogStyle" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/bottomSheetBackground</item>
+    </style>
+
+    <style name="bottomSheetBackground" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/round_bottom_seet</item>
+    </style>
 </resources>
