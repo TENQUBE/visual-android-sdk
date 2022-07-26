@@ -124,16 +124,17 @@ class UiServiceImpl(
     }
 
     override fun openNotiSettings() {
-        val notiCatchDialogFragment = NotiCatchDialogFragment.newInstance(NotiCatchArg(listOf()))
-        notiCatchDialogFragment.setCallback(
-            callback = object : NotiCatchDialogFragment.Callback {
-                override fun onClickNext() {
-                    val i = Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS")
-                    activity.startActivity(i)
-                }
-            }
-        )
-        notiCatchDialogFragment.show(activity.supportFragmentManager, "notiCatch")
+        val i = Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS")
+        activity.startActivity(i)
+//        val notiCatchDialogFragment = NotiCatchDialogFragment.newInstance(NotiCatchArg(listOf()))
+//        notiCatchDialogFragment.setCallback(
+//            callback = object : NotiCatchDialogFragment.Callback {
+//                override fun onClickNext() {
+//
+//                }
+//            }
+//        )
+//        notiCatchDialogFragment.show(activity.supportFragmentManager, "notiCatch")
     }
 
     override fun setRefreshEnabled(enabled: Boolean) {
