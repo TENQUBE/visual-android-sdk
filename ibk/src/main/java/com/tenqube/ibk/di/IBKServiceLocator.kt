@@ -2,6 +2,7 @@ package com.tenqube.ibk.di
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.tenqube.ibk.IBKSharedPreference
 import com.tenqube.ibk.VisualViewModel
 import com.tenqube.shared.prefs.SharedPreferenceStorage
 import com.tenqube.visualbase.infrastructure.adapter.auth.AuthServiceImpl
@@ -82,7 +83,8 @@ object IBKServiceLocator {
                 cardRepository
             ),
             uiService = uiService,
-            bulkParserAppService = ServiceLocator.provideBulkParserAppService(parserAppService)
+            bulkParserAppService = ServiceLocator.provideBulkParserAppService(parserAppService),
+            IBKSharedPreference(context)
         )
     }
 }

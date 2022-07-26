@@ -103,6 +103,17 @@ object Utils {
         }
     }
 
+    fun dwType(cardType: Int, dwType: Int): String {
+        return if(cardType == Constants.CardType.BANK_ACCOUNT.ordinal) {
+            if(dwType == Constants.DWType.DEPOSIT.ordinal) {
+                "입금"
+            } else {
+                "출금"
+            }
+        } else {
+            "결제"
+        }
+    }
 
     fun dpToPx(dp: Int): Int {
         return (dp * Resources.getSystem().displayMetrics.density).toInt()

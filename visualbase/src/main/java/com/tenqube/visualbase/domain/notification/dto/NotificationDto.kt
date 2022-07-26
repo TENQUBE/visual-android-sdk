@@ -7,7 +7,8 @@ data class NotificationDto(
     val transaction: JoinedTransaction
 ) {
     fun getMsg(): String {
-        return "${Utils.threeComma(transaction.transaction.spentMoney)} 결제 | " +
+        return "${Utils.threeComma(transaction.transaction.spentMoney)} " +
+                "${Utils.dwType(transaction.card.type, transaction.transaction.dwType)} | " +
                 "${transaction.card.name}(${Utils.installment(transaction.transaction.installmentCnt)})"
     }
 

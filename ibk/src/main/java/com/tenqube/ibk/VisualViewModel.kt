@@ -25,7 +25,8 @@ class VisualViewModel(
     private val transactionAppService: TransactionAppService,
     private val cardAppService: CardAppService,
     private val uiService: UIService,
-    private val bulkParserAppService: BulkParserAppService
+    private val bulkParserAppService: BulkParserAppService,
+    private val ibkSharedPreference: IBKSharedPreference
 ) : ViewModel() {
 
     private val _url = MutableLiveData<String>()
@@ -57,6 +58,7 @@ class VisualViewModel(
         viewModelScope.launch {
             try {
                 userAppService.signUp(user).getOrThrow()
+                ibkSharedPreference.disableTranPopup()
                 _url.value = VisualFragment.PROGRESS_URL
                 startBulk()
             } catch (e: Exception) {
@@ -175,7 +177,8 @@ class VisualViewModel(
         private val transactionAppService: TransactionAppService,
         private val cardAppService: CardAppService,
         private val uiService: UIService,
-        private val bulkParserAppService: BulkParserAppService
+        private val bulkParserAppService: BulkParserAppService,
+        private val ibkSharedPreference: IBKSharedPreference
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return VisualViewModel(
@@ -183,7 +186,8 @@ class VisualViewModel(
                 transactionAppService,
                 cardAppService,
                 uiService,
-                bulkParserAppService) as T
+                bulkParserAppService,
+                ibkSharedPreference) as T
         }
     }
 }

@@ -30,14 +30,14 @@ class NotificationServiceImpl(
     override fun show(command: NotificationDto) {
         if(prefStorage.isNotiEnabled) {
             createNotificationChannel()
-            val receipt = VisualIBKReceiptDto.from(command)
+//            val receipt = VisualIBKReceiptDto.from(command)
             val builder = NotificationCompat.Builder(context, prefStorage.notiChannelId)
                 .setSmallIcon(prefStorage.notiIcon)
                 .setContentTitle(command.getTitle())
                 .setContentText(command.getMsg())
                 .setWhen(command.getDate())
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentIntent(createIntent(context, receipt.toJson()))
+//                .setContentIntent(createIntent(context, receipt.toJson()))
 
             with(NotificationManagerCompat.from(context)) {
                 notify(NOTI_ID, builder.build())

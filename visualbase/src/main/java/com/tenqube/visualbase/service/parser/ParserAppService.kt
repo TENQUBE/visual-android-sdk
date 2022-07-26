@@ -1,5 +1,8 @@
 package com.tenqube.visualbase.service.parser
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import com.tenqube.visualbase.domain.currency.CurrencyRequest
 import com.tenqube.visualbase.domain.currency.CurrencyService
 import com.tenqube.visualbase.domain.parser.ParsedTransaction
@@ -12,13 +15,17 @@ import com.tenqube.visualbase.domain.search.SearchTransaction
 import com.tenqube.visualbase.domain.search.TranCompany
 import com.tenqube.visualbase.domain.transaction.dto.SaveTransactionDto
 import com.tenqube.shared.prefs.PrefStorage
+import com.tenqube.shared.util.encodeToBase64
+import com.tenqube.shared.util.toJson
 import com.tenqube.visualbase.domain.notification.NotificationService
 import com.tenqube.visualbase.domain.notification.dto.NotificationDto
+import com.tenqube.visualbase.infrastructure.adapter.notification.VisualIBKReceiptDto
 import com.tenqube.visualbase.service.transaction.TransactionAppService
 import com.tenqube.visualbase.service.transaction.dto.JoinedTransaction
 import java.util.*
 
 class ParserAppService(
+    private val context: Context,
     private val parserService: ParserService,
     val currencyService: CurrencyService,
     private val searchService: SearchService,
@@ -58,11 +65,22 @@ class ParserAppService(
     }
 
     private fun showNotification(transaction: JoinedTransaction) {
-        notificationService.show(
-            NotificationDto(
-                transaction
-            )
-        )
+        with(NotificationDto(
+            transaction
+        )) {
+            notificationService.show(this)
+            showPopup(this)
+        }
+
+    }
+
+    private fun showPopup(command: NotificationDto) {
+        val receipt = VisualIBKReceiptDto.from(command)
+        val json = receipt.toJson()
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("visual://ibk-receipt?link=${json.encodeToBase64()}")).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        context.startActivity(intent)
     }
 
     suspend fun saveTransactions(
