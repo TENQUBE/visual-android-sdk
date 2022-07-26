@@ -11,6 +11,8 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.tenqube.shared.prefs.PrefStorage
+import com.tenqube.shared.util.encodeToBase64
+import com.tenqube.shared.util.toJson
 import com.tenqube.visualbase.domain.notification.NotificationApp
 import com.tenqube.visualbase.domain.notification.NotificationService
 import com.tenqube.visualbase.domain.notification.dto.NotificationDto
@@ -32,8 +34,9 @@ class NotificationServiceImpl(
             .setSmallIcon(prefStorage.notiIcon)
             .setContentTitle(command.getTitle())
             .setContentText(command.getMsg())
+            .setWhen(command.getDate())
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setContentIntent(createIntent(context, receipt.toLink()))
+            .setContentIntent(createIntent(context, receipt.toJson()))
 
         with(NotificationManagerCompat.from(context)) {
             notify(NOTI_ID, builder.build())
@@ -44,8 +47,8 @@ class NotificationServiceImpl(
         return notificationAppLocalDataSource.getNotiCatchApps()
     }
 
-    private fun createIntent(context: Context, link: String): PendingIntent {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("visual://ibk-receipt?link=${link}")).apply {
+    private fun createIntent(context: Context, json: String): PendingIntent {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("visual://ibk-receipt?link=${json.encodeToBase64()}")).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         return PendingIntent.getActivity(

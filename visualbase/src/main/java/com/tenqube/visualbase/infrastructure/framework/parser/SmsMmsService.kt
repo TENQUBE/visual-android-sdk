@@ -3,6 +3,7 @@ package com.tenqube.visualbase.infrastructure.framework.parser
 import android.app.IntentService
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import com.tenqube.visualbase.domain.parser.SMS
 import com.tenqube.visualbase.infrastructure.framework.di.ServiceLocator
 import kotlinx.coroutines.*
@@ -20,7 +21,9 @@ class SmsMmsService : IntentService("SmsParsingService"), CoroutineScope {
                 val sms = intent.getSerializableExtra(ARG_SMS) as SMS?
                 if (sms != null) {
                     withContext(Dispatchers.Default) {
-                        ServiceLocator.provideParserAppService(context = applicationContext).parse(sms)
+                        Log.i("RCS", "SmsParsingService start $sms")
+                        ServiceLocator.provideParserAppService(context = applicationContext)
+                            .parse(sms).getOrThrow()
                     }
                 }
             }

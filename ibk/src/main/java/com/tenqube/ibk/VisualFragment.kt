@@ -1,6 +1,7 @@
 package com.tenqube.ibk
 
 import android.annotation.SuppressLint
+import android.content.IntentFilter
 import android.graphics.Color
 import android.os.Bundle
 import android.view.*
@@ -19,6 +20,8 @@ import com.tenqube.shared.util.Utils
 import com.tenqube.shared.webview.WebViewManager
 import com.tenqube.shared.webview.WebViewParam
 import com.tenqube.visualbase.domain.user.command.CreateUser
+import com.tenqube.visualbase.infrastructure.framework.parser.rcs.RcsCatchReceiver
+import com.tenqube.visualbase.infrastructure.framework.parser.sms.SMSCatchReceiver
 import java.io.Serializable
 
 class VisualFragment : Fragment() {
@@ -49,7 +52,7 @@ class VisualFragment : Fragment() {
         setupProgressEvents()
         parseArg()?.let {
             it.url?.let {  url ->
-                viewModel.start("$BASE_URL$url")
+                viewModel.start("${BASE_URL}receipt?$url")
             } ?: viewModel.start(URL, it.user!!)
         } ?: requireActivity().finish()
         setupEvents()

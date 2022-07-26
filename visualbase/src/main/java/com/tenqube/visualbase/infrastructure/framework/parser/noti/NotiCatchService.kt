@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.IBinder
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
+import android.util.Log
 import com.tenqube.visualbase.infrastructure.framework.parser.SmsMmsService
 
 class NotiCatchService : NotificationListenerService() {
@@ -20,6 +21,7 @@ class NotiCatchService : NotificationListenerService() {
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     override fun onNotificationPosted(sbn: StatusBarNotification) {
+        Log.i("RCS", "onNotificationPosted start")
         SmsMmsService.sendIntentService(
             applicationContext,
             NotiParser.parseSbn(applicationContext, sbn)

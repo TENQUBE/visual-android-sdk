@@ -38,7 +38,7 @@ data class VisualIBKReceiptDto(
                 item.transaction.category.large,
                 item.transaction.category.medium,
                 item.transaction.category.small,
-                item.transaction.transaction.company.address
+                item.transaction.transaction.company.name
             )
         }
     }

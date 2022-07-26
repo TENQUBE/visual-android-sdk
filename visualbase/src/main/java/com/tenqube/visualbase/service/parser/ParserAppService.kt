@@ -43,11 +43,13 @@ class ParserAppService(
     suspend fun parse(sms: SMS): Result<Unit> {
         return try {
             val parsedTransactions = parserService.parse(sms)
-            saveTransactions(parsedTransactions)
-            parsedTransactions.firstOrNull { it.transaction.isCurrentTran }?.let {
-                val transaction = transactionAppService.getByIdentifier(it.transaction.identifier)
-                    .getOrThrow()
-                showNotification(transaction)
+            if(parsedTransactions.isNotEmpty()) {
+                saveTransactions(parsedTransactions)
+                parsedTransactions.firstOrNull { it.transaction.isCurrentTran }?.let {
+                    val transaction = transactionAppService.getByIdentifier(it.transaction.identifier)
+                        .getOrThrow()
+                    showNotification(transaction)
+                }
             }
             Result.success(Unit)
         } catch (e: Exception) {
@@ -156,10 +158,10 @@ data class CurrencyTransaction(
             sms = SMS(
                 this.searchedTransaction.getTransaction().smsId,
                 this.searchedTransaction.getTransaction().fullSms,
-                this.searchedTransaction.getTransaction().sender,
-                this.searchedTransaction.getTransaction().sender,
+                "com.kakao.talk",
+                "com.kakao.talk",
                 this.searchedTransaction.getTransaction().smsDate,
-                this.searchedTransaction.getTransaction().smsType
+                0
             )
         )
     }

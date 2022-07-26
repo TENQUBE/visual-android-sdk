@@ -18,7 +18,7 @@ class SharedPreferenceStorage constructor(context: Context
 
     override var refreshToken by StringPreference(
         prefs,
-        PREF_ACCESS_TOKEN,
+        PREF_REFRESH_TOKEN,
         ""
     )
 
@@ -84,7 +84,7 @@ class SharedPreferenceStorage constructor(context: Context
 
     override var notiIcon by IntPreference(
         prefs,
-        PREF_ACCESS_TOKEN,
+        PREF_NOTI_ICON,
         0
     )
 

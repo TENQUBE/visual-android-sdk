@@ -71,7 +71,7 @@ class TransactionAppService(
     suspend fun getTransactions(filter: TransactionFilter): Result<List<JoinedTransaction>> {
         return try {
             val transactions = transactionRepository
-                .findByFilter(filter)
+                .findByFilter(filter).sortedByDescending { it.spentDate }
             val cards = cardRepository
                 .findAll()
             val categories = categoryRepository

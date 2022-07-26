@@ -11,6 +11,11 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-1003660361092577~4035782192"/>
 
+
+        <service
+            android:exported="false"
+            android:name="com.tenqube.visualbase.infrastructure.framework.parser.SmsMmsService" />
+
         <service
             android:enabled="true"
             android:exported="true"

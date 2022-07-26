@@ -12,10 +12,10 @@ data class NotificationDto(
     }
 
     fun getTitle(): String {
-        return ""
+        return "i-ONE 영수증 - ${transaction.transaction.keyword}"
     }
 
     fun getDate(): Long {
-        return 0
+        return Utils.convertDateTimeStrToCalendar(transaction.transaction.spentDate).timeInMillis
     }
 }

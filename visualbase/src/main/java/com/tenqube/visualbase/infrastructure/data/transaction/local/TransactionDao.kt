@@ -6,7 +6,7 @@ import com.tenqube.visualbase.domain.transaction.dto.CountByNoti
 @Dao
 interface TransactionDao {
 
-    @Query("SELECT originTel as name, COUNT(*) as count FROM transactionModel WHERE smsType = 0 ")
+    @Query("SELECT originTel as name, COUNT(*) as count FROM transactionModel WHERE smsType = 0 GROUP BY originTel")
     suspend fun getGroupByNoti(): List<CountByNoti>
 
     @Query("SELECT * FROM transactionModel WHERE spentDate BETWEEN :from ANd :to")

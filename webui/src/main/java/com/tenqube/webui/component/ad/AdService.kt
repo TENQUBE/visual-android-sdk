@@ -20,7 +20,7 @@ class AdService(private val context: Context) {
     }
 
     init {
-        MobileAds.initialize(context, AD_ID)
+        MobileAds.initialize(context)
     }
 
     fun showAd(request: ShowAd) {
@@ -125,5 +125,4 @@ class AdService(private val context: Context) {
             view.setTextColor(Color.parseColor(textColor))
         }
     }
-
 }

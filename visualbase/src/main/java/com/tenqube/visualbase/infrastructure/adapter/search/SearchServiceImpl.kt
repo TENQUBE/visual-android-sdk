@@ -14,6 +14,7 @@ class SearchServiceImpl(
         return try {
             searchRemoteDataSource.search(request)
         } catch (e: Exception) {
+            e.printStackTrace()
             SearchResult(
                 request.transactions.map {
                     TranCompany.getDefaultTranCompany(it)
