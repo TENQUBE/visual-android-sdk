@@ -1,11 +1,8 @@
 package com.tenqube.webui.component.utils
 
-import android.app.Activity
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.drawable.GradientDrawable
-import android.os.Build
-import android.util.DisplayMetrics
 import android.widget.LinearLayout
 import java.text.DecimalFormat
 import java.text.ParseException
@@ -19,22 +16,11 @@ object Utils {
 
     val DECIMAL_FORMAT = DecimalFormat("00")
 
-    fun getDeviceHeight(activity: Activity): Int {
-        val dm = DisplayMetrics()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            val display = activity.display
-            display?.getRealMetrics(dm)
-        } else {
-            @Suppress("DEPRECATION")
-            val display = activity.windowManager.defaultDisplay
-            @Suppress("DEPRECATION")
-            display.getMetrics(dm)
-        }
-        return dm.heightPixels
-    }
+
     fun dpToPx(dp: Int): Int {
         return (dp * Resources.getSystem().displayMetrics.density).toInt()
     }
+
     fun changeColor(container: LinearLayout, color: Int) {
         val background = container.background
         if (background is GradientDrawable) {

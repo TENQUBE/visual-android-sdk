@@ -7,23 +7,45 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.tenqube.ibk.*
+import com.tenqube.ibkreceipt.*
+import com.tenqube.visual_third.Constants
+import com.tenqube.visual_third.VisualServiceImpl
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val jbButton: Button = findViewById(R.id.jb)
+        val ibk: Button = findViewById(R.id.ibk)
         checkPermission()
-        jbButton.setOnClickListener {
+        ibk.setOnClickListener {
+            // visual service 생성
+            val visualService = VisualServiceImpl(
+                this,
+                "LEZQmdU1Zx8hxH1PjfT7hWTzdGOQYre58AVHNgA0" //api 키정보
+                ,  // 발급 된 키정보
+                Constants.DEV,
+                "com.tenqube.visual_android_sdk"
+            ) // 레이어 정보 상용 배포시 Constants.PROD
+
+            // IBKMainActivity.this 값을 통해 startActivityForResult로 호출합니다.
+            // IBK user 고유 아이디 정보를 추가해 주세요.
+            // getVisualPath() 함수를 통해 딥링크를 통해 들어온 값을 전달합니다.
+            visualService.startVisual(
+                this@MainActivity, ":userUniqueId", ""
+            ) { signUpResult, msg -> }
+        }
+        val ibkReceipt: Button = findViewById(R.id.ibk_recept)
+        ibkReceipt.setOnClickListener {
             VisualServiceBuilder()
                 .activity(this)
                 .apiKey("8rbfmPLFN12RmDH4Bq73n7y7o1UUeP3R1D4Oon2q")
                 .layer(Layer.PROD)
-                .notification(NotificationArg(
+                .notification(
+                    NotificationArg(
                     R.drawable.ic_launcher_background,
                     "channel",
-                    "ibk-receipt"))
+                    "ibk-receipt")
+                )
                 .service(Service.IBK)
                 .build()
                 .start(UserArg("uid", 1987, VisualGender.MALE))
