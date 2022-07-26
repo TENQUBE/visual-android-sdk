@@ -28,23 +28,29 @@ class NotificationServiceImpl(
     }
 
     override fun show(command: NotificationDto) {
-        createNotificationChannel()
-        val receipt = VisualIBKReceiptDto.from(command)
-        val builder = NotificationCompat.Builder(context, prefStorage.notiChannelId)
-            .setSmallIcon(prefStorage.notiIcon)
-            .setContentTitle(command.getTitle())
-            .setContentText(command.getMsg())
-            .setWhen(command.getDate())
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setContentIntent(createIntent(context, receipt.toJson()))
+        if(prefStorage.isNotiEnabled) {
+            createNotificationChannel()
+            val receipt = VisualIBKReceiptDto.from(command)
+            val builder = NotificationCompat.Builder(context, prefStorage.notiChannelId)
+                .setSmallIcon(prefStorage.notiIcon)
+                .setContentTitle(command.getTitle())
+                .setContentText(command.getMsg())
+                .setWhen(command.getDate())
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(createIntent(context, receipt.toJson()))
 
-        with(NotificationManagerCompat.from(context)) {
-            notify(NOTI_ID, builder.build())
+            with(NotificationManagerCompat.from(context)) {
+                notify(NOTI_ID, builder.build())
+            }
         }
     }
 
     override suspend fun getNotifications(): List<NotificationApp> {
         return notificationAppLocalDataSource.getNotiCatchApps()
+    }
+
+    override fun setNotiEnabled(enabled: Boolean) {
+        prefStorage.isNotiEnabled = enabled
     }
 
     private fun createIntent(context: Context, json: String): PendingIntent {

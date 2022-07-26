@@ -56,6 +56,8 @@ class VisualFragment : Fragment() {
             } ?: viewModel.start(URL, it.user!!)
         } ?: requireActivity().finish()
         setupEvents()
+
+        viewModel.openNotiSettings()
     }
 
     private fun setupSwipeRefreshView() {

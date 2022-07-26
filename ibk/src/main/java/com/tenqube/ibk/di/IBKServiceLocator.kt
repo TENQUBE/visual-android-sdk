@@ -7,7 +7,8 @@ import com.tenqube.shared.prefs.SharedPreferenceStorage
 import com.tenqube.visualbase.infrastructure.adapter.auth.AuthServiceImpl
 import com.tenqube.visualbase.infrastructure.adapter.auth.remote.AuthApi
 import com.tenqube.visualbase.infrastructure.adapter.auth.remote.AuthRemoteDataSource
-import com.tenqube.visualbase.infrastructure.adapter.currency.CurrencyServiceImpl
+import com.tenqube.visualbase.infrastructure.adapter.notification.NotificationServiceImpl
+import com.tenqube.visualbase.infrastructure.adapter.notification.local.NotificationAppLocalDataSource
 import com.tenqube.visualbase.infrastructure.data.card.CardRepositoryImpl
 import com.tenqube.visualbase.infrastructure.data.category.CategoryRepositoryImpl
 import com.tenqube.visualbase.infrastructure.data.transaction.TransactionRepositoryImpl
@@ -59,6 +60,11 @@ object IBKServiceLocator {
         val authRemote = AuthRemoteDataSource(authApi, prefStorage)
         val authService = AuthServiceImpl(authRemote)
 
+        val notificationAppLocalDataSource = NotificationAppLocalDataSource(context)
+        val notificationService = NotificationServiceImpl(
+            context,
+            prefStorage,
+            notificationAppLocalDataSource)
         return VisualViewModel.Factory(
             userAppService = ServiceLocator.provideUserAppService(
                 context,
@@ -68,7 +74,8 @@ object IBKServiceLocator {
                 userCategoryRepository,
                 cardRepository,
                 parserAppService.currencyService,
-                prefStorage
+                prefStorage,
+                notificationService
             ),
             transactionAppService = transactionAppService,
             cardAppService = ServiceLocator.provideCardAppService(

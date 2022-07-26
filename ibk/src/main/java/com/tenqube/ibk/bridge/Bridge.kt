@@ -42,5 +42,8 @@ interface Bridge {
 
         @JavascriptInterface
         fun getNotiBanks()
+
+        @JavascriptInterface
+        fun setNotiEnabled(params: String?)
     }
 }

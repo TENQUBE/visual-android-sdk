@@ -12,6 +12,7 @@ import com.tenqube.visualbase.domain.auth.AuthService
 import com.tenqube.visualbase.domain.card.CardRepository
 import com.tenqube.visualbase.domain.category.CategoryRepository
 import com.tenqube.visualbase.domain.currency.CurrencyService
+import com.tenqube.visualbase.domain.notification.NotificationService
 import com.tenqube.visualbase.domain.resource.ResourceService
 import com.tenqube.visualbase.domain.transaction.TransactionRepository
 import com.tenqube.visualbase.domain.user.UserRepository
@@ -192,7 +193,8 @@ object ServiceLocator {
         userCategoryConfigRepository: UserCategoryConfigRepository,
         cardRepository: CardRepository,
         currencyService: CurrencyService,
-        prefStorage: PrefStorage
+        prefStorage: PrefStorage,
+        notificationService: NotificationService
     ): UserAppService {
         return UserAppService(
             context,
@@ -202,7 +204,8 @@ object ServiceLocator {
             userCategoryConfigRepository,
             cardRepository,
             currencyService,
-            prefStorage
+            prefStorage,
+            notificationService
         )
     }
 

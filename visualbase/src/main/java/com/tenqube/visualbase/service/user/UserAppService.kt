@@ -9,6 +9,7 @@ import com.tenqube.visualbase.domain.card.Card
 import com.tenqube.visualbase.domain.card.CardRepository
 import com.tenqube.visualbase.domain.category.CategoryRepository
 import com.tenqube.visualbase.domain.currency.CurrencyService
+import com.tenqube.visualbase.domain.notification.NotificationService
 import com.tenqube.visualbase.domain.user.User
 import com.tenqube.visualbase.domain.user.UserRepository
 import com.tenqube.visualbase.domain.user.command.CreateUser
@@ -30,8 +31,14 @@ class UserAppService(
     private val userCategoryConfigRepository: UserCategoryConfigRepository,
     private val cardRepository: CardRepository,
     private val currencyService: CurrencyService,
-    private val prefStorage: PrefStorage
+    private val prefStorage: PrefStorage,
+    private val notificationService: NotificationService
 ) {
+
+    fun setNotiEnabled(enabled: Boolean) {
+        notificationService.setNotiEnabled(enabled)
+    }
+
     suspend fun signUp(request: CreateUser): Result<Unit> {
         return try {
             checkNewUserOrThrow()

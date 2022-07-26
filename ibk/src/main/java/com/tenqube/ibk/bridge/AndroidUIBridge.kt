@@ -183,4 +183,18 @@ class AndroidUIBridge(
             }
         )
     }
+
+    @JavascriptInterface
+    override fun setNotiEnabled(params: String?) {
+        execute(
+            funcName = this@AndroidUIBridge::setNotiEnabled.name,
+            params = params,
+            classOfT = SetNotiEnabledRequest::class.java,
+            body = {
+                it?.let {
+                    viewModel.setNotiEnabled(it.request)
+                }
+            }
+        )
+    }
 }

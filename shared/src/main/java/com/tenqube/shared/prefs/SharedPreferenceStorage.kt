@@ -100,6 +100,12 @@ class SharedPreferenceStorage constructor(context: Context
         ""
     )
 
+    override var isNotiEnabled by BooleanPreference(
+        prefs,
+        PREF_IS_NOTI_ENABLED,
+        true
+    )
+
     companion object {
         const val PREFS_NAME = "visual"
         const val PREF_ACCESS_TOKEN = "PREF_ACCESS_TOKEN"
@@ -117,6 +123,6 @@ class SharedPreferenceStorage constructor(context: Context
         const val PREF_NOTI_ICON = "PREF_NOTI_ICON"
         const val PREF_NOTI_CHANNEL_ID = "PREF_NOTI_CHANNEL_ID"
         const val PREF_NOTI_CHANNEL_NAME = "PREF_NOTI_CHANNEL_NAME"
-
+        const val PREF_IS_NOTI_ENABLED = "PREF_IS_NOTI_ENABLED"
     }
 }

@@ -16,4 +16,5 @@ interface PrefStorage {
     var notiIcon: Int
     var notiChannelName: String
     var notiChannelId: String
+    var isNotiEnabled: Boolean
 }

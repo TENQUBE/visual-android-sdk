@@ -103,6 +103,10 @@ class VisualViewModel(
         _refreshEnabled.value = request
     }
 
+    fun setNotiEnabled(enabled: Boolean) {
+        userAppService.setNotiEnabled(enabled)
+    }
+
     fun openSelectBox(request: OpenSelectBoxRequest, callback: (selectBox: SelectBoxItem) -> Unit) {
         uiService.openSelectBox(OpenSelectBox(
             request.asDomain(), callback

@@ -4,5 +4,8 @@ import com.tenqube.visualbase.domain.notification.dto.NotificationDto
 
 interface NotificationService {
     fun show(command: NotificationDto)
+
     suspend fun getNotifications(): List<NotificationApp>
+
+    fun setNotiEnabled(enabled: Boolean)
 }
