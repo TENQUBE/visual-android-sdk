@@ -65,7 +65,7 @@ class RcsService(private val context: Context) {
         return results.toList()
     }
 
-    private fun queryRcs(messageId: String): SMS? {
+    fun queryRcs(messageId: String): SMS? {
         return if (context.contentResolver == null) {
             null
         } else {

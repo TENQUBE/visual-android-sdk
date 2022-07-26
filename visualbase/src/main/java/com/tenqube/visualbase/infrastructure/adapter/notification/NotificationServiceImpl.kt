@@ -21,6 +21,9 @@ class NotificationServiceImpl(
     private val prefStorage: PrefStorage,
     private val notificationAppLocalDataSource: NotificationAppLocalDataSource
 ) : NotificationService{
+    companion object {
+        private const val NOTI_ID = 1000
+    }
 
     override fun show(command: NotificationDto) {
         createNotificationChannel()
@@ -33,7 +36,7 @@ class NotificationServiceImpl(
             .setContentIntent(createIntent(context, receipt.toLink()))
 
         with(NotificationManagerCompat.from(context)) {
-            notify(1000, builder.build())
+            notify(NOTI_ID, builder.build())
         }
     }
 
