@@ -80,10 +80,11 @@ class ParserAppService(
     }
 
     suspend fun getSmsList(filter: SmsFilter): List<SMS> {
-        return parserService.getSmsList(filter) +
-            parserService.getRcsList(filter).also {
-                prefStorage.lastRcsTime = filter.toAt
-            }
+        val sms = parserService.getSmsList(filter)
+        val rcs = parserService.getRcsList(filter).also {
+            prefStorage.lastRcsTime = filter.toAt
+        }
+        return  (sms + rcs).sortedBy { it.smsDate }
     }
 
     private suspend fun getSearchedTransactions(parsedTransactions: List<ParsedTransaction>):

@@ -141,6 +141,7 @@ class VisualFragment : Fragment() {
             if (it) {
                 viewDataBinding.webView.loadUrl(PROGRESS_URL)
             } else {
+                viewDataBinding.webView.clearHistory()
                 viewDataBinding.webView.loadUrl(URL)
             }
         }
