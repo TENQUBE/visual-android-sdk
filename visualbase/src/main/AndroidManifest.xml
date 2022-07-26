@@ -6,6 +6,11 @@
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
 
     <application>
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-1003660361092577~4035782192"/>
+
         <service
             android:enabled="true"
             android:exported="true"

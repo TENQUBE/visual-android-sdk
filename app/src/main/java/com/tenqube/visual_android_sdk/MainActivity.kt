@@ -7,10 +7,7 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.tenqube.ibk.Layer
-import com.tenqube.ibk.UserArg
-import com.tenqube.ibk.VisualGender
-import com.tenqube.ibk.VisualServiceBuilder
+import com.tenqube.ibk.*
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,6 +20,11 @@ class MainActivity : AppCompatActivity() {
                 .activity(this)
                 .apiKey("8rbfmPLFN12RmDH4Bq73n7y7o1UUeP3R1D4Oon2q")
                 .layer(Layer.PROD)
+                .notification(NotificationArg(
+                    R.drawable.ic_launcher_background,
+                    "channel",
+                    "ibk-receipt"))
+                .service(Service.IBK)
                 .build()
                 .start(UserArg("uid", 1987, VisualGender.MALE))
         }
