@@ -84,7 +84,7 @@ class ParserAppService(
         val rcs = parserService.getRcsList(filter).also {
             prefStorage.lastRcsTime = filter.toAt
         }
-        return  (sms + rcs).sortedBy { it.smsDate }
+        return (sms + rcs).sortedBy { it.smsId }
     }
 
     private suspend fun getSearchedTransactions(parsedTransactions: List<ParsedTransaction>):

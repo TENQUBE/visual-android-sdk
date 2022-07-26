@@ -144,6 +144,7 @@ object ServiceLocator {
         val parsingRuleService = ParsingRuleService(resourceAppService, prefStorage)
 
         val parser = tenqube.parser.core.ParserService.getInstance(context)
+        parser.setDebugMode(true)
         val rcsService = RcsService(context)
         val parserService = ParserServiceImpl(
             context,

@@ -65,7 +65,7 @@ class NotificationServiceImpl(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O  &&
             !isExistChannel(notificationManager)) {
             val name = prefStorage.notiChannelName
-            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val importance = NotificationManager.IMPORTANCE_HIGH
             val channel = NotificationChannel(prefStorage.notiChannelId , name, importance)
             notificationManager.createNotificationChannel(channel)
         }
