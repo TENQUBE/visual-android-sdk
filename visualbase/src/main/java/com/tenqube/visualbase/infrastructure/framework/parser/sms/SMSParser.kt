@@ -1,8 +1,10 @@
 package com.tenqube.visualbase.infrastructure.framework.parser.sms
 
+import android.os.Build
 import android.os.Bundle
 import android.telephony.SmsMessage
 import android.text.TextUtils
+import androidx.annotation.RequiresApi
 import com.tenqube.visualbase.domain.parser.SMS
 import tenqube.transmsparser.constants.Constants
 import java.text.SimpleDateFormat
@@ -10,6 +12,7 @@ import java.util.*
 
 object SMSParser {
 
+    @RequiresApi(Build.VERSION_CODES.M)
     fun parseBundle(bundle: Bundle?): SMS? {
         return bundle?.let {
             val items = parsePdus(it)
@@ -38,6 +41,7 @@ object SMSParser {
         return arrayOf()
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun parseFullSms(bundle: Bundle, items: Array<Any>): String {
         var originMsg = ""
         var displayMsg = ""
@@ -67,6 +71,7 @@ object SMSParser {
         return msg
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun getSmsMessage(
         bundle: Bundle,
         item: Any
@@ -75,6 +80,7 @@ object SMSParser {
         return SmsMessage.createFromPdu(item as ByteArray, format)
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun parseOriginTel(bundle: Bundle, items: Array<Any>): String {
         var originTel = ""
         for (item in items) {
@@ -88,6 +94,7 @@ object SMSParser {
         return originTel
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun parseDisplayTel(bundle: Bundle, items: Array<Any>): String {
         var displayTel = ""
         for (item in items) {
@@ -101,6 +108,7 @@ object SMSParser {
         return displayTel
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun parseSmsDate(bundle: Bundle, items: Array<Any>): String {
         var date = 0L
         for (item in items) {
