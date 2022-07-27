@@ -10,12 +10,12 @@ class ResourceAppService(
     private val resourceService: ResourceService,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
-    suspend fun getVersion(): Int = withContext(ioDispatcher){
+    suspend fun getVersion(): Int = withContext(ioDispatcher) {
         return@withContext resourceService.getVersion().parsingRule
     }
 
     suspend fun getParsingRule(clientVersion: Int, serverVersion: Int):
-        ParsingRuleDto= withContext(ioDispatcher){
+        ParsingRuleDto = withContext(ioDispatcher) {
         return@withContext resourceService
             .getParsingRule(
                 clientVersion,

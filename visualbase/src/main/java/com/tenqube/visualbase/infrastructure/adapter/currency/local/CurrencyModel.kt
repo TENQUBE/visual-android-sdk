@@ -17,5 +17,4 @@ data class CurrencyModel(
     val rate: Float,
     @ColumnInfo(name = "createdAt")
     val createdAt: Long
-) {
-}
+)

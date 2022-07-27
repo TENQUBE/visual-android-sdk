@@ -1,6 +1,5 @@
 package com.tenqube.webui.component.utils
 
-import android.content.Context
 import android.content.res.Resources
 import android.graphics.drawable.GradientDrawable
 import android.widget.LinearLayout
