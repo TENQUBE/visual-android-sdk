@@ -13,6 +13,8 @@ import com.tenqube.visualbase.infrastructure.adapter.notification.local.Notifica
 import com.tenqube.visualbase.infrastructure.data.card.CardRepositoryImpl
 import com.tenqube.visualbase.infrastructure.data.category.CategoryRepositoryImpl
 import com.tenqube.visualbase.infrastructure.data.transaction.TransactionRepositoryImpl
+import com.tenqube.visualbase.infrastructure.data.transaction.remote.TransactionApiService
+import com.tenqube.visualbase.infrastructure.data.transaction.remote.TransactionRemoteDataSource
 import com.tenqube.visualbase.infrastructure.data.user.UserRepositoryImpl
 import com.tenqube.visualbase.infrastructure.data.usercategoryconfig.UserCategoryConfigRepositoryImpl
 import com.tenqube.visualbase.infrastructure.framework.di.ServiceLocator
@@ -34,7 +36,15 @@ object IBKServiceLocator {
         val userRepository = UserRepositoryImpl(userDao)
         val cardRepository = CardRepositoryImpl(cardDao)
         val categoryRepository = CategoryRepositoryImpl(categoryDao)
-        val transactionRepository = TransactionRepositoryImpl(transactionDao)
+        val transactionApi = retrofit.create(TransactionApiService::class.java)
+        val transactionRemoteDataSource = TransactionRemoteDataSource(
+            transactionApi,
+            prefStorage
+        )
+
+        val transactionRepository = TransactionRepositoryImpl(
+            transactionDao,
+            transactionRemoteDataSource)
         val userCategoryRepository = UserCategoryConfigRepositoryImpl(userCategoryConfigDao)
         val uiService = UIServiceBuilder()
             .activity(context)

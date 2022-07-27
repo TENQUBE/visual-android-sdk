@@ -19,7 +19,9 @@ data class SaveTransactionDto(
     val currency: String,
     val dwType: Int,
     val memo: String,
-    val sms: SMS
+    val sms: SMS,
+    val regId: Int,
+    val classCode: String
 ) {
     fun getUniqueCardKey(): String {
         return "${cardName}${cardType}${cardSubType}}"

@@ -23,6 +23,8 @@ data class Transaction(
     val dwType: Int,
     val memo: String,
     val sms: SMS,
+    val regId: Int,
+    val classCode: String,
     val isDeleted: Boolean = false,
     val isOffset: Boolean = false,
     val isCustom: Boolean = false,

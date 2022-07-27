@@ -8,6 +8,7 @@ import com.tenqube.visualbase.domain.category.Category
 import com.tenqube.visualbase.domain.category.CategoryRepository
 import com.tenqube.visualbase.domain.transaction.Transaction
 import com.tenqube.visualbase.domain.transaction.TransactionRepository
+import com.tenqube.visualbase.domain.transaction.TransactionService
 import com.tenqube.visualbase.domain.transaction.dto.CountByNoti
 import com.tenqube.visualbase.domain.transaction.dto.SaveTransactionDto
 import com.tenqube.visualbase.domain.usercategoryconfig.UserCategoryConfig
@@ -138,13 +139,13 @@ class TransactionAppService(
                .findAll()
                .associateBy { it.code }
 
-           val transactions = items.mapNotNull {
+           val joinedTransactions = items.mapNotNull {
                val card = cardMap[it.getUniqueCardKey()]
                val category = categoryMap[it.categoryCode]
                val userCategory = userCateMap[it.categoryCode.substring(0, 2)]
-
                if(hasMandatory(card, category, userCategory)) {
-                   Transaction(
+                   JoinedTransaction(
+                       Transaction(
                        id = it.id,
                        categoryId = category!!.id,
                        cardId = card!!.id,
@@ -159,13 +160,20 @@ class TransactionAppService(
                        currency = it.currency,
                        dwType = it.dwType,
                        memo = it.memo,
-                       sms = it.sms
+                       sms = it.sms,
+                       regId = it.regId,
+                       classCode = it.classCode
+                       ),
+                       card,
+                       category,
+                       userCategory
                    )
                } else {
                    null
                }
            }
-           transactionRepository.saveAll(transactions)
+
+           transactionRepository.saveAll(joinedTransactions)
            Result.success(Unit)
        } catch (e: Exception) {
            Result.failure(e)

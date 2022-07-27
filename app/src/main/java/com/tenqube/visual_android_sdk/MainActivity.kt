@@ -36,19 +36,20 @@ class MainActivity : AppCompatActivity() {
         }
         val ibkReceipt: Button = findViewById(R.id.ibk_recept)
         ibkReceipt.setOnClickListener {
+
             VisualServiceBuilder()
                 .activity(this)
-                .apiKey("8rbfmPLFN12RmDH4Bq73n7y7o1UUeP3R1D4Oon2q")
-                .layer(Layer.PROD)
+                .apiKey("hvvDxbym1D2hYCbMnERM73rZvRopPSZh1Us4Whvq")
+                .layer(Layer.DEV) // 개발 : Layer.DEV, 상용: Layer.PROD
                 .notification(
                     NotificationArg(
-                    R.drawable.ic_launcher_background,
-                    "channel",
-                    "ibk-receipt")
+                    R.drawable.ic_launcher_background, // 알림 small_icon 정보
+                    "현재 사용 중인 알림 채널 아이디",
+                    "현재 사용 중인 채널명")
                 )
                 .service(Service.IBK)
                 .build()
-                .start(UserArg("uid", 1987, VisualGender.MALE))
+                .start(UserArg(":UID", 1987, VisualGender.MALE))  // 사용자 고유 아이디, 생년, 성별
         }
     }
 

@@ -1,6 +1,7 @@
 package com.tenqube.visualbase.domain.transaction
 
 import com.tenqube.visualbase.domain.transaction.dto.CountByNoti
+import com.tenqube.visualbase.service.transaction.dto.JoinedTransaction
 import com.tenqube.visualbase.service.transaction.dto.TransactionFilter
 
 interface TransactionRepository {
@@ -17,7 +18,7 @@ interface TransactionRepository {
 
     suspend fun update(item: Transaction)
 
-    suspend fun saveAll(items: List<Transaction>)
+    suspend fun saveAll(items: List<JoinedTransaction>)
 
     suspend fun delete(item: Transaction)
 }

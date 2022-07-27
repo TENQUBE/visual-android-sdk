@@ -5,9 +5,15 @@ import com.tenqube.visualbase.domain.transaction.TransactionRepository
 import com.tenqube.visualbase.domain.transaction.dto.CountByNoti
 import com.tenqube.visualbase.infrastructure.data.transaction.local.TransactionDao
 import com.tenqube.visualbase.infrastructure.data.transaction.local.TransactionModel
+import com.tenqube.visualbase.infrastructure.data.transaction.remote.TransactionRemoteDataSource
+import com.tenqube.visualbase.infrastructure.data.transaction.remote.TransactionRequest
+import com.tenqube.visualbase.service.transaction.dto.JoinedTransaction
 import com.tenqube.visualbase.service.transaction.dto.TransactionFilter
 
-class TransactionRepositoryImpl(private val dao: TransactionDao) : TransactionRepository {
+class TransactionRepositoryImpl(
+    private val dao: TransactionDao,
+    private val remote: TransactionRemoteDataSource,
+) : TransactionRepository {
 
     override suspend fun findCountByNoti(): List<CountByNoti> {
         return dao.getGroupByNoti()
@@ -34,10 +40,12 @@ class TransactionRepositoryImpl(private val dao: TransactionDao) : TransactionRe
         dao.update(TransactionModel.fromDomain(item))
     }
 
-    override suspend fun saveAll(items: List<Transaction>) {
+    override suspend fun saveAll(items: List<JoinedTransaction>) {
         items.forEach {
-            dao.insertAll(TransactionModel.fromDomain(it))
+            dao.insertAll(TransactionModel.fromDomain(it.transaction))
         }
+        remote.saveTransaction(TransactionRequest.from(items))
+
     }
 
     override suspend fun delete(item: Transaction) {

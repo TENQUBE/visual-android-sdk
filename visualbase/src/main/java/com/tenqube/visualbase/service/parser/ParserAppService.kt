@@ -182,7 +182,9 @@ data class CurrencyTransaction(
                 this.searchedTransaction.getTransaction().sender,
                 this.searchedTransaction.getTransaction().smsDate,
                 this.searchedTransaction.getTransaction().smsType
-            )
+            ),
+            regId = this.searchedTransaction.getTransaction().regId,
+            classCode = this.searchedTransaction.searchResult.classCode
         )
     }
 }

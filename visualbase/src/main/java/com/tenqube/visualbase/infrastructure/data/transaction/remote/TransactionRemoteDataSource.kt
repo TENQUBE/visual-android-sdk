@@ -1,8 +1,6 @@
-package com.tenqube.visualbase.infrastructure.adapter.currency.remote
+package com.tenqube.visualbase.infrastructure.data.transaction.remote
 
-import com.tenqube.visualbase.domain.currency.CurrencyRequest
 import com.tenqube.shared.prefs.PrefStorage
-import com.tenqube.visualbase.domain.util.Result
 import com.tenqube.visualbase.infrastructure.framework.api.dto.VisualApiConfig
 import com.tenqube.visualbase.infrastructure.util.ErrorMsg
 import com.tenqube.visualbase.infrastructure.util.ResultWrapper
@@ -10,8 +8,8 @@ import com.tenqube.visualbase.infrastructure.util.safeApiCall
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
-class CurrencyRemoteDataSource(
-    private val currencyApiService: CurrencyApiService,
+class TransactionRemoteDataSource(
+    private val api: TransactionApiService,
     private val prefStorage: PrefStorage,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
@@ -28,12 +26,13 @@ class CurrencyRemoteDataSource(
         return map
     }
 
-    suspend fun exchange(request: CurrencyRequest): CurrencyResponse {
+    suspend fun saveTransaction(request: TransactionRequest) {
         return when (
             val response = safeApiCall(ioDispatcher) {
-                currencyApiService.exchange(
-                    getUrl("currency/rate/${request.from}/${request.to}"),
-                    getHeader()
+                api.saveTransactions(
+                    getUrl("transaction"),
+                    getHeader(),
+                    request
                 )
             }
         ) {

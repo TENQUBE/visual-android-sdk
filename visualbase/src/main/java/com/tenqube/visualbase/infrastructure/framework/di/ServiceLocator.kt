@@ -41,6 +41,8 @@ import com.tenqube.visualbase.infrastructure.data.category.CategoryRepositoryImp
 import com.tenqube.visualbase.infrastructure.data.category.local.CategoryDao
 import com.tenqube.visualbase.infrastructure.data.transaction.TransactionRepositoryImpl
 import com.tenqube.visualbase.infrastructure.data.transaction.local.TransactionDao
+import com.tenqube.visualbase.infrastructure.data.transaction.remote.TransactionApiService
+import com.tenqube.visualbase.infrastructure.data.transaction.remote.TransactionRemoteDataSource
 import com.tenqube.visualbase.infrastructure.data.user.local.UserDao
 import com.tenqube.visualbase.infrastructure.data.usercategoryconfig.UserCategoryConfigRepositoryImpl
 import com.tenqube.visualbase.infrastructure.data.usercategoryconfig.local.UserCategoryConfigDao
@@ -113,12 +115,22 @@ object ServiceLocator {
 
     private fun createParserAppService(context: Context): ParserAppService {
         val retrofit = provideRetrofit(provideOkHttpClient())
+        val prefStorage = SharedPreferenceStorage(context)
         val db = provideVisualDatabase(context)
         val transactionDao = provideTransactionDao(db)
         val cardDao = provideCardDao(db)
         val categoryDao = provideCategoryDao(db)
         val userCategoryDao = provideUserCategoryConfigDao(db)
-        val transactionRepository = TransactionRepositoryImpl(transactionDao)
+
+        val transactionApi = retrofit.create(TransactionApiService::class.java)
+        val transactionRemoteDataSource = TransactionRemoteDataSource(
+            transactionApi,
+            prefStorage
+        )
+
+        val transactionRepository = TransactionRepositoryImpl(
+            transactionDao,
+            transactionRemoteDataSource)
         val cardRepository = CardRepositoryImpl(cardDao)
         val categoryRepository = CategoryRepositoryImpl(categoryDao)
         val userCategoryRepository = UserCategoryConfigRepositoryImpl(userCategoryDao)
@@ -129,7 +141,6 @@ object ServiceLocator {
             userCategoryRepository,
             context.packageManager
         )
-        val prefStorage = SharedPreferenceStorage(context)
         return provideParserAppService(
             context,
             transactionAppService,

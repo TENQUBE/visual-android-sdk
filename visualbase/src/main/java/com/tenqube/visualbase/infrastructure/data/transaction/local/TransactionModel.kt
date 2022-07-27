@@ -30,6 +30,8 @@ data class TransactionModel(
     val memo: String,
     @Embedded
     val sms: SMSModel,
+    val regId: Int,
+    val classCode: String,
     val isDeleted: Boolean = false,
     val isOffset: Boolean = false,
     val isCustom: Boolean = false,
@@ -55,7 +57,9 @@ data class TransactionModel(
             currency,
             dwType,
             memo,
-            sms.asDomain()
+            sms.asDomain(),
+            regId,
+            classCode
         )
     }
 
@@ -79,7 +83,9 @@ data class TransactionModel(
                 item.currency,
                 item.dwType,
                 item.memo,
-                SMSModel.fromDomain(item.sms)
+                SMSModel.fromDomain(item.sms),
+                item.regId,
+                item.classCode
             )
         }
     }
