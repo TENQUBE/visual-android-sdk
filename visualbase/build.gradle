@@ -9,9 +9,6 @@ android {
     compileSdk rootProject.compileSdkVersion
 
     defaultConfig {
-        configurations.all {
-            resolutionStrategy { force 'androidx.room:room-ktx:2.4.2' }
-        }
         minSdk rootProject.minSdkVersion
         targetSdk rootProject.targetSdkVersion
         versionName VERSION_NAME
