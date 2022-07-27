@@ -1,6 +1,8 @@
 package com.tenqube.shared.webview
 
+import android.util.Log
 import android.webkit.WebView
+import androidx.lifecycle.LifecycleOwner
 import com.tenqube.shared.error.ParameterError
 import com.tenqube.shared.util.elapsedLog
 import com.tenqube.shared.util.fromJson
@@ -13,6 +15,7 @@ import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
 open class BridgeBase(
+    val lifecycleOwner: LifecycleOwner,
     private val webView: WebView
 ) : CoroutineScope {
 
@@ -36,6 +39,8 @@ open class BridgeBase(
                 makeResponseCallback(funcName),
                 response.toJson()
             )
+            Log.i("KJTAG", "onSuccess$url")
+
             webView.loadUrl(url)
             return@withContext response
         }
@@ -69,7 +74,13 @@ open class BridgeBase(
         } as RequestBody
     }
 
-    fun <T> execute(funcName: String, params: String? = null, classOfT: Class<T>, body: (T?) -> Any?) {
+    fun <T> execute(
+        funcName: String,
+        params: String? = null,
+        classOfT: Class<T>,
+        body: (T?) -> Any?,
+        isSkip: Boolean = false
+    ) {
         launch(Dispatchers.Main) {
             var request: RequestBody? = null
             var response: Any? = null
@@ -79,10 +90,14 @@ open class BridgeBase(
                     request = parseRequest(params, classOfT)
                     request.checkParams()
                 }
-                response = onSuccess(
-                    funcName = funcName,
-                    any = body(request as? T?)
-                )
+                val result = body(request as? T?)
+
+                if (!isSkip) {
+                    response = onSuccess(
+                        funcName = funcName,
+                        any = result
+                    )
+                }
             } catch (e: Exception) {
                 onResultError(funcName, e.toString())
             } finally {
@@ -101,7 +116,7 @@ open class BridgeBase(
     companion object {
         const val ERROR_CALLBACK = "onError"
         const val ON_FINISH = "onFinish"
-        const val RESPONSE = "response."
+        const val RESPONSE = "responseSDK."
         const val JS = "javascript:window."
     }
 }

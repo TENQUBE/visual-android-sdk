@@ -1,0 +1,203 @@
+package com.tenqube.ibkreceipt
+
+import android.annotation.SuppressLint
+import android.graphics.Color
+import android.os.Bundle
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.webkit.WebView
+import android.widget.FrameLayout
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import com.tenqube.ibkreceipt.bridge.AndroidUIBridge
+import com.tenqube.ibkreceipt.databinding.FragmentMainIbkBinding
+import com.tenqube.ibkreceipt.di.IBKServiceLocator
+import com.tenqube.shared.util.Utils
+import com.tenqube.shared.webview.WebViewManager
+import com.tenqube.shared.webview.WebViewParam
+import com.tenqube.visualbase.domain.user.command.CreateUser
+import java.io.Serializable
+
+class VisualFragment : Fragment() {
+
+    private lateinit var viewModel: VisualViewModel
+    private lateinit var viewDataBinding: FragmentMainIbkBinding
+    private lateinit var webViewManager: WebViewManager
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        viewModel = ViewModelProvider(
+            this,
+            IBKServiceLocator.provideVisualViewModel(requireActivity() as AppCompatActivity)
+        )[VisualViewModel::class.java]
+        viewDataBinding = FragmentMainIbkBinding.inflate(inflater, container, false)
+            .apply {
+                viewmodel = viewModel
+            }
+        return viewDataBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupLifecycleOwner()
+        setupOnBackPressedDispatcher()
+        setupSwipeRefreshView()
+        setupWebView()
+        setupProgressEvents()
+        start()
+        setupEvents()
+        setupErrorView()
+    }
+
+    private fun start() {
+        parseArg()?.let {
+            it.url?.let { url ->
+                viewModel.start("${BASE_URL}receipt?$url")
+            } ?: viewModel.start(URL, it.user!!)
+        } ?: requireActivity().finish()
+    }
+
+    private fun setupSwipeRefreshView() {
+        with(viewDataBinding.swipeRefreshLayout) {
+            this.isEnabled = false
+            this.setOnRefreshListener {
+                this.isRefreshing = false
+                viewDataBinding.webView.reload()
+            }
+        }
+    }
+
+    private fun setupEvents() {
+        viewModel.url.observe(this.viewLifecycleOwner) {
+            viewDataBinding.webView.loadUrl(it)
+        }
+        viewModel.showAd.observe(this.viewLifecycleOwner) {
+            viewDataBinding.container.addView(createCardView(it))
+        }
+        viewModel.hideAd.observe(this.viewLifecycleOwner) {
+//            viewDataBinding.container.allViews.firstOrNull { it is CardView }?.let {
+//                viewDataBinding.container.removeView(
+//                    it
+//                )
+//            }
+        }
+        viewModel.refreshEnabled.observe(this.viewLifecycleOwner) {
+            viewDataBinding.swipeRefreshLayout.isEnabled = it
+        }
+        viewModel.error.observe(this.viewLifecycleOwner) {
+            viewDataBinding.errorContainer.errorContainer.visibility = View.VISIBLE
+        }
+    }
+
+    private fun setupErrorView() {
+        viewDataBinding.errorContainer.retry.setOnClickListener {
+            viewDataBinding.errorContainer.errorContainer.visibility = View.GONE
+            start()
+        }
+    }
+
+    private fun createCardView(view: View): CardView? {
+        val adContainer = CardView(requireContext())
+        val params = FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.WRAP_CONTENT,
+            FrameLayout.LayoutParams.WRAP_CONTENT
+        )
+        params.setMargins(Utils.dpToPx(10), Utils.dpToPx(16), Utils.dpToPx(10), Utils.dpToPx(16))
+        params.gravity = Gravity.BOTTOM
+        adContainer.layoutParams = params
+        adContainer.radius = Utils.dpToPx(13).toFloat()
+        adContainer.setCardBackgroundColor(Color.parseColor("#00000000"))
+        adContainer.addView(view)
+        return adContainer
+    }
+
+    private fun parseArg(): VisualIBKArg? {
+        return arguments?.let {
+            it.getSerializable(VISUAL_IBK_ARG) as VisualIBKArg
+        }
+    }
+
+    private fun setupLifecycleOwner() {
+        viewDataBinding.lifecycleOwner = this.viewLifecycleOwner
+    }
+
+    private fun setupWebView() {
+        with(viewDataBinding.webView) {
+            webViewManager = WebViewManager(
+                WebViewParam(this)
+            )
+            webViewManager.setupWebView()
+            setupBridges(this)
+        }
+    }
+
+    @SuppressLint("JavascriptInterface")
+    private fun setupBridges(webView: WebView) {
+        with(AndroidUIBridge(this, webView, viewModel)) {
+            webView.addJavascriptInterface(this, this.bridgeName)
+        }
+    }
+
+    private fun setupProgressEvents() {
+        viewModel.isProgress.observe(this.viewLifecycleOwner) {
+            if (it) {
+                viewDataBinding.webView.loadUrl(PROGRESS_URL)
+            } else {
+                viewDataBinding.webView.clearHistory()
+                viewDataBinding.webView.loadUrl(URL)
+            }
+        }
+
+        viewModel.progressCount.observe(this.viewLifecycleOwner) {
+            viewDataBinding.webView.loadUrl(
+                "javascript:window.onProgress(${it.now}, ${it.total});"
+            )
+        }
+
+        viewModel.error.observe(this.viewLifecycleOwner) {
+            viewDataBinding.webView.loadUrl(
+                "javascript:window.onSyncError();"
+            )
+        }
+    }
+
+    private fun setupOnBackPressedDispatcher() {
+        activity?.onBackPressedDispatcher?.addCallback(object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (viewDataBinding.webView.canGoBack()) {
+                    viewDataBinding.webView.goBack()
+                } else {
+                    activity?.finish()
+                }
+            }
+        })
+    }
+
+    companion object {
+        const val BASE_URL = "https://d34db13xxji3zw.cloudfront.net/"
+        const val URL = "$BASE_URL?v=1.0&dv=1.0"
+        const val PROGRESS_URL = "${BASE_URL}loading#type=bulk"
+        const val VISUAL_IBK_ARG = "visual_ibk_arg"
+        @JvmStatic
+        fun newInstance(arg: VisualIBKArg): VisualFragment {
+            return VisualFragment().apply {
+                this.arguments = Bundle().apply {
+                    putSerializable(VISUAL_IBK_ARG, arg)
+                }
+            }
+        }
+    }
+}
+
+data class VisualIBKArg(
+    val url: String? = null,
+    val user: CreateUser? = null
+) : Serializable

@@ -6,7 +6,7 @@ import com.tenqube.shared.util.Utils
 import com.tenqube.visualbase.domain.parser.SMS
 import org.json.JSONException
 import org.json.JSONObject
-import tenqube.parser.constants.Constants
+import tenqube.transmsparser.constants.Constants
 import java.util.*
 
 object RcsParser {

@@ -4,7 +4,7 @@ import com.tenqube.visualbase.domain.Entity
 
 data class Category(
     override val id: String,
-    val code: Int,
+    val code: String,
     val large: String,
     val medium: String,
     val small: String

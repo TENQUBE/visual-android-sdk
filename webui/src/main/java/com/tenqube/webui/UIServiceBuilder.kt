@@ -1,6 +1,7 @@
 package com.tenqube.webui
 
 import androidx.appcompat.app.AppCompatActivity
+import com.tenqube.webui.component.ad.AdService
 
 class UIServiceBuilder {
     private lateinit var activity: AppCompatActivity
@@ -15,7 +16,11 @@ class UIServiceBuilder {
     }
 
     fun build(): UIService {
+        val adService = AdService(
+            activity
+        )
         return UiServiceImpl(
+            adService,
             activity,
             callback
         )

@@ -4,15 +4,15 @@ import android.annotation.SuppressLint
 import android.database.Cursor
 import com.tenqube.shared.util.Constants
 import com.tenqube.shared.util.Utils
-import tenqube.parser.model.Transaction
+import com.tenqube.visualbase.service.parser.BulkAdapter
+import tenqube.transmsparser.model.Transaction
 import java.io.Serializable
 import java.util.*
 
 interface ParserService {
+    suspend fun parseBulk(adapter: BulkAdapter)
     suspend fun parse(sms: SMS): List<ParsedTransaction>
-
     suspend fun getSmsList(filter: SmsFilter): List<SMS>
-
     suspend fun getRcsList(filter: SmsFilter): List<SMS>
 }
 
@@ -32,8 +32,8 @@ data class SMS(
     val title: String = ""
 ) : Serializable {
 
-    fun toParser(): tenqube.parser.model.SMS {
-        return tenqube.parser.model.SMS(
+    fun toParser(): tenqube.transmsparser.model.SMS {
+        return tenqube.transmsparser.model.SMS(
             smsId,
             fullSms,
             originTel,
@@ -47,7 +47,7 @@ data class SMS(
     companion object {
         @SuppressLint("Range")
         fun from(cursor: Cursor): SMS {
-            val smsId = cursor.getInt(cursor.getColumnIndex("id"))
+            val smsId = cursor.getInt(cursor.getColumnIndex("_id"))
             val body = cursor.getString(cursor.getColumnIndex("body"))
             val address = cursor.getString(cursor.getColumnIndex("address"))
             val date = cursor.getLong(cursor.getColumnIndex("date"))
@@ -61,7 +61,7 @@ data class SMS(
             )
         }
 
-        fun fromParser(sms: tenqube.parser.model.SMS): SMS {
+        fun fromParser(sms: tenqube.transmsparser.model.SMS): SMS {
             return SMS(
                 sms.smsId,
                 sms.fullSms,

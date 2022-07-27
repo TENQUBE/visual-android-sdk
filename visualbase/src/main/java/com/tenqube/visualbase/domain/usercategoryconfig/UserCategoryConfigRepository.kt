@@ -1,8 +1,7 @@
 package com.tenqube.visualbase.domain.usercategoryconfig
 
 interface UserCategoryConfigRepository {
-
-    suspend fun findAll(): Result<List<UserCategoryConfig>>
-
-    suspend fun findByUserId(userId: String): Result<List<UserCategoryConfig>>
+    suspend fun findAll(): List<UserCategoryConfig>
+    suspend fun findById(id: String): UserCategoryConfig?
+    suspend fun save(items: List<UserCategoryConfig>)
 }

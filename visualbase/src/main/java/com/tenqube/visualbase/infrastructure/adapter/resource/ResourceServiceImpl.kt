@@ -12,7 +12,7 @@ class ResourceServiceImpl(
 ) : ResourceService {
 
     override suspend fun getVersion(): VersionDto {
-        return resourceRemoteDataSource.getVersion().getValue()
+        return resourceRemoteDataSource.getVersion()
     }
 
     override suspend fun getParsingRule(
@@ -22,7 +22,7 @@ class ResourceServiceImpl(
         return resourceRemoteDataSource.getParsingRule(
             clientVersion,
             serverVersion
-        ).getValue().run {
+        ).run {
             checkSignature(this)
             this.resource.asDomain()
         }

@@ -22,4 +22,8 @@ interface UIService {
     fun openNotiSettings()
 
     fun setRefreshEnabled(enabled: Boolean)
+
+    fun showAd(request: ShowAd)
+
+    fun hideAd()
 }

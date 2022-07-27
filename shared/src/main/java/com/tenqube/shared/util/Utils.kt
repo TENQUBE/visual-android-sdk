@@ -1,8 +1,10 @@
 package com.tenqube.shared.util
 
+import android.content.res.Resources
 import android.util.Log
 import com.google.gson.Gson
 import com.tenqube.shared.error.FormatNotMatchedException
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -10,11 +12,12 @@ object Utils {
 
     var isDebug = false
     const val TAG = "VisualSDK"
+    private val THREE_COMMA_FORMAT = DecimalFormat("###,###")
 
     fun logD(className: Class<Any>, msg: String) {
-        if (isDebug) {
-            Log.d(TAG, "${className.simpleName} $msg")
-        }
+//        if (isDebug) {
+        Log.d(TAG, "${className.simpleName} $msg")
+//        }
     }
 
     fun convertDateToDateTimeStr(date: Date): String {
@@ -87,5 +90,32 @@ object Utils {
     fun String.toDateTime(): Long? {
         val fullDF = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
         return fullDF.parse(this)?.time
+    }
+
+    fun threeComma(value: Double): String {
+        return THREE_COMMA_FORMAT.format(value.toLong()) + "원"
+    }
+
+    fun installment(amount: Int): String {
+        return when (amount) {
+            1 -> "일시불"
+            else -> "${amount}개월"
+        }
+    }
+
+    fun dwType(cardType: Int, dwType: Int): String {
+        return if (cardType == Constants.CardType.BANK_ACCOUNT.ordinal) {
+            if (dwType == Constants.DWType.DEPOSIT.ordinal) {
+                "입금"
+            } else {
+                "출금"
+            }
+        } else {
+            "결제"
+        }
+    }
+
+    fun dpToPx(dp: Int): Int {
+        return (dp * Resources.getSystem().displayMetrics.density).toInt()
     }
 }

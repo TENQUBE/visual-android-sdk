@@ -17,4 +17,8 @@ data class Card(
     val isExcept: Boolean = false,
     val isCustom: Boolean = false,
     val isDeleted: Boolean = false
-) : Entity
+) : Entity {
+    fun getUniqueKey(): String {
+        return "${name}${type}$subType}"
+    }
+}

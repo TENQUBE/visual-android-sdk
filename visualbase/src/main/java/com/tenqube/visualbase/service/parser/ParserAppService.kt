@@ -1,7 +1,15 @@
 package com.tenqube.visualbase.service.parser
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import com.tenqube.shared.prefs.PrefStorage
+import com.tenqube.shared.util.encodeToBase64
+import com.tenqube.shared.util.toJson
 import com.tenqube.visualbase.domain.currency.CurrencyRequest
 import com.tenqube.visualbase.domain.currency.CurrencyService
+import com.tenqube.visualbase.domain.notification.NotificationService
+import com.tenqube.visualbase.domain.notification.dto.NotificationDto
 import com.tenqube.visualbase.domain.parser.ParsedTransaction
 import com.tenqube.visualbase.domain.parser.ParserService
 import com.tenqube.visualbase.domain.parser.SMS
@@ -10,37 +18,80 @@ import com.tenqube.visualbase.domain.search.SearchRequest
 import com.tenqube.visualbase.domain.search.SearchService
 import com.tenqube.visualbase.domain.search.SearchTransaction
 import com.tenqube.visualbase.domain.search.TranCompany
-import com.tenqube.visualbase.domain.transaction.command.SaveTransactionDto
-import com.tenqube.visualbase.domain.util.PrefStorage
+import com.tenqube.visualbase.domain.transaction.dto.SaveTransactionDto
+import com.tenqube.visualbase.infrastructure.adapter.notification.VisualIBKReceiptDto
 import com.tenqube.visualbase.service.transaction.TransactionAppService
+import com.tenqube.visualbase.service.transaction.dto.JoinedTransaction
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import tenqube.transmsparser.model.Transaction
 import java.util.*
 
 class ParserAppService(
+    private val context: Context,
     private val parserService: ParserService,
-    private val currencyService: CurrencyService,
+    val currencyService: CurrencyService,
     private val searchService: SearchService,
     private val transactionAppService: TransactionAppService,
-    private val prefStorage: PrefStorage
+    private val prefStorage: PrefStorage,
+    private val notificationService: NotificationService,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
+    suspend fun parseBulk(adapter: BulkAdapter) = withContext(ioDispatcher) {
+        parserService.parseBulk(adapter)
+    }
 
     suspend fun parseRcsListAfterLastParsedTime() {
-        val lastTime = prefStorage.getLastRcsTime() ?: System.currentTimeMillis()
+        val lastTime = prefStorage.lastRcsTime
         val currentTime = Calendar.getInstance().timeInMillis
         val smsList = parserService.getRcsList(SmsFilter(lastTime, currentTime))
         smsList.forEach {
             parse(it)
         }
-        prefStorage.saveLastRcsTime(currentTime)
+        prefStorage.lastRcsTime = currentTime
     }
 
-    suspend fun parse(sms: SMS): Result<Unit> {
-        val parsedTransactions = parserService.parse(sms)
-        return saveTransactions(parsedTransactions)
+    suspend fun parse(sms: SMS): Result<Unit> = withContext(ioDispatcher) {
+        return@withContext try {
+            val parsedTransactions = parserService.parse(sms)
+            if (parsedTransactions.isNotEmpty()) {
+                saveTransactions(parsedTransactions)
+                parsedTransactions.firstOrNull { it.transaction.isCurrentTran }?.let {
+                    val transaction = transactionAppService.getByIdentifier(it.transaction.identifier)
+                        .getOrThrow()
+                    showNotification(transaction)
+                }
+            }
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    private fun showNotification(transaction: JoinedTransaction) {
+        with(
+            NotificationDto(
+                transaction
+            )
+        ) {
+            notificationService.show(this)
+            showPopup(this)
+        }
+    }
+
+    private fun showPopup(command: NotificationDto) {
+        val receipt = VisualIBKReceiptDto.from(command)
+        val json = receipt.toJson()
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("visual://ibk-receipt?link=${json.encodeToBase64()}")).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        context.startActivity(intent)
     }
 
     suspend fun saveTransactions(
         parsedTransactions: List<ParsedTransaction>
-    ): Result<Unit> {
+    ): Result<Unit> = withContext(ioDispatcher) {
         val searchedTransactions = getSearchedTransactions(parsedTransactions)
         val currencyTransactions = calculateCurrency(searchedTransactions)
         transactionAppService.saveTransactions(
@@ -49,14 +100,15 @@ class ParserAppService(
             }
         )
 
-        return Result.success(Unit)
+        return@withContext Result.success(Unit)
     }
 
-    suspend fun getSmsList(filter: SmsFilter): List<SMS> {
-        return parserService.getSmsList(filter) +
-            parserService.getRcsList(filter).also {
-                prefStorage.saveLastRcsTime(filter.toAt)
-            }
+    suspend fun getSmsList(filter: SmsFilter): List<SMS> = withContext(ioDispatcher) {
+        val sms = parserService.getSmsList(filter)
+        val rcs = parserService.getRcsList(filter).also {
+            prefStorage.lastRcsTime = filter.toAt
+        }
+        return@withContext (sms + rcs).sortedBy { it.smsId }
     }
 
     private suspend fun getSearchedTransactions(parsedTransactions: List<ParsedTransaction>):
@@ -102,7 +154,7 @@ data class SearchedTransaction(
     val parsedTransaction: ParsedTransaction,
     val searchResult: TranCompany
 ) {
-    fun getTransaction(): tenqube.parser.model.Transaction {
+    fun getTransaction(): Transaction {
         return parsedTransaction.transaction
     }
 }
@@ -135,7 +187,9 @@ data class CurrencyTransaction(
                 this.searchedTransaction.getTransaction().sender,
                 this.searchedTransaction.getTransaction().smsDate,
                 this.searchedTransaction.getTransaction().smsType
-            )
+            ),
+            regId = this.searchedTransaction.getTransaction().regId,
+            classCode = this.searchedTransaction.searchResult.classCode
         )
     }
 }

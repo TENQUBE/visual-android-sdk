@@ -1,8 +1,8 @@
 package com.tenqube.visualbase.infrastructure.adapter.currency.remote
 
+import com.tenqube.shared.prefs.PrefStorage
 import com.tenqube.visualbase.domain.currency.CurrencyRequest
-import com.tenqube.visualbase.domain.util.PrefStorage
-import com.tenqube.visualbase.domain.util.Result
+import com.tenqube.visualbase.infrastructure.framework.api.dto.VisualApiConfig
 import com.tenqube.visualbase.infrastructure.util.ErrorMsg
 import com.tenqube.visualbase.infrastructure.util.ResultWrapper
 import com.tenqube.visualbase.infrastructure.util.safeApiCall
@@ -15,21 +15,19 @@ class CurrencyRemoteDataSource(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
 
-    private val baseUrl = ""
-
     private fun getUrl(path: String): String {
-        return "$baseUrl/${prefStorage.getLayer()}/$path"
+        return "${VisualApiConfig.URL}/${prefStorage.layer}/$path"
     }
 
     private fun getHeader(): Map<String, String> {
         val map = HashMap<String, String>()
-        map["Authorization"] = prefStorage.getAccessToken()
-        map["x-api-key"] = prefStorage.getApiKey()
+        map["Authorization"] = prefStorage.accessToken
+        map["x-api-key"] = prefStorage.apiKey
 
         return map
     }
 
-    suspend fun exchange(request: CurrencyRequest): Result<CurrencyResponse> {
+    suspend fun exchange(request: CurrencyRequest): CurrencyResponse {
         return when (
             val response = safeApiCall(ioDispatcher) {
                 currencyApiService.exchange(
@@ -39,13 +37,13 @@ class CurrencyRemoteDataSource(
             }
         ) {
             is ResultWrapper.Success -> {
-                Result.Success(response.value)
+                response.value
             }
             is ResultWrapper.NetworkError -> {
-                Result.Error(Exception(ErrorMsg.NETWORK.msg))
+                throw Exception(ErrorMsg.NETWORK.msg)
             }
             is ResultWrapper.GenericError -> {
-                Result.Error(Exception(response.error?.toString() ?: ErrorMsg.GENERIC.msg))
+                throw Exception(response.error?.toString() ?: ErrorMsg.GENERIC.msg)
             }
         }
     }

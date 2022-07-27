@@ -2,6 +2,7 @@ package com.tenqube.visualbase.domain.currency
 
 interface CurrencyService {
     suspend fun exchange(request: CurrencyRequest): Double
+    suspend fun prepopulate()
 }
 
 data class CurrencyRequest(
@@ -10,6 +11,6 @@ data class CurrencyRequest(
     val amount: Double
 ) {
     fun isKorea(): Boolean {
-        return from == "KRW" && to == "KRW"
+        return (from.isEmpty() || from == "none" || from == "KRW") && to == "KRW"
     }
 }

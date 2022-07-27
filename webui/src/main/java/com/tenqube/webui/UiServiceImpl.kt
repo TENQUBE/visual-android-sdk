@@ -7,18 +7,18 @@ import android.media.AudioManager
 import android.net.Uri
 import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
+import com.tenqube.webui.component.ad.AdService
 import com.tenqube.webui.component.bottomsheet.ItemListDialogFragment
 import com.tenqube.webui.component.datepicker.DatePickerFragment
 import com.tenqube.webui.component.datepicker.DatePickerListener
 import com.tenqube.webui.component.datepicker.model.DateRequest
-import com.tenqube.webui.component.noticatch.NotiCatchArg
-import com.tenqube.webui.component.noticatch.NotiCatchDialogFragment
 import com.tenqube.webui.component.timepicker.TimePickerFragment
 import com.tenqube.webui.component.timepicker.TimePickerListener
 import com.tenqube.webui.component.timepicker.model.TimeRequest
 import com.tenqube.webui.dto.*
 
 class UiServiceImpl(
+    private val adService: AdService,
     private val activity: FragmentActivity,
     private val callback: (enabled: Boolean) -> Unit
 ) : UIService {
@@ -122,17 +122,28 @@ class UiServiceImpl(
     }
 
     override fun openNotiSettings() {
-        val notiCatchDialogFragment = NotiCatchDialogFragment.newInstance(NotiCatchArg(listOf()))
-        notiCatchDialogFragment.setCallback(
-            callback = object : NotiCatchDialogFragment.Callback {
-                override fun onClickNext() {
-                }
-            }
-        )
-        notiCatchDialogFragment.show(activity.supportFragmentManager, "notiCatch")
+        val i = Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS")
+        activity.startActivity(i)
+//        val notiCatchDialogFragment = NotiCatchDialogFragment.newInstance(NotiCatchArg(listOf()))
+//        notiCatchDialogFragment.setCallback(
+//            callback = object : NotiCatchDialogFragment.Callback {
+//                override fun onClickNext() {
+//
+//                }
+//            }
+//        )
+//        notiCatchDialogFragment.show(activity.supportFragmentManager, "notiCatch")
     }
 
     override fun setRefreshEnabled(enabled: Boolean) {
         callback(enabled)
+    }
+
+    override fun showAd(request: ShowAd) {
+        adService.showAd(request)
+    }
+
+    override fun hideAd() {
+        adService.hideAd()
     }
 }

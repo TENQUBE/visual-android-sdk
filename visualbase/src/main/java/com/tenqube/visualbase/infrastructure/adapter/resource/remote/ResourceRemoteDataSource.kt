@@ -1,8 +1,7 @@
 package com.tenqube.visualbase.infrastructure.adapter.resource.remote
 
+import com.tenqube.shared.prefs.PrefStorage
 import com.tenqube.visualbase.domain.resource.dto.VersionDto
-import com.tenqube.visualbase.domain.util.PrefStorage
-import com.tenqube.visualbase.domain.util.Result
 import com.tenqube.visualbase.infrastructure.adapter.resource.remote.dto.SyncParsingRuleDto
 import com.tenqube.visualbase.infrastructure.util.ErrorMsg
 import com.tenqube.visualbase.infrastructure.util.ResultWrapper
@@ -17,18 +16,18 @@ class ResourceRemoteDataSource(
 ) {
 
     private fun getUrl(): String {
-        return prefStorage.getResourceUrl()
+        return prefStorage.resourceUrl
     }
 
     private fun getHeader(): Map<String, String> {
         val map = HashMap<String, String>()
-        map["service"] = prefStorage.getService()
-        map["x-api-key"] = prefStorage.getResourceApiKey()
+        map["service"] = prefStorage.service
+        map["x-api-key"] = prefStorage.resourceApiKey
 
         return map
     }
 
-    suspend fun getVersion(): Result<VersionDto> {
+    suspend fun getVersion(): VersionDto {
         return when (
             val response = safeApiCall(ioDispatcher) {
                 resourceApiService.syncVersion(
@@ -38,13 +37,13 @@ class ResourceRemoteDataSource(
             }
         ) {
             is ResultWrapper.Success -> {
-                Result.Success(response.value)
+                response.value
             }
             is ResultWrapper.NetworkError -> {
-                Result.Error(Exception(ErrorMsg.NETWORK.msg))
+                throw Exception(ErrorMsg.NETWORK.msg)
             }
             is ResultWrapper.GenericError -> {
-                Result.Error(Exception(response.error?.toString() ?: ErrorMsg.GENERIC.msg))
+                throw Exception(response.error?.toString() ?: ErrorMsg.GENERIC.msg)
             }
         }
     }
@@ -52,7 +51,7 @@ class ResourceRemoteDataSource(
     suspend fun getParsingRule(
         clientVersion: Int,
         serverVersion: Int
-    ): Result<SyncParsingRuleDto> {
+    ): SyncParsingRuleDto {
         return when (
             val response = safeApiCall(ioDispatcher) {
                 resourceApiService.syncParsingRule(
@@ -65,13 +64,13 @@ class ResourceRemoteDataSource(
             }
         ) {
             is ResultWrapper.Success -> {
-                Result.Success(response.value)
+                response.value
             }
             is ResultWrapper.NetworkError -> {
-                Result.Error(Exception(ErrorMsg.NETWORK.msg))
+                throw Exception(ErrorMsg.NETWORK.msg)
             }
             is ResultWrapper.GenericError -> {
-                Result.Error(Exception(response.error?.toString() ?: ErrorMsg.GENERIC.msg))
+                throw Exception(response.error?.toString() ?: ErrorMsg.GENERIC.msg)
             }
         }
     }

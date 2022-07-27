@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.tenqube.ibkreceipt" >
+
+    <application>
+        <activity
+            android:name="com.tenqube.ibkreceipt.VisualActivity"
+            android:exported="true"
+            android:label="@string/title_activity_visual" >
+
+            <intent-filter android:label="ibk-receipt">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "example://gizmos” -->
+                <data android:scheme="visual"
+                    android:host="ibk-receipt" />
+            </intent-filter>
+
+        </activity>
+    </application>
+
+</manifest>
