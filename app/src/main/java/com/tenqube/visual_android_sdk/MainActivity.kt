@@ -44,8 +44,8 @@ class MainActivity : AppCompatActivity() {
                 .notification(
                     NotificationArg(
                         R.drawable.ic_status, // 알림 small_icon 정보
-                        "ibk-channel-id", //현재 사용 중인 알림 채널 아이디
-                        "IBK"// 채널명
+                        "ibk-channel-id", // 현재 사용 중인 알림 채널 아이디
+                        "IBK" // 채널명
                     )
                 )
                 .service(Service.IBK) // IBK 고정
