@@ -19,6 +19,6 @@ data class Card(
     val isDeleted: Boolean = false
 ) : Entity {
     fun getUniqueKey(): String {
-        return "${name}${type}${subType}}"
+        return "${name}${type}$subType}"
     }
 }

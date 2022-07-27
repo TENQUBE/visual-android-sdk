@@ -1,9 +1,8 @@
 package com.tenqube.visualbase.infrastructure.adapter.search.remote
 
+import com.tenqube.shared.prefs.PrefStorage
 import com.tenqube.visualbase.domain.search.SearchRequest
 import com.tenqube.visualbase.domain.search.SearchResult
-import com.tenqube.shared.prefs.PrefStorage
-import com.tenqube.visualbase.domain.util.Result
 import com.tenqube.visualbase.infrastructure.util.ErrorMsg
 import com.tenqube.visualbase.infrastructure.util.ResultWrapper
 import com.tenqube.visualbase.infrastructure.util.safeApiCall
@@ -44,7 +43,7 @@ class SearchRemoteDataSource(
                 throw Exception(ErrorMsg.NETWORK.msg)
             }
             is ResultWrapper.GenericError -> {
-               throw Exception(response.error?.toString() ?: ErrorMsg.GENERIC.msg)
+                throw Exception(response.error?.toString() ?: ErrorMsg.GENERIC.msg)
             }
         }
     }

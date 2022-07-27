@@ -8,7 +8,6 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.tenqube.jb.bridge.ui.AndroidUIBridge
 import com.tenqube.jb.databinding.MainFragmentJbBinding
 import com.tenqube.shared.webview.WebViewManager
 import com.tenqube.shared.webview.WebViewParam

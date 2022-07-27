@@ -8,8 +8,8 @@ data class NotificationDto(
 ) {
     fun getMsg(): String {
         return "${Utils.threeComma(transaction.transaction.spentMoney)} " +
-                "${Utils.dwType(transaction.card.type, transaction.transaction.dwType)} | " +
-                "${transaction.card.name}(${Utils.installment(transaction.transaction.installmentCnt)})"
+            "${Utils.dwType(transaction.card.type, transaction.transaction.dwType)} | " +
+            "${transaction.card.name}(${Utils.installment(transaction.transaction.installmentCnt)})"
     }
 
     fun getTitle(): String {

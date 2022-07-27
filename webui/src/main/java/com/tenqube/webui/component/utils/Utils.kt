@@ -16,7 +16,6 @@ object Utils {
 
     val DECIMAL_FORMAT = DecimalFormat("00")
 
-
     fun dpToPx(dp: Int): Int {
         return (dp * Resources.getSystem().displayMetrics.density).toInt()
     }

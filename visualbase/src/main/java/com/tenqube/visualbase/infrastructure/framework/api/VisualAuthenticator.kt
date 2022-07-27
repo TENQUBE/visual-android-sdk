@@ -12,8 +12,8 @@ import java.io.IOException
 class VisualAuthenticator(private val authService: AuthService, private val prefStorage: PrefStorage) : Authenticator {
     private fun getRequest(response: Response): Request {
         return response.request.newBuilder()
-                .header("Authorization", prefStorage.accessToken)
-                .build()
+            .header("Authorization", prefStorage.accessToken)
+            .build()
     }
 
     @Throws(IOException::class)

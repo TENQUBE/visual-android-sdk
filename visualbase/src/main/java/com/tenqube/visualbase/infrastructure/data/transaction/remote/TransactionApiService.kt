@@ -19,7 +19,7 @@ interface TransactionApiService {
 
 data class TransactionRequest(
     val transactions: List<TransactionDto>
-): Serializable {
+) : Serializable {
     companion object {
         fun from(items: List<JoinedTransaction>): TransactionRequest {
             return TransactionRequest(
@@ -64,7 +64,6 @@ data class TransactionRequest(
     }
 }
 
-
 data class TransactionDto(
     val identifier: String,
     val cardName: String,
@@ -98,6 +97,6 @@ data class TransactionDto(
     val isUserUpdate: Int,
     val isUpdateAll: Int,
     val isDeleted: Int
-): Serializable
+) : Serializable
 
 data class CurrencyResponse(val rate: Float)

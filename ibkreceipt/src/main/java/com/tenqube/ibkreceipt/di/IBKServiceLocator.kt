@@ -44,12 +44,12 @@ object IBKServiceLocator {
 
         val transactionRepository = TransactionRepositoryImpl(
             transactionDao,
-            transactionRemoteDataSource)
+            transactionRemoteDataSource
+        )
         val userCategoryRepository = UserCategoryConfigRepositoryImpl(userCategoryConfigDao)
         val uiService = UIServiceBuilder()
             .activity(context)
             .refreshCallback {
-
             }
             .build()
 
@@ -75,7 +75,8 @@ object IBKServiceLocator {
         val notificationService = NotificationServiceImpl(
             context,
             prefStorage,
-            notificationAppLocalDataSource)
+            notificationAppLocalDataSource
+        )
         return VisualViewModel.Factory(
             userAppService = ServiceLocator.provideUserAppService(
                 context,

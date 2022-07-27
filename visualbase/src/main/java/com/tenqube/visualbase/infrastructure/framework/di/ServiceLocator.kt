@@ -66,14 +66,15 @@ object ServiceLocator {
     private var parserAppService: ParserAppService? = null
 
     fun provideOkHttpClient():
-            OkHttpClient {
+        OkHttpClient {
         return OkHttpClient.Builder().apply {
             this.connectTimeout(5, TimeUnit.SECONDS)
             this.readTimeout(5, TimeUnit.SECONDS)
             this.writeTimeout(5, TimeUnit.SECONDS)
             this.addInterceptor(
                 HttpLoggingInterceptor()
-                .setLevel(HttpLoggingInterceptor.Level.BODY))
+                    .setLevel(HttpLoggingInterceptor.Level.BODY)
+            )
         }.build()
     }
 
@@ -88,7 +89,8 @@ object ServiceLocator {
 
     private fun provideAuthService(
         retrofit: Retrofit,
-        prefStorage: PrefStorage): AuthService {
+        prefStorage: PrefStorage
+    ): AuthService {
         val api = retrofit.create(AuthApi::class.java)
         val remote = AuthRemoteDataSource(api, prefStorage)
         return AuthServiceImpl(
@@ -107,7 +109,7 @@ object ServiceLocator {
         return ResourceAppService(resourceService)
     }
 
-    fun provideParserAppService(context: Context) : ParserAppService {
+    fun provideParserAppService(context: Context): ParserAppService {
         return parserAppService ?: createParserAppService(context).apply {
             parserAppService = this
         }
@@ -130,7 +132,8 @@ object ServiceLocator {
 
         val transactionRepository = TransactionRepositoryImpl(
             transactionDao,
-            transactionRemoteDataSource)
+            transactionRemoteDataSource
+        )
         val cardRepository = CardRepositoryImpl(cardDao)
         val categoryRepository = CategoryRepositoryImpl(categoryDao)
         val userCategoryRepository = UserCategoryConfigRepositoryImpl(userCategoryDao)
@@ -149,10 +152,12 @@ object ServiceLocator {
         )
     }
 
-    fun provideParserAppService(context: Context,
-                                transactionAppService: TransactionAppService,
-                                prefStorage: PrefStorage,
-                                retrofit: Retrofit) : ParserAppService {
+    fun provideParserAppService(
+        context: Context,
+        transactionAppService: TransactionAppService,
+        prefStorage: PrefStorage,
+        retrofit: Retrofit
+    ): ParserAppService {
         val resourceAppService = provideResourceAppService(retrofit, prefStorage)
         val parsingRuleService = ParsingRuleService(resourceAppService, prefStorage)
 
@@ -163,7 +168,8 @@ object ServiceLocator {
             context,
             parserService = parser,
             parsingRuleService = parsingRuleService,
-            rcsService = rcsService)
+            rcsService = rcsService
+        )
 
         val db = provideVisualDatabase(context)
 
@@ -256,7 +262,7 @@ object ServiceLocator {
                 super.onCreate(db)
             }
         })
-        .build()
+            .build()
     }
 
     fun provideUserDao(db: VisualDatabase): UserDao {

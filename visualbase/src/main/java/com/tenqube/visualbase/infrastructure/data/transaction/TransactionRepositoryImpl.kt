@@ -45,7 +45,6 @@ class TransactionRepositoryImpl(
             dao.insertAll(TransactionModel.fromDomain(it.transaction))
         }
         remote.saveTransaction(TransactionRequest.from(items))
-
     }
 
     override suspend fun delete(item: Transaction) {

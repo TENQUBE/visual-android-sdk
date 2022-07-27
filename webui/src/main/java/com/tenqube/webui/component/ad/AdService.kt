@@ -50,7 +50,6 @@ class AdService(private val context: Context) {
     }
 
     fun hideAd() {
-
     }
 
     private fun populateUnifiedNativeAdView(
@@ -71,7 +70,8 @@ class AdService(private val context: Context) {
         }
         setBgColor(adView, bgColor)
         if (
-            adRequest.button != null) {
+            adRequest.button != null
+        ) {
             linkToBgColor = adRequest.button.bgColor
             adRequest.button.textColor?.let {
                 linkToColor = it

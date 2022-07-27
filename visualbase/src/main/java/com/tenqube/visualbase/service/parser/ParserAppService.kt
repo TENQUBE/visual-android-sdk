@@ -3,8 +3,13 @@ package com.tenqube.visualbase.service.parser
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import com.tenqube.shared.prefs.PrefStorage
+import com.tenqube.shared.util.encodeToBase64
+import com.tenqube.shared.util.toJson
 import com.tenqube.visualbase.domain.currency.CurrencyRequest
 import com.tenqube.visualbase.domain.currency.CurrencyService
+import com.tenqube.visualbase.domain.notification.NotificationService
+import com.tenqube.visualbase.domain.notification.dto.NotificationDto
 import com.tenqube.visualbase.domain.parser.ParsedTransaction
 import com.tenqube.visualbase.domain.parser.ParserService
 import com.tenqube.visualbase.domain.parser.SMS
@@ -14,11 +19,6 @@ import com.tenqube.visualbase.domain.search.SearchService
 import com.tenqube.visualbase.domain.search.SearchTransaction
 import com.tenqube.visualbase.domain.search.TranCompany
 import com.tenqube.visualbase.domain.transaction.dto.SaveTransactionDto
-import com.tenqube.shared.prefs.PrefStorage
-import com.tenqube.shared.util.encodeToBase64
-import com.tenqube.shared.util.toJson
-import com.tenqube.visualbase.domain.notification.NotificationService
-import com.tenqube.visualbase.domain.notification.dto.NotificationDto
 import com.tenqube.visualbase.infrastructure.adapter.notification.VisualIBKReceiptDto
 import com.tenqube.visualbase.service.transaction.TransactionAppService
 import com.tenqube.visualbase.service.transaction.dto.JoinedTransaction
@@ -51,7 +51,7 @@ class ParserAppService(
     suspend fun parse(sms: SMS): Result<Unit> {
         return try {
             val parsedTransactions = parserService.parse(sms)
-            if(parsedTransactions.isNotEmpty()) {
+            if (parsedTransactions.isNotEmpty()) {
                 saveTransactions(parsedTransactions)
                 parsedTransactions.firstOrNull { it.transaction.isCurrentTran }?.let {
                     val transaction = transactionAppService.getByIdentifier(it.transaction.identifier)
@@ -66,13 +66,14 @@ class ParserAppService(
     }
 
     private fun showNotification(transaction: JoinedTransaction) {
-        with(NotificationDto(
-            transaction
-        )) {
+        with(
+            NotificationDto(
+                transaction
+            )
+        ) {
             notificationService.show(this)
             showPopup(this)
         }
-
     }
 
     private fun showPopup(command: NotificationDto) {

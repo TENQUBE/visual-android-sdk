@@ -74,10 +74,12 @@ open class BridgeBase(
         } as RequestBody
     }
 
-    fun <T> execute(funcName: String, params: String? = null,
-                    classOfT: Class<T>,
-                    body: (T?) -> Any?,
-                    isSkip: Boolean = false
+    fun <T> execute(
+        funcName: String,
+        params: String? = null,
+        classOfT: Class<T>,
+        body: (T?) -> Any?,
+        isSkip: Boolean = false
     ) {
         launch(Dispatchers.Main) {
             var request: RequestBody? = null
@@ -90,13 +92,12 @@ open class BridgeBase(
                 }
                 val result = body(request as? T?)
 
-                if(!isSkip) {
+                if (!isSkip) {
                     response = onSuccess(
                         funcName = funcName,
                         any = result
                     )
                 }
-
             } catch (e: Exception) {
                 onResultError(funcName, e.toString())
             } finally {

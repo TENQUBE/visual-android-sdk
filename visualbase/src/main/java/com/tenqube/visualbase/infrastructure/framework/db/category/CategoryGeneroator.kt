@@ -8,7 +8,7 @@ import java.io.InputStream
 import java.io.InputStreamReader
 
 object CategoryGeneroator {
-    fun generate(context: Context) : List<Category> {
+    fun generate(context: Context): List<Category> {
         val categories = mutableListOf<Category>()
         val am: AssetManager = context.assets
         val inStream: InputStream
@@ -31,7 +31,6 @@ object CategoryGeneroator {
                         it[4]
                     )
                     categories.add(category)
-
                 }
                 i++
             }

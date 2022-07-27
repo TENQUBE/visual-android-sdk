@@ -26,7 +26,7 @@ data class UserModel(
         )
     }
     companion object {
-        fun fromDomain(item: User) : UserModel {
+        fun fromDomain(item: User): UserModel {
             return UserModel(
                 item.id,
                 item.birth,

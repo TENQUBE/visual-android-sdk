@@ -21,8 +21,8 @@ class MainActivity : AppCompatActivity() {
             // visual service 생성
             val visualService = VisualServiceImpl(
                 this,
-                "LEZQmdU1Zx8hxH1PjfT7hWTzdGOQYre58AVHNgA0" //api 키정보
-                ,  // 발급 된 키정보
+                "LEZQmdU1Zx8hxH1PjfT7hWTzdGOQYre58AVHNgA0", // api 키정보
+                // 발급 된 키정보
                 Constants.DEV,
                 "com.tenqube.visual_android_sdk"
             ) // 레이어 정보 상용 배포시 Constants.PROD
@@ -43,13 +43,14 @@ class MainActivity : AppCompatActivity() {
                 .layer(Layer.DEV) // 개발 : Layer.DEV, 상용: Layer.PROD
                 .notification(
                     NotificationArg(
-                    R.drawable.ic_launcher_background, // 알림 small_icon 정보
-                    "현재 사용 중인 알림 채널 아이디",
-                    "현재 사용 중인 채널명")
+                        R.drawable.ic_launcher_background, // 알림 small_icon 정보
+                        "현재 사용 중인 알림 채널 아이디",
+                        "현재 사용 중인 채널명"
+                    )
                 )
                 .service(Service.IBK)
                 .build()
-                .start(UserArg(":UID", 1987, VisualGender.MALE))  // 사용자 고유 아이디, 생년, 성별
+                .start(UserArg(":UID", 1987, VisualGender.MALE)) // 사용자 고유 아이디, 생년, 성별
         }
     }
 
@@ -65,7 +66,6 @@ class MainActivity : AppCompatActivity() {
                     Manifest.permission.READ_SMS
                 )
             ) {
-
             } else {
                 ActivityCompat.requestPermissions(
                     this@MainActivity,

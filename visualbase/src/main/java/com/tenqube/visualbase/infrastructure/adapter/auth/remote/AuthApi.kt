@@ -8,8 +8,10 @@ import retrofit2.http.*
 
 interface AuthApi {
     @POST
-    suspend fun signUp(@Url url: String, @HeaderMap header: Map<String, String>,
-                       @Body request: UserRequestDto
+    suspend fun signUp(
+        @Url url: String,
+        @HeaderMap header: Map<String, String>,
+        @Body request: UserRequestDto
     ): ResultBody<UserResultDto>
 
     @POST

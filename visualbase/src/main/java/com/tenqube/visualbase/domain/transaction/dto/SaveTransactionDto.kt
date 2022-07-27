@@ -24,6 +24,6 @@ data class SaveTransactionDto(
     val classCode: String
 ) {
     fun getUniqueCardKey(): String {
-        return "${cardName}${cardType}${cardSubType}}"
+        return "${cardName}${cardType}$cardSubType}"
     }
 }

@@ -1,7 +1,7 @@
 package com.tenqube.visualbase.infrastructure.adapter.parser.rule
 
-import com.tenqube.visualbase.domain.resource.dto.ParsingRuleDto
 import com.tenqube.shared.prefs.PrefStorage
+import com.tenqube.visualbase.domain.resource.dto.ParsingRuleDto
 import com.tenqube.visualbase.service.resource.ResourceAppService
 
 class ParsingRuleService(
@@ -12,8 +12,8 @@ class ParsingRuleService(
     suspend fun getParsingRule(): ParsingRuleDto? {
         val clientVersion = prefStorage.ruleVersion
         val serverVersion = resourceAppService.getVersion()
-        if(clientVersion >= serverVersion) {
-            return  null
+        if (clientVersion >= serverVersion) {
+            return null
         }
 
         return resourceAppService.getParsingRule(

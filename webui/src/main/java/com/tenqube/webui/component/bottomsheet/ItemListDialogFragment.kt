@@ -21,7 +21,7 @@ class ItemListDialogFragment : BottomSheetDialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(STYLE_NORMAL, R.style.BottomSheetDialogStyle);
+        setStyle(STYLE_NORMAL, R.style.BottomSheetDialogStyle)
     }
 
     override fun onCreateView(
@@ -29,7 +29,7 @@ class ItemListDialogFragment : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-         return inflater.inflate(R.layout.fragment_bottom_sheet_view, container, false)
+        return inflater.inflate(R.layout.fragment_bottom_sheet_view, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

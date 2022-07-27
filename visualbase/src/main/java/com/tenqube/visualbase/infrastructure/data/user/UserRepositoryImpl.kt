@@ -2,7 +2,6 @@ package com.tenqube.visualbase.infrastructure.data.user
 
 import com.tenqube.visualbase.domain.user.User
 import com.tenqube.visualbase.domain.user.UserRepository
-import com.tenqube.visualbase.infrastructure.data.transaction.local.TransactionModel
 import com.tenqube.visualbase.infrastructure.data.user.local.UserDao
 import com.tenqube.visualbase.infrastructure.data.user.local.UserModel
 

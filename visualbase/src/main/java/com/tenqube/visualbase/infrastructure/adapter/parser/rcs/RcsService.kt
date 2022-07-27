@@ -45,8 +45,10 @@ class RcsService(private val context: Context) {
             val arg = arrayOfNulls<String>(2)
             arg[0] = from.toString()
             arg[1] = to.toString()
-            c = context.contentResolver.query(SAMSUNG_URI, null,
-                "type = 1 and date > ? and date <= ?", arg, "date asc")
+            c = context.contentResolver.query(
+                SAMSUNG_URI, null,
+                "type = 1 and date > ? and date <= ?", arg, "date asc"
+            )
             if (c != null) {
                 if (c.moveToFirst()) {
                     while (!c.isAfterLast) {

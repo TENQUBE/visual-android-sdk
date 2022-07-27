@@ -35,8 +35,10 @@ class VisualFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProvider(this,
-            IBKServiceLocator.provideVisualViewModel(requireActivity() as AppCompatActivity))[VisualViewModel::class.java]
+        viewModel = ViewModelProvider(
+            this,
+            IBKServiceLocator.provideVisualViewModel(requireActivity() as AppCompatActivity)
+        )[VisualViewModel::class.java]
         viewDataBinding = FragmentMainIbkBinding.inflate(inflater, container, false)
             .apply {
                 viewmodel = viewModel
@@ -118,7 +120,7 @@ class VisualFragment : Fragment() {
         return adContainer
     }
 
-    private fun parseArg() : VisualIBKArg? {
+    private fun parseArg(): VisualIBKArg? {
         return arguments?.let {
             it.getSerializable(VISUAL_IBK_ARG) as VisualIBKArg
         }
@@ -182,7 +184,7 @@ class VisualFragment : Fragment() {
 
     companion object {
         const val BASE_URL = "https://d34db13xxji3zw.cloudfront.net/"
-        const val URL = "${BASE_URL}?v=1.0&dv=1.0"
+        const val URL = "$BASE_URL?v=1.0&dv=1.0"
         const val PROGRESS_URL = "${BASE_URL}loading#type=bulk"
         const val VISUAL_IBK_ARG = "visual_ibk_arg"
         @JvmStatic

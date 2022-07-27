@@ -15,14 +15,17 @@ import com.tenqube.visualbase.infrastructure.data.user.local.UserModel
 import com.tenqube.visualbase.infrastructure.data.usercategoryconfig.local.UserCategoryConfigDao
 import com.tenqube.visualbase.infrastructure.data.usercategoryconfig.local.UserCategoryConfigModel
 
-@Database(entities = [
-    CurrencyModel::class,
-    UserModel::class,
-    CardModel::class,
-    CategoryModel::class,
-    UserCategoryConfigModel::class,
-    TransactionModel::class],
-    version = 1)
+@Database(
+    entities = [
+        CurrencyModel::class,
+        UserModel::class,
+        CardModel::class,
+        CategoryModel::class,
+        UserCategoryConfigModel::class,
+        TransactionModel::class
+    ],
+    version = 1
+)
 abstract class VisualDatabase : RoomDatabase() {
     abstract fun currencyDao(): CurrencyDao
     abstract fun userDao(): UserDao

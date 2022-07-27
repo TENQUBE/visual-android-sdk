@@ -1,9 +1,7 @@
 package com.tenqube.visualbase.infrastructure.adapter.notification
 
 import com.tenqube.visualbase.domain.notification.dto.NotificationDto
-import com.tenqube.visualbase.service.transaction.dto.JoinedTransaction
 import java.io.Serializable
-
 
 data class VisualIBKReceiptDto(
     val keyword: String,
@@ -14,22 +12,22 @@ data class VisualIBKReceiptDto(
     val mediumCategory: String,
     val smallCategory: String,
     val franchise: String
-): Serializable {
+) : Serializable {
     fun toLink(): String {
-        return  "v=1&" +
-                "dv=1.0&" +
-                "keyword=${keyword}&" +
-                "cardName=${cardName}&" +
-                "amount=${amount}&" +
-                "paymentDate=${paymentDate}&" +
-                "largeCategory=${largeCategory}&" +
-                "mediumCategory=${mediumCategory}&" +
-                "smallCategory=${smallCategory}&" +
-                "franchise=${franchise}"
+        return "v=1&" +
+            "dv=1.0&" +
+            "keyword=$keyword&" +
+            "cardName=$cardName&" +
+            "amount=$amount&" +
+            "paymentDate=$paymentDate&" +
+            "largeCategory=$largeCategory&" +
+            "mediumCategory=$mediumCategory&" +
+            "smallCategory=$smallCategory&" +
+            "franchise=$franchise"
     }
 
     companion object {
-        fun from(item: NotificationDto) : VisualIBKReceiptDto {
+        fun from(item: NotificationDto): VisualIBKReceiptDto {
             return VisualIBKReceiptDto(
                 item.transaction.transaction.keyword,
                 item.transaction.card.name,

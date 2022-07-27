@@ -16,7 +16,7 @@ object Utils {
 
     fun logD(className: Class<Any>, msg: String) {
 //        if (isDebug) {
-            Log.d(TAG, "${className.simpleName} $msg")
+        Log.d(TAG, "${className.simpleName} $msg")
 //        }
     }
 
@@ -97,15 +97,15 @@ object Utils {
     }
 
     fun installment(amount: Int): String {
-        return when(amount) {
+        return when (amount) {
             1 -> "일시불"
             else -> "${amount}개월"
         }
     }
 
     fun dwType(cardType: Int, dwType: Int): String {
-        return if(cardType == Constants.CardType.BANK_ACCOUNT.ordinal) {
-            if(dwType == Constants.DWType.DEPOSIT.ordinal) {
+        return if (cardType == Constants.CardType.BANK_ACCOUNT.ordinal) {
+            if (dwType == Constants.DWType.DEPOSIT.ordinal) {
                 "입금"
             } else {
                 "출금"
@@ -118,5 +118,4 @@ object Utils {
     fun dpToPx(dp: Int): Int {
         return (dp * Resources.getSystem().displayMetrics.density).toInt()
     }
-
 }

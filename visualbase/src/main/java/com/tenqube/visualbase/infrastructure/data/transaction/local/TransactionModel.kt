@@ -64,7 +64,7 @@ data class TransactionModel(
     }
 
     companion object {
-        fun fromDomain(item: Transaction) : TransactionModel {
+        fun fromDomain(item: Transaction): TransactionModel {
             return TransactionModel(
                 item.id,
                 item.categoryId,

@@ -1,8 +1,7 @@
 package com.tenqube.visualbase.infrastructure.adapter.currency.remote
 
-import com.tenqube.visualbase.domain.currency.CurrencyRequest
 import com.tenqube.shared.prefs.PrefStorage
-import com.tenqube.visualbase.domain.util.Result
+import com.tenqube.visualbase.domain.currency.CurrencyRequest
 import com.tenqube.visualbase.infrastructure.framework.api.dto.VisualApiConfig
 import com.tenqube.visualbase.infrastructure.util.ErrorMsg
 import com.tenqube.visualbase.infrastructure.util.ResultWrapper

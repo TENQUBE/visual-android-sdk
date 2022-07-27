@@ -44,14 +44,14 @@ class VisualActivity : AppCompatActivity() {
     }
 
     private fun setupReceiver() {
-        val smsReceiver = SMSCatchReceiver();
-        val intentFilter = IntentFilter();
-        intentFilter.addAction(SMSCatchReceiver.SMS_RECEIVED_ACTION);
-        this.registerReceiver(smsReceiver,intentFilter);
+        val smsReceiver = SMSCatchReceiver()
+        val intentFilter = IntentFilter()
+        intentFilter.addAction(SMSCatchReceiver.SMS_RECEIVED_ACTION)
+        this.registerReceiver(smsReceiver, intentFilter)
 
-        val rcsReceiver = RcsCatchReceiver();
-        val intentFilter2 = IntentFilter();
-        intentFilter2.addAction(RcsCatchReceiver.RCS_RECEIVED_ACTION);
-        this.registerReceiver(rcsReceiver,intentFilter2);
+        val rcsReceiver = RcsCatchReceiver()
+        val intentFilter2 = IntentFilter()
+        intentFilter2.addAction(RcsCatchReceiver.RCS_RECEIVED_ACTION)
+        this.registerReceiver(rcsReceiver, intentFilter2)
     }
 }

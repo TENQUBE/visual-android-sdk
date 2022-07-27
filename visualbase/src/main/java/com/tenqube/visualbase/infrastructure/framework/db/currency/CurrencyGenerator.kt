@@ -8,7 +8,7 @@ import java.io.InputStream
 import java.io.InputStreamReader
 
 object CurrencyGenerator {
-    fun generate(context: Context) : List<CurrencyModel> {
+    fun generate(context: Context): List<CurrencyModel> {
         val items = mutableListOf<CurrencyModel>()
         val am: AssetManager = context.assets
         val inStream: InputStream

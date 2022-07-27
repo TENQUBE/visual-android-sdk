@@ -26,12 +26,16 @@ class VisualServiceImpl(
 
     override fun start(command: UserArg) {
         val intent = Intent(arg.activity, VisualActivity::class.java)
-        intent.putExtra(VISUAL_IBK_ARG, VisualIBKArg(
-            user=CreateUser(
-                uid = command.uid,
-                birth = command.birth,
-                gender = command.gender.ordinal
-            )))
+        intent.putExtra(
+            VISUAL_IBK_ARG,
+            VisualIBKArg(
+                user = CreateUser(
+                    uid = command.uid,
+                    birth = command.birth,
+                    gender = command.gender.ordinal
+                )
+            )
+        )
         arg.activity.startActivity(intent)
     }
 }

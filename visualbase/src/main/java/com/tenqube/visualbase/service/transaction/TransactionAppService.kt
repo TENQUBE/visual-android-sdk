@@ -8,7 +8,6 @@ import com.tenqube.visualbase.domain.category.Category
 import com.tenqube.visualbase.domain.category.CategoryRepository
 import com.tenqube.visualbase.domain.transaction.Transaction
 import com.tenqube.visualbase.domain.transaction.TransactionRepository
-import com.tenqube.visualbase.domain.transaction.TransactionService
 import com.tenqube.visualbase.domain.transaction.dto.CountByNoti
 import com.tenqube.visualbase.domain.transaction.dto.SaveTransactionDto
 import com.tenqube.visualbase.domain.usercategoryconfig.UserCategoryConfig
@@ -30,8 +29,10 @@ class TransactionAppService(
                 .findCountByNoti()
                 .mapNotNull {
                     packageManager.getPackageInfo(it.name, 0)?.let { pkg ->
-                        it.copy(name = packageManager.getApplicationLabel(
-                            pkg.applicationInfo).toString()
+                        it.copy(
+                            name = packageManager.getApplicationLabel(
+                                pkg.applicationInfo
+                            ).toString()
                         )
                     }
                 }.sortedByDescending { it.count }
@@ -105,7 +106,7 @@ class TransactionAppService(
             val card = cardMap[it.cardId]
             val category = categoryMap[it.categoryId]
             val userCategory = userCateMap[it.userCategoryConfigId]
-            if(hasMandatory(card, category, userCategory)) {
+            if (hasMandatory(card, category, userCategory)) {
                 JoinedTransaction(
                     it,
                     card!!,
@@ -127,60 +128,60 @@ class TransactionAppService(
     }
 
     suspend fun saveTransactions(items: List<SaveTransactionDto>): Result<Unit> {
-       return try {
-           val cardMap = saveCards(items)
-               .associateBy { it.getUniqueKey()}
+        return try {
+            val cardMap = saveCards(items)
+                .associateBy { it.getUniqueKey() }
 
-           val categoryMap = categoryRepository
-               .findAll()
-               .associateBy { it.code }
+            val categoryMap = categoryRepository
+                .findAll()
+                .associateBy { it.code }
 
-           val userCateMap = userCategoryConfigRepository
-               .findAll()
-               .associateBy { it.code }
+            val userCateMap = userCategoryConfigRepository
+                .findAll()
+                .associateBy { it.code }
 
-           val joinedTransactions = items.mapNotNull {
-               val card = cardMap[it.getUniqueCardKey()]
-               val category = categoryMap[it.categoryCode]
-               val userCategory = userCateMap[it.categoryCode.substring(0, 2)]
-               if(hasMandatory(card, category, userCategory)) {
-                   JoinedTransaction(
-                       Transaction(
-                       id = it.id,
-                       categoryId = category!!.id,
-                       cardId = card!!.id,
-                       userCategoryConfigId = userCategory!!.id,
-                       company = it.company,
-                       spentDate = it.spentDate,
-                       finishDate = it.finishDate,
-                       spentMoney = it.spentMoney,
-                       oriSpentMoney = it.oriSpentMoney,
-                       installmentCnt = it.installmentCnt,
-                       keyword = it.keyword,
-                       currency = it.currency,
-                       dwType = it.dwType,
-                       memo = it.memo,
-                       sms = it.sms,
-                       regId = it.regId,
-                       classCode = it.classCode
-                       ),
-                       card,
-                       category,
-                       userCategory
-                   )
-               } else {
-                   null
-               }
-           }
+            val joinedTransactions = items.mapNotNull {
+                val card = cardMap[it.getUniqueCardKey()]
+                val category = categoryMap[it.categoryCode]
+                val userCategory = userCateMap[it.categoryCode.substring(0, 2)]
+                if (hasMandatory(card, category, userCategory)) {
+                    JoinedTransaction(
+                        Transaction(
+                            id = it.id,
+                            categoryId = category!!.id,
+                            cardId = card!!.id,
+                            userCategoryConfigId = userCategory!!.id,
+                            company = it.company,
+                            spentDate = it.spentDate,
+                            finishDate = it.finishDate,
+                            spentMoney = it.spentMoney,
+                            oriSpentMoney = it.oriSpentMoney,
+                            installmentCnt = it.installmentCnt,
+                            keyword = it.keyword,
+                            currency = it.currency,
+                            dwType = it.dwType,
+                            memo = it.memo,
+                            sms = it.sms,
+                            regId = it.regId,
+                            classCode = it.classCode
+                        ),
+                        card,
+                        category,
+                        userCategory
+                    )
+                } else {
+                    null
+                }
+            }
 
-           transactionRepository.saveAll(joinedTransactions)
-           Result.success(Unit)
-       } catch (e: Exception) {
-           Result.failure(e)
-       }
+            transactionRepository.saveAll(joinedTransactions)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
     }
 
-    private suspend fun saveCards(items: List<SaveTransactionDto>) : List<Card> {
+    private suspend fun saveCards(items: List<SaveTransactionDto>): List<Card> {
         val cardMap = cardRepository
             .findAll()
             .associateBy { it.getUniqueKey() }

@@ -1,6 +1,5 @@
 package com.tenqube.ibkreceipt
 
-import android.security.keystore.UserNotAuthenticatedException
 import android.view.View
 import androidx.lifecycle.*
 import com.tenqube.ibkreceipt.bridge.dto.request.*
@@ -63,7 +62,7 @@ class VisualViewModel(
                 ibkSharedPreference.disableTranPopup()
                 _url.value = VisualFragment.PROGRESS_URL
                 startBulk()
-            } catch(e: UserAlreadyExistException) {
+            } catch (e: UserAlreadyExistException) {
                 _url.value = url
             } catch (e: Exception) {
                 _error.value = e.toString()
@@ -73,21 +72,24 @@ class VisualViewModel(
 
     private suspend fun startBulk() {
         bulkParserAppService.start(
-            BulkSmsAdapterImpl(bulkParserAppService, object : BulkCallback {
-                override fun onStart() {
-                    _isProgress.postValue(true)
+            BulkSmsAdapterImpl(
+                bulkParserAppService,
+                object : BulkCallback {
+                    override fun onStart() {
+                        _isProgress.postValue(true)
+                    }
+                    override fun onProgress(now: Int, total: Int) {
+                        _progressCount.postValue(ProgressCount(now, total))
+                    }
+                    override fun onCompleted() {
+                        _isProgress.postValue(false)
+                    }
+                    override fun onError(code: Int) {
+                        _error.postValue("내역을 불러오던 도중 에러가 발생하였습니다.")
+                        _isProgress.postValue(false)
+                    }
                 }
-                override fun onProgress(now: Int, total: Int) {
-                    _progressCount.postValue(ProgressCount(now, total))
-                }
-                override fun onCompleted() {
-                    _isProgress.postValue(false)
-                }
-                override fun onError(code: Int) {
-                    _error.postValue("내역을 불러오던 도중 에러가 발생하였습니다.")
-                    _isProgress.postValue(false)
-                }
-            })
+            )
         )
     }
 
@@ -114,20 +116,24 @@ class VisualViewModel(
     }
 
     fun openSelectBox(request: OpenSelectBoxRequest, callback: (selectBox: SelectBoxItem) -> Unit) {
-        uiService.openSelectBox(OpenSelectBox(
-            request.asDomain(), callback
-        ))
+        uiService.openSelectBox(
+            OpenSelectBox(
+                request.asDomain(), callback
+            )
+        )
     }
 
     fun showAd(request: ShowAdDto) {
-        uiService.showAd(ShowAd(
-            request.unitId,
-            request.container.asDomain(),
-            request.button.asDomain(),
-            callback = {
-                _showAd.value = it
-            }
-        ))
+        uiService.showAd(
+            ShowAd(
+                request.unitId,
+                request.container.asDomain(),
+                request.button.asDomain(),
+                callback = {
+                    _showAd.value = it
+                }
+            )
+        )
     }
 
     fun hideAd() {
@@ -142,25 +148,29 @@ class VisualViewModel(
         uiService.finish()
     }
 
-    fun getBanks() : BanksDto = runBlocking {
+    fun getBanks(): BanksDto = runBlocking {
         return@runBlocking try {
             val cards = userAppService.getNotiApps().getOrThrow()
-            BanksDto(cards.map {
-                BankDto.fomDomain(it)
-            })
+            BanksDto(
+                cards.map {
+                    BankDto.fomDomain(it)
+                }
+            )
         } catch (e: Exception) {
             BanksDto(listOf())
         }
     }
 
-    fun getNotiBanks() : NotiBanksDto = runBlocking {
+    fun getNotiBanks(): NotiBanksDto = runBlocking {
         val countByCard = transactionAppService.getCountByNoti().getOrDefault(listOf())
-        return@runBlocking NotiBanksDto(countByCard.map {
-            NotiBankDto.fromDomain(it)
-        })
+        return@runBlocking NotiBanksDto(
+            countByCard.map {
+                NotiBankDto.fromDomain(it)
+            }
+        )
     }
 
-    fun getTransactions(request: GetTransactionsRequest) : TransactionsResponse = runBlocking {
+    fun getTransactions(request: GetTransactionsRequest): TransactionsResponse = runBlocking {
         return@runBlocking try {
             val transactions = transactionAppService.getTransactions(
                 TransactionFilter(
@@ -168,9 +178,11 @@ class VisualViewModel(
                     request.month,
                 )
             ).getOrThrow()
-            TransactionsResponse(transactions.map {
-                TransactionDto.fromDomain(it)
-            })
+            TransactionsResponse(
+                transactions.map {
+                    TransactionDto.fromDomain(it)
+                }
+            )
         } catch (e: Exception) {
             TransactionsResponse(listOf())
         }
@@ -191,7 +203,8 @@ class VisualViewModel(
                 cardAppService,
                 uiService,
                 bulkParserAppService,
-                ibkSharedPreference) as T
+                ibkSharedPreference
+            ) as T
         }
     }
 }

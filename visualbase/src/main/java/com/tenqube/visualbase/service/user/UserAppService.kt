@@ -1,7 +1,6 @@
 package com.tenqube.visualbase.service.user
 
 import android.content.Context
-import android.security.keystore.UserNotAuthenticatedException
 import com.tenqube.shared.error.UserAlreadyExistException
 import com.tenqube.shared.prefs.PrefStorage
 import com.tenqube.shared.util.Constants
@@ -19,10 +18,7 @@ import com.tenqube.visualbase.domain.usercategoryconfig.UserCategoryConfig
 import com.tenqube.visualbase.domain.usercategoryconfig.UserCategoryConfigRepository
 import com.tenqube.visualbase.infrastructure.adapter.auth.remote.dto.UserRequestDto
 import com.tenqube.visualbase.infrastructure.adapter.auth.remote.dto.UserResultDto
-import com.tenqube.visualbase.infrastructure.data.category.local.CategoryModel
 import com.tenqube.visualbase.infrastructure.framework.db.category.CategoryGeneroator
-import com.tenqube.visualbase.infrastructure.framework.db.currency.CurrencyGenerator
-import com.tenqube.visualbase.infrastructure.framework.di.ServiceLocator
 import java.util.*
 
 class UserAppService(
@@ -71,7 +67,8 @@ class UserAppService(
         prefStorage.resourceUrl = userResultDto.resource.url
         prefStorage.resourceApiKey = userResultDto.resource.apiKey
         prefStorage.searchUrl = userResultDto.search.url
-        prefStorage.searchApiKey = userResultDto.search.apiKey }
+        prefStorage.searchApiKey = userResultDto.search.apiKey
+    }
 
     private suspend fun saveCategoryConfig(user: User) {
         CategoryGeneroator.generate(context).let {
@@ -96,7 +93,8 @@ class UserAppService(
     private suspend fun saveCard(user: User) {
         cardRepository.save(
             listOf(
-                Card("visual_cash_id",
+                Card(
+                    "visual_cash_id",
                     user.id,
                     "현금",
                     Constants.CardType.CASH.ordinal,

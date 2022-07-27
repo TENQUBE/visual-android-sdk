@@ -23,10 +23,12 @@ class SMSCatchReceiver() : BroadcastReceiver() {
                 }
             } else if (RcsCatchReceiver.RCS_RECEIVED_ACTION == intent.action) {
                 val msgId = intent.extras?.get("msg_id").toString()
-                Log.i("RCS", "msgId ${msgId}")
-                (rcsService ?: RcsService(context).apply {
-                    rcsService = this
-                }).queryRcs(msgId)?.run {
+                Log.i("RCS", "msgId $msgId")
+                (
+                    rcsService ?: RcsService(context).apply {
+                        rcsService = this
+                    }
+                    ).queryRcs(msgId)?.run {
                     sendIntentService(context, this)
                 }
             }
@@ -38,6 +40,5 @@ class SMSCatchReceiver() : BroadcastReceiver() {
     companion object {
         const val SMS_RECEIVED_ACTION = "android.provider.Telephony.SMS_RECEIVED"
         const val RCS_RECEIVED_ACTION = "com.services.rcs.MESSAGE_RECEIVED"
-
     }
 }

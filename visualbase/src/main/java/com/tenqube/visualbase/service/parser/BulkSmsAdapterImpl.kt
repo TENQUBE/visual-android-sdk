@@ -35,7 +35,7 @@ class BulkSmsAdapterImpl(
     }
 
     override fun onProgress(now: Int, total: Int) {
-        Log.i("RCS", "now ${now}/ total ${total}")
+        Log.i("RCS", "now $now/ total $total")
         callback.onProgress(now, total)
     }
 

@@ -12,7 +12,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.tenqube.shared.prefs.PrefStorage
 import com.tenqube.shared.util.encodeToBase64
-import com.tenqube.shared.util.toJson
 import com.tenqube.visualbase.domain.notification.NotificationApp
 import com.tenqube.visualbase.domain.notification.NotificationService
 import com.tenqube.visualbase.domain.notification.dto.NotificationDto
@@ -22,13 +21,13 @@ class NotificationServiceImpl(
     private val context: Context,
     private val prefStorage: PrefStorage,
     private val notificationAppLocalDataSource: NotificationAppLocalDataSource
-) : NotificationService{
+) : NotificationService {
     companion object {
         private const val NOTI_ID = 1000
     }
 
     override fun show(command: NotificationDto) {
-        if(prefStorage.isNotiEnabled) {
+        if (prefStorage.isNotiEnabled) {
             createNotificationChannel()
 //            val receipt = VisualIBKReceiptDto.from(command)
             val builder = NotificationCompat.Builder(context, prefStorage.notiChannelId)
@@ -68,11 +67,12 @@ class NotificationServiceImpl(
     private fun createNotificationChannel() {
         val notificationManager: NotificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O  &&
-            !isExistChannel(notificationManager)) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
+            !isExistChannel(notificationManager)
+        ) {
             val name = prefStorage.notiChannelName
             val importance = NotificationManager.IMPORTANCE_HIGH
-            val channel = NotificationChannel(prefStorage.notiChannelId , name, importance)
+            val channel = NotificationChannel(prefStorage.notiChannelId, name, importance)
             notificationManager.createNotificationChannel(channel)
         }
     }

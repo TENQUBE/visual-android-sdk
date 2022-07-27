@@ -8,11 +8,11 @@ data class UserResultDto(
     val resource: ExternalApi,
     val web: Web,
     val authorization: Authorization
-): Serializable
+) : Serializable
 
-data class ExternalApi(val url: String, val apiKey: String): Serializable
+data class ExternalApi(val url: String, val apiKey: String) : Serializable
 
-data class Web(val url: String, val iosUrl: String): Serializable
+data class Web(val url: String, val iosUrl: String) : Serializable
 
 data class Authorization(val sdk: String) : Serializable
 

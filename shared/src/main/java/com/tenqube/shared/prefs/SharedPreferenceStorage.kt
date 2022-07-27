@@ -3,7 +3,8 @@ package com.tenqube.shared.prefs
 import android.content.Context
 import android.content.SharedPreferences
 
-class SharedPreferenceStorage constructor(context: Context
+class SharedPreferenceStorage constructor(
+    context: Context
 ) : PrefStorage {
 
     private val prefs: Lazy<SharedPreferences> = lazy {

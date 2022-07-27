@@ -59,4 +59,4 @@ data class NotificationArg(
     val icon: Int,
     val channelId: String,
     val channelName: String
-    ) : Serializable
+) : Serializable

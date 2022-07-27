@@ -28,10 +28,12 @@ class AuthRemoteDataSource(
     }
 
     suspend fun signUp(request: UserRequestDto): UserResultDto {
-        return when (val response =
-            safeApiCall(ioDispatcher) {
-                api.signUp(getUrl("users/sign-up"), getHeader(""), request)
-            }) {
+        return when (
+            val response =
+                safeApiCall(ioDispatcher) {
+                    api.signUp(getUrl("users/sign-up"), getHeader(""), request)
+                }
+        ) {
             is ResultWrapper.Success -> {
                 response.value.results!!
             }
@@ -45,10 +47,12 @@ class AuthRemoteDataSource(
     }
 
     suspend fun reissueToken(refreshToken: String): Token {
-        return when (val response =
-            safeApiCall(ioDispatcher) {
-                api.reissueToken(getUrl("users/reissue"), getHeader(refreshToken))
-            }) {
+        return when (
+            val response =
+                safeApiCall(ioDispatcher) {
+                    api.reissueToken(getUrl("users/reissue"), getHeader(refreshToken))
+                }
+        ) {
             is ResultWrapper.Success -> {
                 response.value.results!!
             }
