@@ -37,7 +37,7 @@ class UserAppService(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
 
-    suspend fun getNotiApps(): Result<List<NotificationApp>> = withContext(ioDispatcher){
+    suspend fun getNotiApps(): Result<List<NotificationApp>> = withContext(ioDispatcher) {
         return@withContext try {
             Result.success(notificationService.getNotifications())
         } catch (e: Exception) {
@@ -49,7 +49,7 @@ class UserAppService(
         notificationService.setNotiEnabled(enabled)
     }
 
-    suspend fun signUp(request: CreateUser): Result<Unit>  = withContext(ioDispatcher) {
+    suspend fun signUp(request: CreateUser): Result<Unit> = withContext(ioDispatcher) {
         return@withContext try {
             checkNewUserOrThrow()
             val user = User.from(request)
@@ -118,7 +118,7 @@ class UserAppService(
         }
     }
 
-    suspend fun getUser(): User  = withContext(ioDispatcher) {
+    suspend fun getUser(): User = withContext(ioDispatcher) {
         return@withContext userRepository.findUser().getOrThrow()
     }
 }

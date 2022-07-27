@@ -15,7 +15,7 @@ class BulkParserAppService(
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
 
-    suspend fun start(adapter: BulkAdapter) = withContext(ioDispatcher){
+    suspend fun start(adapter: BulkAdapter) = withContext(ioDispatcher) {
         parserAppService.parseBulk(adapter)
     }
 
@@ -32,7 +32,7 @@ class BulkParserAppService(
         }
     }
 
-    suspend fun saveTransactions(transactions: ArrayList<Transaction>) = withContext(ioDispatcher){
+    suspend fun saveTransactions(transactions: ArrayList<Transaction>) = withContext(ioDispatcher) {
         parserAppService.saveTransactions(
             transactions.map {
                 ParsedTransaction(it)

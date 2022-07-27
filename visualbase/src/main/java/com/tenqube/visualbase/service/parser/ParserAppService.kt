@@ -38,7 +38,7 @@ class ParserAppService(
     private val notificationService: NotificationService,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
-    suspend fun parseBulk(adapter: BulkAdapter) = withContext(ioDispatcher){
+    suspend fun parseBulk(adapter: BulkAdapter) = withContext(ioDispatcher) {
         parserService.parseBulk(adapter)
     }
 
@@ -52,7 +52,7 @@ class ParserAppService(
         prefStorage.lastRcsTime = currentTime
     }
 
-    suspend fun parse(sms: SMS): Result<Unit> = withContext(ioDispatcher){
+    suspend fun parse(sms: SMS): Result<Unit> = withContext(ioDispatcher) {
         return@withContext try {
             val parsedTransactions = parserService.parse(sms)
             if (parsedTransactions.isNotEmpty()) {
@@ -91,7 +91,7 @@ class ParserAppService(
 
     suspend fun saveTransactions(
         parsedTransactions: List<ParsedTransaction>
-    ): Result<Unit> = withContext(ioDispatcher){
+    ): Result<Unit> = withContext(ioDispatcher) {
         val searchedTransactions = getSearchedTransactions(parsedTransactions)
         val currencyTransactions = calculateCurrency(searchedTransactions)
         transactionAppService.saveTransactions(
@@ -103,7 +103,7 @@ class ParserAppService(
         return@withContext Result.success(Unit)
     }
 
-    suspend fun getSmsList(filter: SmsFilter): List<SMS>  = withContext(ioDispatcher){
+    suspend fun getSmsList(filter: SmsFilter): List<SMS> = withContext(ioDispatcher) {
         val sms = parserService.getSmsList(filter)
         val rcs = parserService.getRcsList(filter).also {
             prefStorage.lastRcsTime = filter.toAt

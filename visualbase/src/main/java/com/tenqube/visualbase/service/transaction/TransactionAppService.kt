@@ -27,7 +27,7 @@ class TransactionAppService(
     private val packageManager: PackageManager,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
-    suspend fun getCountByNoti(): Result<List<CountByNoti>> = withContext(ioDispatcher){
+    suspend fun getCountByNoti(): Result<List<CountByNoti>> = withContext(ioDispatcher) {
         return@withContext try {
             val countByNotis = transactionRepository
                 .findCountByNoti()
@@ -46,7 +46,7 @@ class TransactionAppService(
         }
     }
 
-    suspend fun getByIdentifier(identifier: String): Result<JoinedTransaction> = withContext(ioDispatcher){
+    suspend fun getByIdentifier(identifier: String): Result<JoinedTransaction> = withContext(ioDispatcher) {
         return@withContext try {
             val transaction = transactionRepository
                 .findById(identifier)
@@ -74,7 +74,7 @@ class TransactionAppService(
         }
     }
 
-    suspend fun getTransactions(filter: TransactionFilter): Result<List<JoinedTransaction>> = withContext(ioDispatcher){
+    suspend fun getTransactions(filter: TransactionFilter): Result<List<JoinedTransaction>> = withContext(ioDispatcher) {
         return@withContext try {
             val transactions = transactionRepository
                 .findByFilter(filter).sortedByDescending { it.spentDate }
@@ -131,7 +131,7 @@ class TransactionAppService(
         return card != null && category != null && userCategory != null
     }
 
-    suspend fun saveTransactions(items: List<SaveTransactionDto>): Result<Unit> = withContext(ioDispatcher){
+    suspend fun saveTransactions(items: List<SaveTransactionDto>): Result<Unit> = withContext(ioDispatcher) {
         return@withContext try {
             val cardMap = saveCards(items)
                 .associateBy { it.getUniqueKey() }
