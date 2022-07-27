@@ -14,14 +14,11 @@ class RcsCatchReceiver() : BroadcastReceiver() {
         try {
             requireNotNull(context)
             requireNotNull(intent)
-            Log.i("RCS", "start")
             if (RCS_RECEIVED_ACTION == intent.action) {
                 val msgId = intent.extras?.get("msg_id").toString()
-                Log.i("RCS", "msgId ${msgId}")
                 (rcsService ?: RcsService(context).apply {
                     rcsService = this
                 }).queryRcs(msgId)?.run {
-                    Log.i("RCS", "SMS ${this}")
                     sendIntentService(context, this)
                 }
             }

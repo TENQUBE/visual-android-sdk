@@ -178,10 +178,10 @@ data class CurrencyTransaction(
             sms = SMS(
                 this.searchedTransaction.getTransaction().smsId,
                 this.searchedTransaction.getTransaction().fullSms,
-                "com.kakao.talk",
-                "com.kakao.talk",
+                this.searchedTransaction.getTransaction().sender,
+                this.searchedTransaction.getTransaction().sender,
                 this.searchedTransaction.getTransaction().smsDate,
-                0
+                this.searchedTransaction.getTransaction().smsType
             )
         )
     }
