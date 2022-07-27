@@ -7,7 +7,7 @@ import android.os.AsyncTask;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-import tenqube.parser.BuildConfig;
+import tenqube.transmsparser.BuildConfig;
 import tenqube.transmsparser.BulkSmsAdapter;
 import tenqube.transmsparser.OnNetworkResultListener;
 import tenqube.transmsparser.Parser;

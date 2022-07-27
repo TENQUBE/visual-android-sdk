@@ -11,7 +11,7 @@ interface CategoryDao {
     suspend fun getById(id: String): CategoryModel?
 
     @Insert
-    suspend fun insertAll(vararg items: CategoryModel)
+    suspend fun insertAll(items: CategoryModel)
 
     @Update
     suspend fun update(item: CategoryModel)

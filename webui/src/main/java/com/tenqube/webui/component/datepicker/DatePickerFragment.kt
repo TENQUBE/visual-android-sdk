@@ -22,7 +22,7 @@ class DatePickerFragment : DialogFragment(), OnDateSetListener {
     }
 
     override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {
-        dateRequest.callbackJS?.let { callbackJS ->
+        dateRequest.callbackJS?.let {
             calendar[year, month] = day
             onCalendar(Utils.getYMD(calendar))
         }

@@ -70,8 +70,4 @@ object Utils {
         }
         return calendar
     }
-
-    fun getApplicationName(context: Context): String {
-        return ""
-    }
 }

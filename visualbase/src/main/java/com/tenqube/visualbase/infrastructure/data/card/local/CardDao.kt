@@ -11,7 +11,7 @@ interface CardDao {
     suspend fun getById(id: String): CardModel?
 
     @Insert
-    suspend fun insertAll(vararg cards: CardModel)
+    suspend fun insertAll(cards: CardModel)
 
     @Update
     suspend fun update(card: CardModel)

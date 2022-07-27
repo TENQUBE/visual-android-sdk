@@ -11,7 +11,7 @@ interface UserCategoryConfigDao {
     suspend fun getById(id: String): UserCategoryConfigModel?
 
     @Insert
-    suspend fun insertAll(vararg items: UserCategoryConfigModel)
+    suspend fun insertAll(items: UserCategoryConfigModel)
 
     @Update
     suspend fun update(item: UserCategoryConfigModel)

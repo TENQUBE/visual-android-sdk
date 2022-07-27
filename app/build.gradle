@@ -5,9 +5,11 @@ plugins {
 }
 
 android {
+
     compileSdk 31
 
     defaultConfig {
+
         applicationId "com.tenqube.visual_android_sdk"
         minSdk rootProject.minSdkVersion
         targetSdk 31
@@ -15,6 +17,8 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+
     }
     buildTypes {
         release {

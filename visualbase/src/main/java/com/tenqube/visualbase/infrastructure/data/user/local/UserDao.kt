@@ -8,7 +8,7 @@ interface UserDao {
     suspend fun getUser(): UserModel
 
     @Insert
-    suspend fun insertAll(vararg items: UserModel)
+    suspend fun insertAll(items: UserModel)
 
     @Update
     suspend fun update(item: UserModel)

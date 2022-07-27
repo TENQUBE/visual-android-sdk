@@ -19,7 +19,7 @@ interface TransactionDao {
     suspend fun getById(id: String): TransactionModel?
 
     @Insert
-    suspend fun insertAll(vararg items: TransactionModel)
+    suspend fun insertAll(item: TransactionModel)
 
     @Update
     suspend fun update(item: TransactionModel)
