@@ -61,7 +61,7 @@ class SharedPreferenceStorage constructor(context: Context
     override var ruleVersion by IntPreference(
         prefs,
         PREF_RULE_VERSION,
-        0
+        300
     )
 
     override var syncCnt by IntPreference(

@@ -24,7 +24,6 @@ class AuthRemoteDataSource(
         val map = HashMap<String, String>()
         map["Authorization"] = authorization
         map["x-api-key"] = prefStorage.apiKey
-        map["version"] = "v0.0.2"
         return map
     }
 

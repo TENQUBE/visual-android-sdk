@@ -12,8 +12,8 @@ data class UserResultDto(
 
 data class ExternalApi(val url: String, val apiKey: String): Serializable
 
-data class Web(val url: String): Serializable
+data class Web(val url: String, val iosUrl: String): Serializable
 
-data class Authorization(val sdk: Token) : Serializable
+data class Authorization(val sdk: String) : Serializable
 
 data class Token(val accessToken: String, val refreshToken: String) : Serializable

@@ -66,10 +66,10 @@ class UserAppService(
     }
 
     private fun saveBaseConfig(userResultDto: UserResultDto) {
-        prefStorage.accessToken = userResultDto.authorization.sdk.accessToken
-        prefStorage.refreshToken = userResultDto.authorization.sdk.refreshToken
+        prefStorage.accessToken = userResultDto.authorization.sdk
+        prefStorage.refreshToken = userResultDto.authorization.sdk
         prefStorage.resourceUrl = userResultDto.resource.url
-        prefStorage.resourceApiKey = "6RAiQu9TqM9Yc0VwnsVkp8DUYrppjP7G8hemWM76"
+        prefStorage.resourceApiKey = userResultDto.resource.apiKey
         prefStorage.searchUrl = userResultDto.search.url
         prefStorage.searchApiKey = userResultDto.search.apiKey }
 
