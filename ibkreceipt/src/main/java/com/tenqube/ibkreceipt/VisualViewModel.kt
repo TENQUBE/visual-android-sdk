@@ -140,7 +140,7 @@ class VisualViewModel(
 
     fun getBanks() : BanksDto = runBlocking {
         return@runBlocking try {
-            val cards = cardAppService.getCards().getOrThrow()
+            val cards = userAppService.getNotiApps().getOrThrow()
             BanksDto(cards.map {
                 BankDto.fomDomain(it)
             })

@@ -23,20 +23,22 @@ class NotificationAppLocalDataSource(
         try {
             inStream = am.open("notification_apps.tsv")
             buffer = BufferedReader(InputStreamReader(inStream))
-            var line = ""
+            var line: String? = ""
             var i = 0
             while (buffer.readLine().also { line = it } != null) {
                 if (i == 0) {
                     i++
                     continue
                 }
-                val colums = line.split("\t").toTypedArray()
-                apps.add(
-                    NotificationApp(
-                        colums[1], // name
-                        colums[2], // image
+                line?.split("\t")?.toTypedArray()?.let {
+                    apps.add(
+                        NotificationApp(
+                            it[0],
+                            it[1],
+                            it[2],
+                        )
                     )
-                )
+                }
             }
             inStream.close()
             buffer.close()

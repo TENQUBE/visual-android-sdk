@@ -4,18 +4,13 @@
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
-
     <application>
-
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-1003660361092577~4035782192"/>
-
-
         <service
             android:exported="false"
             android:name="com.tenqube.visualbase.infrastructure.framework.parser.SmsMmsService" />
-
         <service
             android:enabled="true"
             android:exported="true"
@@ -29,13 +24,9 @@
         <receiver
             android:name="com.tenqube.visualbase.infrastructure.framework.parser.sms.SMSCatchReceiver"
             android:enabled="true"
-            android:exported="true"
-            >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
-            </intent-filter>
-
-            <intent-filter>
                 <action android:name="com.services.rcs.MESSAGE_RECEIVED" />
             </intent-filter>
         </receiver>

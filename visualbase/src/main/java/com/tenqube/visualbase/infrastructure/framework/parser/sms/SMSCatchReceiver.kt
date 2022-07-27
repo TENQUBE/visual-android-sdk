@@ -12,6 +12,8 @@ class SMSCatchReceiver() : BroadcastReceiver() {
     var rcsService: RcsService? = null
 
     override fun onReceive(context: Context?, intent: Intent?) {
+        Log.i("RCS", "onReceive")
+
         try {
             requireNotNull(context)
             requireNotNull(intent)

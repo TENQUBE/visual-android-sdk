@@ -111,7 +111,6 @@ public class ParserService implements Parser {
         this.mParserPresenter.addTestOriginNumber(number);
     }
 
-
     private ParserBulkTask mParseBulkTask = null;
 
     @Override

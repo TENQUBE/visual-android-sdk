@@ -72,9 +72,9 @@ class AndroidUIBridge(
             params = params,
             classOfT = ShowAdRequest::class.java,
             body = {
-                it?.let {
-                    viewModel.showAd(it.data)
-                }
+//                it?.let {
+//                    viewModel.showAd(it.data)
+//                }
             }
         )
     }

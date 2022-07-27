@@ -1,6 +1,6 @@
 package com.tenqube.ibkreceipt.bridge.dto.response
 
-import com.tenqube.visualbase.domain.card.Card
+import com.tenqube.visualbase.domain.notification.NotificationApp
 
 data class BanksDto(
     val banks: List<BankDto>
@@ -12,11 +12,11 @@ data class BankDto(
     val symbol: String
 ) {
     companion object {
-        fun fomDomain(card: Card): BankDto {
+        fun fomDomain(app: NotificationApp): BankDto {
             return BankDto(
-                card.id,
-                card.name,
-                ""
+                app.id,
+                app.name,
+                app.image
             )
         }
     }

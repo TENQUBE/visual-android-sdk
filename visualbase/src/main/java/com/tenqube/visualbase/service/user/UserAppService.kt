@@ -9,6 +9,7 @@ import com.tenqube.visualbase.domain.card.Card
 import com.tenqube.visualbase.domain.card.CardRepository
 import com.tenqube.visualbase.domain.category.CategoryRepository
 import com.tenqube.visualbase.domain.currency.CurrencyService
+import com.tenqube.visualbase.domain.notification.NotificationApp
 import com.tenqube.visualbase.domain.notification.NotificationService
 import com.tenqube.visualbase.domain.user.User
 import com.tenqube.visualbase.domain.user.UserRepository
@@ -34,6 +35,14 @@ class UserAppService(
     private val prefStorage: PrefStorage,
     private val notificationService: NotificationService
 ) {
+
+    suspend fun getNotiApps(): Result<List<NotificationApp>> {
+        return try {
+            Result.success(notificationService.getNotifications())
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 
     fun setNotiEnabled(enabled: Boolean) {
         notificationService.setNotiEnabled(enabled)
