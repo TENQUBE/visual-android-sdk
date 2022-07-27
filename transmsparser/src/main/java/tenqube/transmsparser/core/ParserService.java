@@ -260,7 +260,6 @@ public class ParserService implements Parser {
         }
     }
 
-
     private static class SendToServerThread extends Thread {
 
         private boolean mIsError;
