@@ -24,7 +24,7 @@ class CurrencyServiceImpl(
             getFromLocal(request, it)
         } ?: getFromRemote(request).also {
             currencyDao.save(
-                CurrencyModel(request.from, request.to, it, System.currentTimeMillis())
+                CurrencyModel(0, request.from, request.to, it, System.currentTimeMillis())
             )
         }
 

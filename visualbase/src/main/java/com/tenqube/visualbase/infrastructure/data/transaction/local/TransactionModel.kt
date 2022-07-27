@@ -8,34 +8,58 @@ import com.tenqube.visualbase.domain.parser.SMS
 import com.tenqube.visualbase.domain.transaction.Company
 import com.tenqube.visualbase.domain.transaction.Transaction
 
-@Entity
+@Entity(tableName = "transaction")
 data class TransactionModel(
-    @PrimaryKey val id: String,
+    @PrimaryKey
+    @ColumnInfo(name = "id")
+    val id: String,
+    @ColumnInfo(name = "categoryId")
     val categoryId: String,
+    @ColumnInfo(name = "cardId")
     val cardId: String,
+    @ColumnInfo(name = "userCategoryConfigId")
     val userCategoryConfigId: String,
     @Embedded
     val company: CompanyModel,
+    @ColumnInfo(name = "spentDate")
     val spentDate: String,
+    @ColumnInfo(name = "finishDate")
     val finishDate: String,
+    @ColumnInfo(name = "lat")
     val lat: Double = 0.0,
+    @ColumnInfo(name = "lng")
     val lng: Double = 0.0,
+    @ColumnInfo(name = "spentMoney")
     val spentMoney: Double,
+    @ColumnInfo(name = "oriSpentMoney")
     val oriSpentMoney: Double,
+    @ColumnInfo(name = "installmentCnt")
     val installmentCnt: Int,
+    @ColumnInfo(name = "keyword")
     val keyword: String,
+    @ColumnInfo(name = "repeatType")
     val repeatType: Int = 0,
+    @ColumnInfo(name = "currency")
     val currency: String,
+    @ColumnInfo(name = "dwType")
     val dwType: Int,
+    @ColumnInfo(name = "memo")
     val memo: String,
     @Embedded
     val sms: SMSModel,
+    @ColumnInfo(name = "regId")
     val regId: Int,
+    @ColumnInfo(name = "classCode")
     val classCode: String,
+    @ColumnInfo(name = "isDeleted")
     val isDeleted: Boolean = false,
+    @ColumnInfo(name = "isOffset")
     val isOffset: Boolean = false,
+    @ColumnInfo(name = "isCustom")
     val isCustom: Boolean = false,
+    @ColumnInfo(name = "isUserUpdate")
     val isUserUpdate: Boolean = false,
+    @ColumnInfo(name = "isUpdateAll")
     val isUpdateAll: Boolean = false
 ) {
     fun asDomain(): Transaction {
@@ -92,8 +116,11 @@ data class TransactionModel(
 }
 
 data class CompanyModel(
-    @ColumnInfo(name = "company_id") val id: String,
+    @ColumnInfo(name = "company_id")
+    val id: String,
+    @ColumnInfo(name = "companyName")
     val name: String,
+    @ColumnInfo(name = "companyAddress")
     val address: String
 ) {
     fun asDomain(): Company {
@@ -108,12 +135,19 @@ data class CompanyModel(
 }
 
 data class SMSModel(
-    @ColumnInfo(name = "sms_id") val id: Int,
+    @ColumnInfo(name = "sms_id")
+    val id: Int,
+    @ColumnInfo(name = "fullSms")
     val fullSms: String,
+    @ColumnInfo(name = "originTel")
     val originTel: String,
+    @ColumnInfo(name = "displayTel")
     val displayTel: String,
+    @ColumnInfo(name = "smsDate")
     val smsDate: String,
+    @ColumnInfo(name = "smsType")
     val smsType: Int,
+    @ColumnInfo(name = "title")
     val title: String
 ) {
     fun asDomain(): SMS {

@@ -2,16 +2,20 @@ package com.tenqube.visualbase.service.parser
 
 import com.tenqube.visualbase.domain.parser.ParsedTransaction
 import com.tenqube.visualbase.domain.parser.SmsFilter
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import tenqube.transmsparser.OnNetworkResultListener
 import tenqube.transmsparser.model.SMS
 import tenqube.transmsparser.model.Transaction
 
 class BulkParserAppService(
-    private val parserAppService: ParserAppService
+    private val parserAppService: ParserAppService,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
 
-    suspend fun start(adapter: BulkAdapter) {
+    suspend fun start(adapter: BulkAdapter) = withContext(ioDispatcher){
         parserAppService.parseBulk(adapter)
     }
 
@@ -28,7 +32,7 @@ class BulkParserAppService(
         }
     }
 
-    suspend fun saveTransactions(transactions: ArrayList<Transaction>) {
+    suspend fun saveTransactions(transactions: ArrayList<Transaction>) = withContext(ioDispatcher){
         parserAppService.saveTransactions(
             transactions.map {
                 ParsedTransaction(it)

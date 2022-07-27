@@ -24,6 +24,7 @@ object CurrencyGenerator {
                 }
                 line?.split("\t")?.toTypedArray()?.let {
                     val currency = CurrencyModel(
+                        0,
                         it[0],
                         it[1],
                         it[2].toFloat(),

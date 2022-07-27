@@ -4,18 +4,18 @@ import androidx.room.*
 
 @Dao
 interface UserCategoryConfigDao {
-    @Query("SELECT * FROM userCategoryConfigModel")
-    suspend fun getAll(): List<UserCategoryConfigModel>
+    @Query("SELECT * FROM userCategoryConfig")
+    fun getAll(): List<UserCategoryConfigModel>
 
-    @Query("SELECT * FROM userCategoryConfigModel WHERE id = :id")
-    suspend fun getById(id: String): UserCategoryConfigModel?
+    @Query("SELECT * FROM userCategoryConfig WHERE id = :id")
+    fun getById(id: String): UserCategoryConfigModel?
 
     @Insert
-    suspend fun insertAll(items: UserCategoryConfigModel)
+    fun insertAll(items: UserCategoryConfigModel)
 
     @Update
-    suspend fun update(item: UserCategoryConfigModel)
+    fun update(item: UserCategoryConfigModel)
 
     @Delete
-    suspend fun delete(item: UserCategoryConfigModel)
+    fun delete(item: UserCategoryConfigModel)
 }

@@ -6,24 +6,24 @@ import com.tenqube.visualbase.domain.transaction.dto.CountByNoti
 @Dao
 interface TransactionDao {
 
-    @Query("SELECT originTel as name, COUNT(*) as count FROM transactionModel WHERE smsType = 0 GROUP BY originTel")
-    suspend fun getGroupByNoti(): List<CountByNoti>
+    @Query("SELECT originTel as name, COUNT(*) as count FROM `transaction` WHERE smsType = 0 GROUP BY originTel")
+    fun getGroupByNoti(): List<CountByNoti>
 
-    @Query("SELECT * FROM transactionModel WHERE spentDate BETWEEN :from ANd :to")
-    suspend fun getByFilter(from: String, to: String): List<TransactionModel>
+    @Query("SELECT * FROM `transaction` WHERE spentDate BETWEEN :from ANd :to")
+    fun getByFilter(from: String, to: String): List<TransactionModel>
 
-    @Query("SELECT * FROM transactionModel ORDER BY spentDate DESC")
-    suspend fun getAll(): List<TransactionModel>
+    @Query("SELECT * FROM `transaction` ORDER BY spentDate DESC")
+    fun getAll(): List<TransactionModel>
 
-    @Query("SELECT * FROM transactionModel WHERE id = :id")
-    suspend fun getById(id: String): TransactionModel?
+    @Query("SELECT * FROM `transaction` WHERE id = :id")
+    fun getById(id: String): TransactionModel?
 
     @Insert
-    suspend fun insertAll(item: TransactionModel)
+    fun insertAll(item: TransactionModel)
 
     @Update
-    suspend fun update(item: TransactionModel)
+    fun update(item: TransactionModel)
 
     @Delete
-    suspend fun delete(item: TransactionModel)
+    fun delete(item: TransactionModel)
 }

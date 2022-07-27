@@ -19,6 +19,9 @@ import com.tenqube.visualbase.domain.usercategoryconfig.UserCategoryConfigReposi
 import com.tenqube.visualbase.infrastructure.adapter.auth.remote.dto.UserRequestDto
 import com.tenqube.visualbase.infrastructure.adapter.auth.remote.dto.UserResultDto
 import com.tenqube.visualbase.infrastructure.framework.db.category.CategoryGeneroator
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.util.*
 
 class UserAppService(
@@ -30,23 +33,24 @@ class UserAppService(
     private val cardRepository: CardRepository,
     private val currencyService: CurrencyService,
     private val prefStorage: PrefStorage,
-    private val notificationService: NotificationService
+    private val notificationService: NotificationService,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
 
-    suspend fun getNotiApps(): Result<List<NotificationApp>> {
-        return try {
+    suspend fun getNotiApps(): Result<List<NotificationApp>> = withContext(ioDispatcher){
+        return@withContext try {
             Result.success(notificationService.getNotifications())
         } catch (e: Exception) {
             Result.failure(e)
         }
     }
 
-    fun setNotiEnabled(enabled: Boolean) {
+    suspend fun setNotiEnabled(enabled: Boolean) = withContext(ioDispatcher) {
         notificationService.setNotiEnabled(enabled)
     }
 
-    suspend fun signUp(request: CreateUser): Result<Unit> {
-        return try {
+    suspend fun signUp(request: CreateUser): Result<Unit>  = withContext(ioDispatcher) {
+        return@withContext try {
             checkNewUserOrThrow()
             val user = User.from(request)
             val result = authService.signUp(UserRequestDto(request.uid, ""))
@@ -114,7 +118,7 @@ class UserAppService(
         }
     }
 
-    suspend fun getUser(): User {
-        return userRepository.findUser().getOrThrow()
+    suspend fun getUser(): User  = withContext(ioDispatcher) {
+        return@withContext userRepository.findUser().getOrThrow()
     }
 }

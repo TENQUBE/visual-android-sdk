@@ -12,7 +12,6 @@ import android.widget.FrameLayout
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
-import androidx.core.view.allViews
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.tenqube.ibkreceipt.bridge.AndroidUIBridge
@@ -84,11 +83,11 @@ class VisualFragment : Fragment() {
             viewDataBinding.container.addView(createCardView(it))
         }
         viewModel.hideAd.observe(this.viewLifecycleOwner) {
-            viewDataBinding.container.allViews.firstOrNull { it is CardView }?.let {
-                viewDataBinding.container.removeView(
-                    it
-                )
-            }
+//            viewDataBinding.container.allViews.firstOrNull { it is CardView }?.let {
+//                viewDataBinding.container.removeView(
+//                    it
+//                )
+//            }
         }
         viewModel.refreshEnabled.observe(this.viewLifecycleOwner) {
             viewDataBinding.swipeRefreshLayout.isEnabled = it

@@ -24,7 +24,8 @@ import com.tenqube.visualbase.infrastructure.data.usercategoryconfig.local.UserC
         UserCategoryConfigModel::class,
         TransactionModel::class
     ],
-    version = 1
+    version = 1,
+    exportSchema = false
 )
 abstract class VisualDatabase : RoomDatabase() {
     abstract fun currencyDao(): CurrencyDao

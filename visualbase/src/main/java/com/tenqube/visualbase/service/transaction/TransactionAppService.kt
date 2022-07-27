@@ -14,6 +14,9 @@ import com.tenqube.visualbase.domain.usercategoryconfig.UserCategoryConfig
 import com.tenqube.visualbase.domain.usercategoryconfig.UserCategoryConfigRepository
 import com.tenqube.visualbase.service.transaction.dto.JoinedTransaction
 import com.tenqube.visualbase.service.transaction.dto.TransactionFilter
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.util.*
 
 class TransactionAppService(
@@ -21,10 +24,11 @@ class TransactionAppService(
     private val cardRepository: CardRepository,
     private val categoryRepository: CategoryRepository,
     private val userCategoryConfigRepository: UserCategoryConfigRepository,
-    private val packageManager: PackageManager
+    private val packageManager: PackageManager,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
-    suspend fun getCountByNoti(): Result<List<CountByNoti>> {
-        return try {
+    suspend fun getCountByNoti(): Result<List<CountByNoti>> = withContext(ioDispatcher){
+        return@withContext try {
             val countByNotis = transactionRepository
                 .findCountByNoti()
                 .mapNotNull {
@@ -42,8 +46,8 @@ class TransactionAppService(
         }
     }
 
-    suspend fun getByIdentifier(identifier: String): Result<JoinedTransaction> {
-        return try {
+    suspend fun getByIdentifier(identifier: String): Result<JoinedTransaction> = withContext(ioDispatcher){
+        return@withContext try {
             val transaction = transactionRepository
                 .findById(identifier)
                 ?: throw Resources.NotFoundException("transaction not exist")
@@ -70,8 +74,8 @@ class TransactionAppService(
         }
     }
 
-    suspend fun getTransactions(filter: TransactionFilter): Result<List<JoinedTransaction>> {
-        return try {
+    suspend fun getTransactions(filter: TransactionFilter): Result<List<JoinedTransaction>> = withContext(ioDispatcher){
+        return@withContext try {
             val transactions = transactionRepository
                 .findByFilter(filter).sortedByDescending { it.spentDate }
             val cards = cardRepository
@@ -127,8 +131,8 @@ class TransactionAppService(
         return card != null && category != null && userCategory != null
     }
 
-    suspend fun saveTransactions(items: List<SaveTransactionDto>): Result<Unit> {
-        return try {
+    suspend fun saveTransactions(items: List<SaveTransactionDto>): Result<Unit> = withContext(ioDispatcher){
+        return@withContext try {
             val cardMap = saveCards(items)
                 .associateBy { it.getUniqueKey() }
 

@@ -112,7 +112,9 @@ class VisualViewModel(
     }
 
     fun setNotiEnabled(enabled: Boolean) {
-        userAppService.setNotiEnabled(enabled)
+        viewModelScope.launch {
+            userAppService.setNotiEnabled(enabled)
+        }
     }
 
     fun openSelectBox(request: OpenSelectBoxRequest, callback: (selectBox: SelectBoxItem) -> Unit) {

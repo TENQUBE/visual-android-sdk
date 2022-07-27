@@ -9,7 +9,7 @@ class UserRepositoryImpl(private val dao: UserDao) : UserRepository {
     override suspend fun findUser(): Result<User> {
         return try {
             Result.success(
-                dao.getUser().asDomain()
+                dao.getUser()?.asDomain() ?: throw Exception("user not exists")
             )
         } catch (e: Exception) {
             Result.failure(e)
@@ -19,7 +19,7 @@ class UserRepositoryImpl(private val dao: UserDao) : UserRepository {
     override suspend fun save(item: User): Result<Unit> {
         return try {
             Result.success(
-                dao.insertAll(UserModel.fromDomain(item))
+                dao.save(UserModel.fromDomain(item))
             )
         } catch (e: Exception) {
             Result.failure(e)

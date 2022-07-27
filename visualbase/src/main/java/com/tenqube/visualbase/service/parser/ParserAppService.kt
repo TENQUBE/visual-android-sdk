@@ -22,6 +22,9 @@ import com.tenqube.visualbase.domain.transaction.dto.SaveTransactionDto
 import com.tenqube.visualbase.infrastructure.adapter.notification.VisualIBKReceiptDto
 import com.tenqube.visualbase.service.transaction.TransactionAppService
 import com.tenqube.visualbase.service.transaction.dto.JoinedTransaction
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import tenqube.transmsparser.model.Transaction
 import java.util.*
 
@@ -32,9 +35,10 @@ class ParserAppService(
     private val searchService: SearchService,
     private val transactionAppService: TransactionAppService,
     private val prefStorage: PrefStorage,
-    private val notificationService: NotificationService
+    private val notificationService: NotificationService,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) {
-    suspend fun parseBulk(adapter: BulkAdapter) {
+    suspend fun parseBulk(adapter: BulkAdapter) = withContext(ioDispatcher){
         parserService.parseBulk(adapter)
     }
 
@@ -48,8 +52,8 @@ class ParserAppService(
         prefStorage.lastRcsTime = currentTime
     }
 
-    suspend fun parse(sms: SMS): Result<Unit> {
-        return try {
+    suspend fun parse(sms: SMS): Result<Unit> = withContext(ioDispatcher){
+        return@withContext try {
             val parsedTransactions = parserService.parse(sms)
             if (parsedTransactions.isNotEmpty()) {
                 saveTransactions(parsedTransactions)
@@ -87,7 +91,7 @@ class ParserAppService(
 
     suspend fun saveTransactions(
         parsedTransactions: List<ParsedTransaction>
-    ): Result<Unit> {
+    ): Result<Unit> = withContext(ioDispatcher){
         val searchedTransactions = getSearchedTransactions(parsedTransactions)
         val currencyTransactions = calculateCurrency(searchedTransactions)
         transactionAppService.saveTransactions(
@@ -96,15 +100,15 @@ class ParserAppService(
             }
         )
 
-        return Result.success(Unit)
+        return@withContext Result.success(Unit)
     }
 
-    suspend fun getSmsList(filter: SmsFilter): List<SMS> {
+    suspend fun getSmsList(filter: SmsFilter): List<SMS>  = withContext(ioDispatcher){
         val sms = parserService.getSmsList(filter)
         val rcs = parserService.getRcsList(filter).also {
             prefStorage.lastRcsTime = filter.toAt
         }
-        return (sms + rcs).sortedBy { it.smsId }
+        return@withContext (sms + rcs).sortedBy { it.smsId }
     }
 
     private suspend fun getSearchedTransactions(parsedTransactions: List<ParsedTransaction>):
