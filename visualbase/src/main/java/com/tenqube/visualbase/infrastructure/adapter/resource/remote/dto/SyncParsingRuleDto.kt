@@ -2,10 +2,10 @@ package com.tenqube.visualbase.infrastructure.adapter.resource.remote.dto
 
 import com.google.gson.annotations.SerializedName
 import com.tenqube.visualbase.domain.resource.dto.ParsingRuleDto
-import tenqube.parser.model.Bank
-import tenqube.parser.model.ParsingRule
-import tenqube.parser.model.RegData
-import tenqube.parser.model.Sender
+import tenqube.transmsparser.model.Bank
+import tenqube.transmsparser.model.ParsingRule
+import tenqube.transmsparser.model.RegData
+import tenqube.transmsparser.model.Sender
 
 data class SyncParsingRuleDto(
     @SerializedName("signature") val signature: String,

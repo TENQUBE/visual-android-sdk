@@ -56,6 +56,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import tenqube.transmsparser.core.ParserService
 import java.util.concurrent.TimeUnit
 
 object ServiceLocator {
@@ -144,7 +145,7 @@ object ServiceLocator {
         val resourceAppService = provideResourceAppService(retrofit, prefStorage)
         val parsingRuleService = ParsingRuleService(resourceAppService, prefStorage)
 
-        val parser = tenqube.parser.core.ParserService.getInstance(context)
+        val parser = ParserService.getInstance(context)
         parser.setDebugMode(true)
         val rcsService = RcsService(context)
         val parserService = ParserServiceImpl(

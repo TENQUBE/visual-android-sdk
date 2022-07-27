@@ -21,16 +21,16 @@
 -keep class tenqube.parser.mdel.** { *; }
 -keep class tenqube.parser.util.** { *; }
 
--keep class tenqube.parser.BulkSmsAdapter {
+-keep class tenqube.transmsparser.BulkSmsAdapter {
  public *;
  }
--keep class tenqube.parser.OnNetworkResultListener{
+-keep class tenqube.transmsparser.OnNetworkResultListener{
  public *;
 }
--keep class tenqube.parser.Parser {
+-keep class tenqube.transmsparser.Parser {
  public *;
 }
--keep class tenqube.parser.core.ParserService {
+-keep class tenqube.transmsparser.core.ParserService {
  public *;
 }
 

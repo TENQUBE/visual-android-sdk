@@ -22,6 +22,7 @@ import com.tenqube.visualbase.domain.notification.dto.NotificationDto
 import com.tenqube.visualbase.infrastructure.adapter.notification.VisualIBKReceiptDto
 import com.tenqube.visualbase.service.transaction.TransactionAppService
 import com.tenqube.visualbase.service.transaction.dto.JoinedTransaction
+import tenqube.transmsparser.model.Transaction
 import java.util.*
 
 class ParserAppService(
@@ -148,7 +149,7 @@ data class SearchedTransaction(
     val parsedTransaction: ParsedTransaction,
     val searchResult: TranCompany
 ) {
-    fun getTransaction(): tenqube.parser.model.Transaction {
+    fun getTransaction(): Transaction {
         return parsedTransaction.transaction
     }
 }

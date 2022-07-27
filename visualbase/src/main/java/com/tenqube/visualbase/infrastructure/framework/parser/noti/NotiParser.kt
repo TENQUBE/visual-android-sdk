@@ -5,7 +5,7 @@ import android.content.Context
 import android.service.notification.StatusBarNotification
 import androidx.core.app.NotificationCompat
 import com.tenqube.visualbase.domain.parser.SMS
-import tenqube.parser.model.NotiRequest
+import tenqube.transmsparser.model.NotiRequest
 
 object NotiParser {
 

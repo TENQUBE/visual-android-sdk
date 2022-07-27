@@ -11,16 +11,16 @@ import com.tenqube.visualbase.domain.parser.SmsFilter
 import com.tenqube.visualbase.infrastructure.adapter.parser.rcs.RcsService
 import com.tenqube.visualbase.infrastructure.adapter.parser.rule.ParsingRuleService
 import com.tenqube.visualbase.service.parser.BulkAdapter
-import tenqube.parser.BulkSmsAdapter
-import tenqube.parser.OnNetworkResultListener
-import tenqube.parser.model.FinancialProduct
-import tenqube.parser.model.ResultCode
-import tenqube.parser.model.Transaction
+import tenqube.transmsparser.BulkSmsAdapter
+import tenqube.transmsparser.OnNetworkResultListener
+import tenqube.transmsparser.model.FinancialProduct
+import tenqube.transmsparser.model.ResultCode
+import tenqube.transmsparser.model.Transaction
 import java.util.ArrayList
 
 class ParserServiceImpl(
     private val context: Context,
-    private val parserService: tenqube.parser.core.ParserService,
+    private val parserService: tenqube.transmsparser.core.ParserService,
     private val parsingRuleService: ParsingRuleService,
     private val rcsService: RcsService
 ) : ParserService {
@@ -32,7 +32,7 @@ class ParserServiceImpl(
                 return adapter.getSmsCount()
             }
 
-            override fun getSmsAt(n: Int): tenqube.parser.model.SMS {
+            override fun getSmsAt(n: Int): tenqube.transmsparser.model.SMS {
                 return adapter.getSmsAt(n)
             }
 

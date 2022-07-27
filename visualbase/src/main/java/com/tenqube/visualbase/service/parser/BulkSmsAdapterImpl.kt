@@ -3,9 +3,9 @@ package com.tenqube.visualbase.service.parser
 import android.util.Log
 import com.tenqube.visualbase.domain.parser.SmsFilter
 import kotlinx.coroutines.runBlocking
-import tenqube.parser.OnNetworkResultListener
-import tenqube.parser.model.SMS
-import tenqube.parser.model.Transaction
+import tenqube.transmsparser.OnNetworkResultListener
+import tenqube.transmsparser.model.SMS
+import tenqube.transmsparser.model.Transaction
 import java.util.*
 
 class BulkSmsAdapterImpl(

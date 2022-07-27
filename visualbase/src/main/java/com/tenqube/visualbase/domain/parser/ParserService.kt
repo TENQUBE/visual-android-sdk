@@ -5,7 +5,7 @@ import android.database.Cursor
 import com.tenqube.shared.util.Constants
 import com.tenqube.shared.util.Utils
 import com.tenqube.visualbase.service.parser.BulkAdapter
-import tenqube.parser.model.Transaction
+import tenqube.transmsparser.model.Transaction
 import java.io.Serializable
 import java.util.*
 
@@ -32,8 +32,8 @@ data class SMS(
     val title: String = ""
 ) : Serializable {
 
-    fun toParser(): tenqube.parser.model.SMS {
-        return tenqube.parser.model.SMS(
+    fun toParser(): tenqube.transmsparser.model.SMS {
+        return tenqube.transmsparser.model.SMS(
             smsId,
             fullSms,
             originTel,
@@ -61,7 +61,7 @@ data class SMS(
             )
         }
 
-        fun fromParser(sms: tenqube.parser.model.SMS): SMS {
+        fun fromParser(sms: tenqube.transmsparser.model.SMS): SMS {
             return SMS(
                 sms.smsId,
                 sms.fullSms,

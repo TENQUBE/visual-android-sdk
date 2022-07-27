@@ -8,7 +8,7 @@ import android.net.Uri
 import android.text.TextUtils
 import com.tenqube.shared.util.Utils
 import com.tenqube.visualbase.domain.parser.SMS
-import tenqube.parser.constants.Constants
+import tenqube.transmsparser.constants.Constants
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStream

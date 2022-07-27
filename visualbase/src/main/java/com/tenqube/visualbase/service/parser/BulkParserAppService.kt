@@ -3,11 +3,9 @@ package com.tenqube.visualbase.service.parser
 import com.tenqube.visualbase.domain.parser.ParsedTransaction
 import com.tenqube.visualbase.domain.parser.SmsFilter
 import kotlinx.coroutines.runBlocking
-import tenqube.parser.OnNetworkResultListener
-import tenqube.parser.model.FinancialProduct
-import tenqube.parser.model.ResultCode
-import tenqube.parser.model.SMS
-import tenqube.parser.model.Transaction
+import tenqube.transmsparser.OnNetworkResultListener
+import tenqube.transmsparser.model.SMS
+import tenqube.transmsparser.model.Transaction
 
 class BulkParserAppService(
     private val parserAppService: ParserAppService
