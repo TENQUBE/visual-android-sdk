@@ -26,6 +26,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
 
+            <include
+                android:id="@+id/error_container"
+                layout="@layout/visual_web_error"/>
+
         </FrameLayout>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

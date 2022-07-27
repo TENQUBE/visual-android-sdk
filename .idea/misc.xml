@@ -9,6 +9,10 @@
         <entry key="ibk/src/main/res/layout/activity_visual_ibk.xml" value="0.1609375" />
         <entry key="ibk/src/main/res/layout/fragment_main_ibk.xml" value="0.1" />
         <entry key="ibk/src/main/res/layout/visual_dialog_progress.xml" value="0.17916666666666667" />
+        <entry key="ibkreceipt/src/main/res/layout/activity_visual_ibk.xml" value="0.24909420289855072" />
+        <entry key="ibkreceipt/src/main/res/layout/fragment_main_ibk.xml" value="0.24909420289855072" />
+        <entry key="ibkreceipt/src/main/res/layout/visual_dialog_progress.xml" value="0.24909420289855072" />
+        <entry key="ibkreceipt/src/main/res/layout/visual_web_error.xml" value="0.1671195652173913" />
         <entry key="webui/src/main/res/drawable/round_bottom_seet.xml" value="0.1635" />
         <entry key="webui/src/main/res/layout/fragment_bottom_sheet_view.xml" value="0.375" />
         <entry key="webui/src/main/res/layout/fragment_item_list_dialog_list_dialog_item.xml" value="0.1524822695035461" />

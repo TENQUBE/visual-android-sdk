@@ -13,5 +13,8 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
     <string name="visual_progress_description">소비 분석을 진행중입니다.\n잠시만 기다려주세요!</string>
+    <string name="visual_network_error">네트워크 연결이 불안정합니다.잠시 후 다시 이용해주세요.</string>
+
+    <string name="visual_retry">다시시도</string>
 
 </resources>

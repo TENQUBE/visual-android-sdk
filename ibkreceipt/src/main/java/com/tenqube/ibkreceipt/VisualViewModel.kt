@@ -1,10 +1,12 @@
 package com.tenqube.ibkreceipt
 
+import android.security.keystore.UserNotAuthenticatedException
 import android.view.View
 import androidx.lifecycle.*
 import com.tenqube.ibkreceipt.bridge.dto.request.*
 import com.tenqube.ibkreceipt.bridge.dto.response.*
 import com.tenqube.ibkreceipt.progress.ProgressCount
+import com.tenqube.shared.error.UserAlreadyExistException
 import com.tenqube.visualbase.domain.user.command.CreateUser
 import com.tenqube.visualbase.service.card.CardAppService
 import com.tenqube.visualbase.service.parser.BulkCallback
@@ -61,8 +63,10 @@ class VisualViewModel(
                 ibkSharedPreference.disableTranPopup()
                 _url.value = VisualFragment.PROGRESS_URL
                 startBulk()
-            } catch (e: Exception) {
+            } catch(e: UserAlreadyExistException) {
                 _url.value = url
+            } catch (e: Exception) {
+                _error.value = e.toString()
             }
         }
     }

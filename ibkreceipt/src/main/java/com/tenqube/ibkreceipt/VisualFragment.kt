@@ -51,12 +51,17 @@ class VisualFragment : Fragment() {
         setupSwipeRefreshView()
         setupWebView()
         setupProgressEvents()
+        start()
+        setupEvents()
+        setupErrorView()
+    }
+
+    private fun start() {
         parseArg()?.let {
-            it.url?.let {  url ->
+            it.url?.let { url ->
                 viewModel.start("${BASE_URL}receipt?$url")
             } ?: viewModel.start(URL, it.user!!)
         } ?: requireActivity().finish()
-        setupEvents()
     }
 
     private fun setupSwipeRefreshView() {
@@ -73,11 +78,9 @@ class VisualFragment : Fragment() {
         viewModel.url.observe(this.viewLifecycleOwner) {
             viewDataBinding.webView.loadUrl(it)
         }
-
         viewModel.showAd.observe(this.viewLifecycleOwner) {
             viewDataBinding.container.addView(createCardView(it))
         }
-
         viewModel.hideAd.observe(this.viewLifecycleOwner) {
             viewDataBinding.container.allViews.firstOrNull { it is CardView }?.let {
                 viewDataBinding.container.removeView(
@@ -87,6 +90,16 @@ class VisualFragment : Fragment() {
         }
         viewModel.refreshEnabled.observe(this.viewLifecycleOwner) {
             viewDataBinding.swipeRefreshLayout.isEnabled = it
+        }
+        viewModel.error.observe(this.viewLifecycleOwner) {
+            viewDataBinding.errorContainer.errorContainer.visibility = View.VISIBLE
+        }
+    }
+
+    private fun setupErrorView() {
+        viewDataBinding.errorContainer.retry.setOnClickListener {
+            viewDataBinding.errorContainer.errorContainer.visibility = View.GONE
+            start()
         }
     }
 

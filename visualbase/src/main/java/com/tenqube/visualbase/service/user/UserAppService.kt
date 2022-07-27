@@ -2,6 +2,7 @@ package com.tenqube.visualbase.service.user
 
 import android.content.Context
 import android.security.keystore.UserNotAuthenticatedException
+import com.tenqube.shared.error.UserAlreadyExistException
 import com.tenqube.shared.prefs.PrefStorage
 import com.tenqube.shared.util.Constants
 import com.tenqube.visualbase.domain.auth.AuthService
@@ -111,7 +112,7 @@ class UserAppService(
     private suspend fun checkNewUserOrThrow() {
         val user = userRepository.findUser().getOrNull()
         if (user != null) {
-            throw UserNotAuthenticatedException("user already exist")
+            throw UserAlreadyExistException("user already exist")
         }
     }
 
