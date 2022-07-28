@@ -20,8 +20,8 @@ class VisualServiceImpl(
         prefStorage.layer = arg.layer.value
         prefStorage.service = arg.service.value
         prefStorage.notiChannelId = arg.notification.channelId
-        prefStorage.notiIcon = arg.notification.icon
-        prefStorage.notiChannelName = arg.notification.channelName
+        prefStorage.notiIcon = arg.notification.smallIcon
+        prefStorage.notiColor = arg.notification.color
     }
 
     override fun start(command: UserArg) {

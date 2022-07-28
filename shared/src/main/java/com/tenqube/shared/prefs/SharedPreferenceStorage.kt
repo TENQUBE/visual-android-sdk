@@ -95,10 +95,10 @@ class SharedPreferenceStorage constructor(
         ""
     )
 
-    override var notiChannelName by StringPreference(
+    override var notiColor by IntPreference(
         prefs,
-        PREF_NOTI_CHANNEL_NAME,
-        ""
+        PREF_NOTI_COLOR,
+        0
     )
 
     override var isNotiEnabled by BooleanPreference(
@@ -123,7 +123,7 @@ class SharedPreferenceStorage constructor(
         const val PREF_LAST_RCS_TIME = "PREF_LAST_RCS_TIME"
         const val PREF_NOTI_ICON = "PREF_NOTI_ICON"
         const val PREF_NOTI_CHANNEL_ID = "PREF_NOTI_CHANNEL_ID"
-        const val PREF_NOTI_CHANNEL_NAME = "PREF_NOTI_CHANNEL_NAME"
+        const val PREF_NOTI_COLOR = "PREF_NOTI_COLOR"
         const val PREF_IS_NOTI_ENABLED = "PREF_IS_NOTI_ENABLED"
     }
 }

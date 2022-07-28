@@ -1,5 +1,6 @@
 package com.tenqube.visualbase.infrastructure.adapter.notification
 
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -29,14 +30,19 @@ class NotificationServiceImpl(
     override fun show(command: NotificationDto) {
         if (prefStorage.isNotiEnabled) {
             createNotificationChannel()
-//            val receipt = VisualIBKReceiptDto.from(command)
             val builder = NotificationCompat.Builder(context, prefStorage.notiChannelId)
                 .setSmallIcon(prefStorage.notiIcon)
+                .setTicker(command.getTitle())
                 .setContentTitle(command.getTitle())
                 .setContentText(command.getMsg())
                 .setWhen(command.getDate())
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-//                .setContentIntent(createIntent(context, receipt.toJson()))
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setAutoCancel(true)
+                .setContentIntent(createIntent(context))
+                .setColor(prefStorage.notiColor)
+                .setDefaults(Notification.DEFAULT_LIGHTS or Notification.DEFAULT_SOUND)
+                .setStyle(NotificationCompat.BigTextStyle()
+                    .bigText(command.getMsg()));
 
             with(NotificationManagerCompat.from(context)) {
                 notify(NOTI_ID, builder.build())
@@ -52,8 +58,8 @@ class NotificationServiceImpl(
         prefStorage.isNotiEnabled = enabled
     }
 
-    private fun createIntent(context: Context, json: String): PendingIntent {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("visual://ibk-receipt?link=${json.encodeToBase64()}")).apply {
+    private fun createIntent(context: Context): PendingIntent {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("visual://ibk-receipt")).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         return PendingIntent.getActivity(
@@ -70,9 +76,8 @@ class NotificationServiceImpl(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
             !isExistChannel(notificationManager)
         ) {
-            val name = prefStorage.notiChannelName
             val importance = NotificationManager.IMPORTANCE_HIGH
-            val channel = NotificationChannel(prefStorage.notiChannelId, name, importance)
+            val channel = NotificationChannel(prefStorage.notiChannelId, "receipt", importance)
             notificationManager.createNotificationChannel(channel)
         }
     }

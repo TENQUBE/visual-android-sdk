@@ -82,8 +82,7 @@ class ParserAppService(
 
     private fun showPopup(command: NotificationDto) {
         val receipt = VisualIBKReceiptDto.from(command)
-        val json = receipt.toJson()
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("visual://ibk-receipt?link=${json.encodeToBase64()}")).apply {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("visual://ibk-receipt?${receipt.toLink()})")).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         context.startActivity(intent)

@@ -24,7 +24,6 @@ import kotlinx.coroutines.runBlocking
 class VisualViewModel(
     private val userAppService: UserAppService,
     private val transactionAppService: TransactionAppService,
-    private val cardAppService: CardAppService,
     private val uiService: UIService,
     private val bulkParserAppService: BulkParserAppService,
     private val ibkSharedPreference: IBKSharedPreference
@@ -125,7 +124,7 @@ class VisualViewModel(
         )
     }
 
-    fun showAd(request: ShowAdDto) {
+    fun showAd(request: ShowAdRequest) {
         uiService.showAd(
             ShowAd(
                 request.unitId,
@@ -193,7 +192,6 @@ class VisualViewModel(
     class Factory(
         private val userAppService: UserAppService,
         private val transactionAppService: TransactionAppService,
-        private val cardAppService: CardAppService,
         private val uiService: UIService,
         private val bulkParserAppService: BulkParserAppService,
         private val ibkSharedPreference: IBKSharedPreference
@@ -202,7 +200,6 @@ class VisualViewModel(
             return VisualViewModel(
                 userAppService,
                 transactionAppService,
-                cardAppService,
                 uiService,
                 bulkParserAppService,
                 ibkSharedPreference
