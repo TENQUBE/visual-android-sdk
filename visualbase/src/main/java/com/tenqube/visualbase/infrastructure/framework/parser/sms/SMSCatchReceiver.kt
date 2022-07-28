@@ -3,7 +3,9 @@ package com.tenqube.visualbase.infrastructure.framework.parser.sms
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import com.tenqube.visualbase.infrastructure.adapter.parser.rcs.RcsService
 import com.tenqube.visualbase.infrastructure.framework.parser.SmsMmsService.Companion.sendIntentService
 import com.tenqube.visualbase.infrastructure.framework.parser.rcs.RcsCatchReceiver
@@ -11,6 +13,7 @@ import com.tenqube.visualbase.infrastructure.framework.parser.rcs.RcsCatchReceiv
 class SMSCatchReceiver() : BroadcastReceiver() {
     var rcsService: RcsService? = null
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onReceive(context: Context?, intent: Intent?) {
         Log.i("RCS", "onReceive")
 

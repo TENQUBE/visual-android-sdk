@@ -43,12 +43,12 @@ class MainActivity : AppCompatActivity() {
                 .layer(Layer.DEV) // 개발 : Layer.DEV, 상용: Layer.PROD
                 .notification(
                     NotificationArg(
-                        R.drawable.ic_launcher_background, // 알림 small_icon 정보
-                        "현재 사용 중인 알림 채널 아이디",
-                        "현재 사용 중인 채널명"
+                        R.drawable.ic_status, // 알림 small_icon 정보
+                        "ibk-channel-id", // 현재 사용 중인 알림 채널 아이디
+                        "IBK" // 채널명
                     )
                 )
-                .service(Service.IBK)
+                .service(Service.IBK) // IBK 고정
                 .build()
                 .start(UserArg(":UID", 1987, VisualGender.MALE)) // 사용자 고유 아이디, 생년, 성별
         }
