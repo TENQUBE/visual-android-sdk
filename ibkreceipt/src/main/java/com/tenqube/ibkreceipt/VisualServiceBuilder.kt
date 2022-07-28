@@ -56,7 +56,7 @@ enum class Layer(val value: String) {
 }
 
 data class NotificationArg(
-    val icon: Int,
+    val smallIcon: Int,
     val channelId: String,
-    val channelName: String
+    val color: Int
 ) : Serializable

@@ -3,7 +3,7 @@ package com.tenqube.visualbase.infrastructure.framework.parser
 import android.app.IntentService
 import android.content.Context
 import android.content.Intent
-import android.util.Log
+import android.os.Build
 import com.tenqube.visualbase.domain.parser.SMS
 import com.tenqube.visualbase.infrastructure.framework.di.ServiceLocator
 import kotlinx.coroutines.*
@@ -21,7 +21,6 @@ class SmsMmsService : IntentService("SmsParsingService"), CoroutineScope {
                 val sms = intent.getSerializableExtra(ARG_SMS) as SMS?
                 if (sms != null) {
                     withContext(Dispatchers.Default) {
-                        Log.i("RCS", "SmsParsingService start $sms")
                         ServiceLocator.provideParserAppService(context = applicationContext)
                             .parse(sms).getOrThrow()
                     }
@@ -45,7 +44,7 @@ class SmsMmsService : IntentService("SmsParsingService"), CoroutineScope {
 
         return SMS(
             0,
-            "MG체크카드(8*0*) 13,000원 승인 07/22 12:13 (MG라이프) 주식",
+            "MG체크카드(8*0*) ${(100..999).random()}원 승인 07/22 12:13 (MG라이프) 주식",
             "com.smg.mgnoti",
             "com.smg.mgnoti",
             "2022-07-28 00:10:10",
@@ -78,9 +77,17 @@ class SmsMmsService : IntentService("SmsParsingService"), CoroutineScope {
         const val ARG_SMS = "ARG_SMS"
 
         fun sendIntentService(context: Context, sms: SMS) {
-            val startIntent = Intent(context, SmsMmsService::class.java)
-            startIntent.putExtra(ARG_SMS, sms)
-            context.startService(startIntent)
+            try {
+                val startIntent = Intent(context, SmsMmsService::class.java)
+                startIntent.putExtra(ARG_SMS, sms)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    context.startService(startIntent)
+                } else {
+                    context.startService(startIntent)
+                }
+            } catch (e: Exception) {
+
+            }
         }
     }
 }

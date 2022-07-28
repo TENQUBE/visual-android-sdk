@@ -5,6 +5,7 @@ import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import java.lang.Exception
+import java.nio.charset.Charset
 import java.util.*
 import kotlin.math.max
 
@@ -140,9 +141,9 @@ fun String.toGroupByWeek(currentWeekMonday: Long): String { // 미랠
 }
 
 fun String.encodeToBase64(): String {
-    return Base64.encodeToString(this.toByteArray(), Base64.NO_WRAP)
+    return Base64.encodeToString(this.encodeToByteArray(), Base64.NO_WRAP)
 }
 
 fun String.decodeBase64(): String {
-    return String(Base64.decode(this, Base64.NO_WRAP))
+    return String(Base64.decode(this, Base64.NO_WRAP), Charsets.UTF_8)
 }

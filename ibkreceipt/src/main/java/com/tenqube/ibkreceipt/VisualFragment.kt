@@ -62,7 +62,7 @@ class VisualFragment : Fragment() {
             it.url?.let { url ->
                 viewModel.start("${BASE_URL}receipt?$url")
             } ?: viewModel.start(URL, it.user!!)
-        } ?: requireActivity().finish()
+        } ?: viewModel.start(URL)
     }
 
     private fun setupSwipeRefreshView() {

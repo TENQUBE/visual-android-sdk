@@ -90,9 +90,6 @@ object IBKServiceLocator {
                 notificationService
             ),
             transactionAppService = transactionAppService,
-            cardAppService = ServiceLocator.provideCardAppService(
-                cardRepository
-            ),
             uiService = uiService,
             bulkParserAppService = ServiceLocator.provideBulkParserAppService(parserAppService),
             IBKSharedPreference(context)
