@@ -17,6 +17,7 @@ import com.tenqube.webui.dto.ShowAd
 class AdService(private val context: Context) {
     companion object {
         const val AD_ID = "ca-app-pub-1003660361092577~7504035716"
+        const val TEST_UNIT_ID = "ca-app-pub-3940256099942544/2247696110"
     }
 
     init {
@@ -24,7 +25,7 @@ class AdService(private val context: Context) {
     }
 
     fun showAd(request: ShowAd) {
-        val builder = AdLoader.Builder(context, request.unitId)
+        val builder = AdLoader.Builder(context, TEST_UNIT_ID)
         builder.forUnifiedNativeAd { unifiedNativeAd ->
             val adView: UnifiedNativeAdView = LayoutInflater.from(context)
                 .inflate(R.layout.visual_admob_view, null) as UnifiedNativeAdView

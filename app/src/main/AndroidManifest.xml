@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.tenqube.visual_android_sdk">
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-sdk tools:overrideLibrary="com.tenqube.ibkreceipt" />
 
     <application
         android:allowBackup="true"
@@ -12,6 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Visualandroidsdk">
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-1003660361092577~4035782192"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">

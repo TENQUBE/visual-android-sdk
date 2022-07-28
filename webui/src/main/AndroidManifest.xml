@@ -3,4 +3,5 @@
     package="com.tenqube.webui">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
 </manifest>

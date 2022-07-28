@@ -124,7 +124,7 @@ class VisualViewModel(
         )
     }
 
-    fun showAd(request: ShowAdDto) {
+    fun showAd(request: ShowAdRequest) {
         uiService.showAd(
             ShowAd(
                 request.unitId,

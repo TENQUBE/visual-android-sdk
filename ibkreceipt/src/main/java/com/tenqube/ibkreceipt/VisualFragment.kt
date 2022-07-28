@@ -28,6 +28,7 @@ class VisualFragment : Fragment() {
     private lateinit var viewModel: VisualViewModel
     private lateinit var viewDataBinding: FragmentMainIbkBinding
     private lateinit var webViewManager: WebViewManager
+    private var adContainer: CardView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -83,11 +84,10 @@ class VisualFragment : Fragment() {
             viewDataBinding.container.addView(createCardView(it))
         }
         viewModel.hideAd.observe(this.viewLifecycleOwner) {
-//            viewDataBinding.container.allViews.firstOrNull { it is CardView }?.let {
-//                viewDataBinding.container.removeView(
-//                    it
-//                )
-//            }
+            adContainer?.let {
+                viewDataBinding.container.removeView(it)
+                adContainer = null
+            }
         }
         viewModel.refreshEnabled.observe(this.viewLifecycleOwner) {
             viewDataBinding.swipeRefreshLayout.isEnabled = it
@@ -105,17 +105,21 @@ class VisualFragment : Fragment() {
     }
 
     private fun createCardView(view: View): CardView? {
-        val adContainer = CardView(requireContext())
-        val params = FrameLayout.LayoutParams(
-            FrameLayout.LayoutParams.WRAP_CONTENT,
-            FrameLayout.LayoutParams.WRAP_CONTENT
-        )
-        params.setMargins(Utils.dpToPx(10), Utils.dpToPx(16), Utils.dpToPx(10), Utils.dpToPx(16))
-        params.gravity = Gravity.BOTTOM
-        adContainer.layoutParams = params
-        adContainer.radius = Utils.dpToPx(13).toFloat()
-        adContainer.setCardBackgroundColor(Color.parseColor("#00000000"))
-        adContainer.addView(view)
+        adContainer = CardView(requireContext())
+        with(CardView(requireContext())) {
+            val params = FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT
+            )
+            params.setMargins(Utils.dpToPx(16), Utils.dpToPx(16), Utils.dpToPx(16), Utils.dpToPx(16))
+            params.gravity = Gravity.BOTTOM
+            this.layoutParams = params
+            this.radius = Utils.dpToPx(13).toFloat()
+            this.setCardBackgroundColor(Color.parseColor("#00000000"))
+            this.addView(view)
+            adContainer = this
+        }
+
         return adContainer
     }
 
