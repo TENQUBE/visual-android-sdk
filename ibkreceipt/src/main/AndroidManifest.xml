@@ -16,7 +16,6 @@
                 <data android:scheme="visual"
                     android:host="ibk-receipt-popup" />
             </intent-filter>
-
         </activity>
 
         <activity
