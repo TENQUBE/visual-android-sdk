@@ -97,6 +97,7 @@ class VisualFragment : Fragment() {
             viewDataBinding.swipeRefreshLayout.isEnabled = it
         }
         viewModel.error.observe(this.viewLifecycleOwner) {
+            viewModel.showToast(it)
             viewDataBinding.errorContainer.errorContainer.visibility = View.VISIBLE
         }
     }
