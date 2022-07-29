@@ -59,7 +59,7 @@ class NotificationServiceImpl(
     }
 
     private fun createIntent(context: Context): PendingIntent {
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("visual://ibk-receipt")).apply {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(prefStorage.visualReceiptDeepLink)).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         return PendingIntent.getActivity(

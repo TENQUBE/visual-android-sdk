@@ -17,4 +17,5 @@ interface PrefStorage {
     var notiColor: Int
     var notiChannelId: String
     var isNotiEnabled: Boolean
+    var visualReceiptDeepLink: String
 }

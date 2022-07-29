@@ -19,6 +19,7 @@ class VisualServiceImpl(
         prefStorage.apiKey = arg.apiKey
         prefStorage.layer = arg.layer.value
         prefStorage.service = arg.service.value
+        prefStorage.visualReceiptDeepLink = arg.service.deepLink
         prefStorage.notiChannelId = arg.notification.channelId
         prefStorage.notiIcon = arg.notification.smallIcon
         prefStorage.notiColor = arg.notification.color

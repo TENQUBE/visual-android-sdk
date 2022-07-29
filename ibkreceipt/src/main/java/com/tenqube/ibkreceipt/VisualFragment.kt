@@ -61,9 +61,13 @@ class VisualFragment : Fragment() {
     private fun start() {
         parseArg()?.let {
             it.url?.let { url ->
-                viewModel.start("${BASE_URL}receipt?$url")
+                startReceipt(url)
             } ?: viewModel.start(URL, it.user!!)
         } ?: viewModel.start(URL)
+    }
+
+    private fun startReceipt(url: String) {
+        viewModel.start("${BASE_URL}receipt?$url")
     }
 
     private fun setupSwipeRefreshView() {
@@ -159,13 +163,11 @@ class VisualFragment : Fragment() {
                 viewDataBinding.webView.loadUrl(URL)
             }
         }
-
         viewModel.progressCount.observe(this.viewLifecycleOwner) {
             viewDataBinding.webView.loadUrl(
                 "javascript:window.onProgress(${it.now}, ${it.total});"
             )
         }
-
         viewModel.error.observe(this.viewLifecycleOwner) {
             viewDataBinding.webView.loadUrl(
                 "javascript:window.onSyncError();"
@@ -179,6 +181,7 @@ class VisualFragment : Fragment() {
                 if (viewDataBinding.webView.canGoBack()) {
                     viewDataBinding.webView.goBack()
                 } else {
+                    activity?.overridePendingTransition(0, 0)
                     activity?.finish()
                 }
             }
