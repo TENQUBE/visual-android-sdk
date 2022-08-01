@@ -39,6 +39,7 @@ android {
 
 dependencies {
     implementation project(':ibkreceipt')
+    implementation project(':visualibk')
     implementation "tenqube.parser:sms-parser:2.5.0"
     implementation "com.tenqube:notiparser:0.0.7"
 //    implementation project(":webui")
