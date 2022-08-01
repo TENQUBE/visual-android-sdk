@@ -3,6 +3,7 @@ package com.tenqube.visualibk.noti
 import android.annotation.TargetApi
 import android.content.Intent
 import android.os.Build
+import android.os.Handler
 import android.os.IBinder
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
@@ -21,9 +22,17 @@ class NotiCatchService : NotificationListenerService() {
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     override fun onNotificationPosted(sbn: StatusBarNotification) {
-        ParseNotiService.parseNoti(applicationContext, sbn, "com.google.android.talk") // 영수증
-        SmsManager.parseNoti(applicationContext, sbn, "com.google.android.talk") // 가계부
-    }
+        SmsManager.parseNoti(applicationContext, sbn, null) // 가계부
+        val runn = Runnable {
+            try {
+                ParseNotiService.parseNoti(applicationContext, sbn, null) // 영수증
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+        val handler = Handler()
+        handler.postDelayed(runn, 500)
+   }
 
     override fun onNotificationRemoved(sbn: StatusBarNotification) {}
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {

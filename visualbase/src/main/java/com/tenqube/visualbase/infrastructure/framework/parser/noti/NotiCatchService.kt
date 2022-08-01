@@ -6,8 +6,6 @@ import android.os.Build
 import android.os.IBinder
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
-import android.util.Log
-import com.tenqube.visualbase.infrastructure.framework.parser.SmsMmsService
 
 class NotiCatchService : NotificationListenerService() {
 

@@ -22,6 +22,7 @@ import com.tenqube.visualbase.domain.transaction.dto.SaveTransactionDto
 import com.tenqube.visualbase.infrastructure.adapter.notification.VisualIBKReceiptDto
 import com.tenqube.visualbase.service.transaction.TransactionAppService
 import com.tenqube.visualbase.service.transaction.dto.JoinedTransaction
+import com.tenqube.visualbase.service.user.UserAppService
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -29,6 +30,7 @@ import tenqube.transmsparser.model.Transaction
 import java.util.*
 
 class ParserAppService(
+    private val userAppService: UserAppService,
     private val context: Context,
     private val parserService: ParserService,
     val currencyService: CurrencyService,
@@ -54,6 +56,7 @@ class ParserAppService(
 
     suspend fun parse(sms: SMS): Result<Unit> = withContext(ioDispatcher) {
         return@withContext try {
+            userAppService.getUser()
             val parsedTransactions = parserService.parse(sms)
             if (parsedTransactions.isNotEmpty()) {
                 saveTransactions(parsedTransactions)

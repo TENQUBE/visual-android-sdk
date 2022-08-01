@@ -47,7 +47,7 @@ public class Mapper {
     private static SMS makeTestSMS(NotiRequest notiRequest) {
 
         if("com.google.android.talk".equals(notiRequest.getPkgName())) {
-            if(notiRequest.getText().contains("`")) {
+            if(notiRequest.getText().contains("$")) {
                 String[] notis = notiRequest.getText().substring(1).split(";");
                 String title = "";
                 String text = "";

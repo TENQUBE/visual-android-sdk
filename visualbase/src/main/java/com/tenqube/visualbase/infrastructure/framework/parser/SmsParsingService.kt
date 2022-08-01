@@ -9,7 +9,7 @@ import com.tenqube.visualbase.infrastructure.framework.di.ServiceLocator
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
-class SmsMmsService : IntentService("SmsParsingService"), CoroutineScope {
+class SmsParsingService : IntentService("SmsParsingService"), CoroutineScope {
 
     private var coroutineJob: Job = Job()
     override val coroutineContext: CoroutineContext
@@ -36,7 +36,7 @@ class SmsMmsService : IntentService("SmsParsingService"), CoroutineScope {
 
         fun sendIntentService(context: Context, sms: SMS) {
             try {
-                val startIntent = Intent(context, SmsMmsService::class.java)
+                val startIntent = Intent(context, SmsParsingService::class.java)
                 startIntent.putExtra(ARG_SMS, sms)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     context.startService(startIntent)
