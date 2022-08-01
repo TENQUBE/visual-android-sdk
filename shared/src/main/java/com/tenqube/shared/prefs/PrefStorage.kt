@@ -18,4 +18,6 @@ interface PrefStorage {
     var notiChannelId: String
     var isNotiEnabled: Boolean
     var visualReceiptDeepLink: String
+    var visualReceiptPopupDeepLink: String
+
 }

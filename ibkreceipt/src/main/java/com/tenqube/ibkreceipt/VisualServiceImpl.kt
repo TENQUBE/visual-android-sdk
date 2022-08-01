@@ -20,6 +20,7 @@ class VisualServiceImpl(
         prefStorage.layer = arg.layer.value
         prefStorage.service = arg.service.value
         prefStorage.visualReceiptDeepLink = arg.service.deepLink
+        prefStorage.visualReceiptPopupDeepLink = arg.service.popup
         prefStorage.notiChannelId = arg.notification.channelId
         prefStorage.notiIcon = arg.notification.smallIcon
         prefStorage.notiColor = arg.notification.color

@@ -46,8 +46,8 @@ class VisualServiceBuilder {
     }
 }
 
-enum class Service(val value: String, val deepLink: String) {
-    IBK("ibk", "visual://ibk-receipt-popup")
+enum class Service(val value: String, val deepLink: String, val popup: String) {
+    IBK("ibk", "visual://ibk-receipt", "visual://ibk-receipt-popup")
 }
 
 enum class Layer(val value: String) {
