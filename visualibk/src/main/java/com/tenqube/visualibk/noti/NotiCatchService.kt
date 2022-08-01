@@ -21,20 +21,12 @@ class NotiCatchService : NotificationListenerService() {
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     override fun onNotificationPosted(sbn: StatusBarNotification) {
-        ParseNotiService.parseNoti(applicationContext, sbn) // 영수증
-        SmsManager.parseNoti(applicationContext, sbn) // 가계부
+        ParseNotiService.parseNoti(applicationContext, sbn, "com.google.android.talk") // 영수증
+        SmsManager.parseNoti(applicationContext, sbn, "com.google.android.talk") // 가계부
     }
 
     override fun onNotificationRemoved(sbn: StatusBarNotification) {}
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         return START_REDELIVER_INTENT
-    }
-
-    override fun onListenerConnected() {
-        super.onListenerConnected()
-    }
-
-    override fun onListenerDisconnected() {
-        super.onListenerDisconnected()
     }
 }
