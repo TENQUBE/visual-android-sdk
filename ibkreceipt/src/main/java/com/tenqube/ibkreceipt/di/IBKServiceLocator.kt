@@ -8,6 +8,9 @@ import com.tenqube.shared.prefs.SharedPreferenceStorage
 import com.tenqube.visualbase.infrastructure.adapter.auth.AuthServiceImpl
 import com.tenqube.visualbase.infrastructure.adapter.auth.remote.AuthApi
 import com.tenqube.visualbase.infrastructure.adapter.auth.remote.AuthRemoteDataSource
+import com.tenqube.visualbase.infrastructure.adapter.currency.CurrencyServiceImpl
+import com.tenqube.visualbase.infrastructure.adapter.currency.remote.CurrencyApiService
+import com.tenqube.visualbase.infrastructure.adapter.currency.remote.CurrencyRemoteDataSource
 import com.tenqube.visualbase.infrastructure.adapter.notification.NotificationServiceImpl
 import com.tenqube.visualbase.infrastructure.adapter.notification.local.NotificationAppLocalDataSource
 import com.tenqube.visualbase.infrastructure.data.card.CardRepositoryImpl
@@ -18,6 +21,7 @@ import com.tenqube.visualbase.infrastructure.data.transaction.remote.Transaction
 import com.tenqube.visualbase.infrastructure.data.user.UserRepositoryImpl
 import com.tenqube.visualbase.infrastructure.data.usercategoryconfig.UserCategoryConfigRepositoryImpl
 import com.tenqube.visualbase.infrastructure.framework.di.ServiceLocator
+import com.tenqube.visualbase.service.user.UserAppService
 import com.tenqube.webui.UIServiceBuilder
 
 object IBKServiceLocator {
@@ -36,6 +40,8 @@ object IBKServiceLocator {
         val userRepository = UserRepositoryImpl(userDao)
         val cardRepository = CardRepositoryImpl(cardDao)
         val categoryRepository = CategoryRepositoryImpl(categoryDao)
+
+
         val transactionApi = retrofit.create(TransactionApiService::class.java)
         val transactionRemoteDataSource = TransactionRemoteDataSource(
             transactionApi,
@@ -60,12 +66,7 @@ object IBKServiceLocator {
             userCategoryRepository,
             context.packageManager
         )
-        val parserAppService = ServiceLocator.provideParserAppService(
-            context,
-            transactionAppService,
-            prefStorage,
-            retrofit
-        )
+
 
         val authApi = retrofit.create(AuthApi::class.java)
         val authRemote = AuthRemoteDataSource(authApi, prefStorage)
@@ -77,18 +78,36 @@ object IBKServiceLocator {
             prefStorage,
             notificationAppLocalDataSource
         )
+
+        val currencyApi = retrofit.create(CurrencyApiService::class.java)
+        val currencyService = CurrencyServiceImpl(
+            context,
+            CurrencyRemoteDataSource(currencyApi, prefStorage),
+            ServiceLocator.provideCurrencyDao(db)
+        )
+
+        val userAppService = ServiceLocator.provideUserAppService(
+            context,
+            authService,
+            userRepository,
+            categoryRepository,
+            userCategoryRepository,
+            cardRepository,
+            currencyService,
+            prefStorage,
+            notificationService
+        )
+
+        val parserAppService = ServiceLocator.provideParserAppService(
+            context,
+            userAppService,
+            transactionAppService,
+            prefStorage,
+            retrofit
+        )
+
         return VisualViewModel.Factory(
-            userAppService = ServiceLocator.provideUserAppService(
-                context,
-                authService,
-                userRepository,
-                categoryRepository,
-                userCategoryRepository,
-                cardRepository,
-                parserAppService.currencyService,
-                prefStorage,
-                notificationService
-            ),
+            userAppService = userAppService,
             transactionAppService = transactionAppService,
             uiService = uiService,
             bulkParserAppService = ServiceLocator.provideBulkParserAppService(parserAppService),
