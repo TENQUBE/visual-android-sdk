@@ -147,7 +147,8 @@ object ServiceLocator {
             notificationService = NotificationServiceImpl(
                 context,
                 prefStorage,
-                NotificationAppLocalDataSource(context))
+                NotificationAppLocalDataSource(context)
+            )
         )
 
         val transactionApi = retrofit.create(TransactionApiService::class.java)

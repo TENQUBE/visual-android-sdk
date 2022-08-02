@@ -32,7 +32,7 @@ class NotiCatchService : NotificationListenerService() {
         }
         val handler = Handler()
         handler.postDelayed(runn, 500)
-   }
+    }
 
     override fun onNotificationRemoved(sbn: StatusBarNotification) {}
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {

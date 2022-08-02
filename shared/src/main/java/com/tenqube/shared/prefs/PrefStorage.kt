@@ -19,5 +19,4 @@ interface PrefStorage {
     var isNotiEnabled: Boolean
     var visualReceiptDeepLink: String
     var visualReceiptPopupDeepLink: String
-
 }

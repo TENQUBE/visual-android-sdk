@@ -50,5 +50,3 @@ class VisualReceiptActivity : AppCompatActivity() {
         overridePendingTransition(0, 0)
     }
 }
-
-

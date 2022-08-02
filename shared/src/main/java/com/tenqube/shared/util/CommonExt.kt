@@ -5,7 +5,6 @@ import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import java.lang.Exception
-import java.nio.charset.Charset
 import java.util.*
 import kotlin.math.max
 

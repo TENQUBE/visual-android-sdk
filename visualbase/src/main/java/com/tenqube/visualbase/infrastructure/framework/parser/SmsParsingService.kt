@@ -44,7 +44,6 @@ class SmsParsingService : IntentService("SmsParsingService"), CoroutineScope {
                     context.startService(startIntent)
                 }
             } catch (e: Exception) {
-
             }
         }
     }

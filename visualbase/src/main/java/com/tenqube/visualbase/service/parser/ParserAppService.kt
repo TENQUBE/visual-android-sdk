@@ -4,8 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import com.tenqube.shared.prefs.PrefStorage
-import com.tenqube.shared.util.encodeToBase64
-import com.tenqube.shared.util.toJson
 import com.tenqube.visualbase.domain.currency.CurrencyRequest
 import com.tenqube.visualbase.domain.currency.CurrencyService
 import com.tenqube.visualbase.domain.notification.NotificationService
@@ -85,13 +83,15 @@ class ParserAppService(
 
     private fun showPopup(command: NotificationDto) {
         val receipt = VisualIBKReceiptDto.from(command)
-        val intent = Intent(Intent.ACTION_VIEW,
-            Uri.parse("${prefStorage.visualReceiptPopupDeepLink}?${receipt.toLink()})")).apply {
+        val intent = Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse("${prefStorage.visualReceiptPopupDeepLink}?${receipt.toLink()})")
+        ).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or
-                    Intent.FLAG_ACTIVITY_CLEAR_TASK or
-                    Intent.FLAG_ACTIVITY_CLEAR_TOP or
-                    Intent.FLAG_ACTIVITY_NO_HISTORY or
-                    Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
+                Intent.FLAG_ACTIVITY_CLEAR_TASK or
+                Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                Intent.FLAG_ACTIVITY_NO_HISTORY or
+                Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
         }
         context.startActivity(intent)
     }

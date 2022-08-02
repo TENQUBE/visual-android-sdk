@@ -7,7 +7,6 @@ import com.tenqube.ibkreceipt.bridge.dto.response.*
 import com.tenqube.ibkreceipt.progress.ProgressCount
 import com.tenqube.shared.error.UserAlreadyExistException
 import com.tenqube.visualbase.domain.user.command.CreateUser
-import com.tenqube.visualbase.service.card.CardAppService
 import com.tenqube.visualbase.service.parser.BulkCallback
 import com.tenqube.visualbase.service.parser.BulkParserAppService
 import com.tenqube.visualbase.service.parser.BulkSmsAdapterImpl
