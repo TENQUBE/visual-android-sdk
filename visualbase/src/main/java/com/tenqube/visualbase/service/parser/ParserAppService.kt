@@ -3,6 +3,9 @@ package com.tenqube.visualbase.service.parser
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import com.tenqube.shared.prefs.PrefStorage
 import com.tenqube.visualbase.domain.currency.CurrencyRequest
 import com.tenqube.visualbase.domain.currency.CurrencyService
@@ -77,7 +80,9 @@ class ParserAppService(
             )
         ) {
             notificationService.show(this)
-            showPopup(this)
+            Handler(Looper.getMainLooper()).postDelayed({
+                showPopup(this)
+            }, 200)
         }
     }
 

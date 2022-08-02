@@ -38,12 +38,10 @@ android {
 }
 
 dependencies {
-    implementation 'com.tenqube:ibkreceipt:0.0.1-alpha04'
-    implementation 'com.tenqube:ibk:1.6.7'
-
-    implementation "tenqube.parser:sms-parser:2.5.0"
+//    implementation 'com.tenqube:ibkreceipt:0.0.1-alpha05'
+    implementation 'com.tenqube:ibk:1.6.8'
     implementation "com.tenqube:notiparser:0.0.7"
-//    implementation project(":webui")
+    implementation project(":ibkreceipt")
 //    implementation project(":jb")
     implementation fileTree(include: ['*.aar'], dir: 'libs')
     implementation 'androidx.core:core-ktx:1.0.0'
