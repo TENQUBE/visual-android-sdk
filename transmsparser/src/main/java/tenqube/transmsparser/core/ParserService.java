@@ -21,12 +21,9 @@ import tenqube.transmsparser.model.Transaction;
 import tenqube.transmsparser.util.LogUtil;
 
 public class ParserService implements Parser {
-
     public static final String TAG = LogUtil.makeLogTag(ParserService.class);
-
     private Context mContext;
     private boolean mIsBulk;
-    public static boolean mIsDebug = false;
     private int mTranCnt;
 
     private ParserPresenter mParserPresenter;
@@ -98,7 +95,7 @@ public class ParserService implements Parser {
 
     @Override
     public void setDebugMode(boolean isDebug) {
-        mIsDebug = isDebug;
+        com.tenqube.shared.util.Utils.INSTANCE.setDebug(isDebug);
     }
 
     @Override

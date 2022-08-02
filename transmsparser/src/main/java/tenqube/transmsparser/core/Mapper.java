@@ -106,7 +106,6 @@ public class Mapper {
                 return texts[texts.length - 1].trim();
             }
         }
-
         if("com.hyundaicard.appcard".equals(pkg) && !TextUtils.isEmpty(bigText)) {
             return bigText;
         }
@@ -119,7 +118,6 @@ public class Mapper {
      * @return
      */
     private static String getSender(boolean isDefault, String pkgName, String title) {
-
         if(isDefault) {
             return title;
         } else {
@@ -127,7 +125,6 @@ public class Mapper {
         }
 
     }
-
 
     private static String getSmsDate(long when) {
         SimpleDateFormat fullDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
@@ -141,6 +138,4 @@ public class Mapper {
             return Constants.SMSType.NOTIFICATION.ordinal();
         }
     }
-
-
 }
