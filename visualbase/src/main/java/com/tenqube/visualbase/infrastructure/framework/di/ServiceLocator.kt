@@ -260,7 +260,6 @@ object ServiceLocator {
         categoryRepository: CategoryRepository,
         userCategoryConfigRepository: UserCategoryConfigRepository,
         packageManager: PackageManager
-
     ): TransactionAppService {
         return TransactionAppService(
             transactionRepository,
