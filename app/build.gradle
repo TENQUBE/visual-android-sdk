@@ -38,8 +38,7 @@ android {
 }
 
 dependencies {
-    implementation project(':ibkreceipt')
-//    implementation 'com.tenqube:ibkreceipt:0.0.1-alpha02'
+    implementation 'com.tenqube:ibkreceipt:0.0.1-alpha04'
     implementation 'com.tenqube:ibk:1.6.7'
 
     implementation "tenqube.parser:sms-parser:2.5.0"
