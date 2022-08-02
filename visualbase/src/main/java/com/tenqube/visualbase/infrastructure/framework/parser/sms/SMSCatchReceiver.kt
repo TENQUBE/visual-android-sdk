@@ -32,6 +32,7 @@ class SMSCatchReceiver() : BroadcastReceiver() {
                         rcsService = this
                     }
                     ).queryRcs(msgId)?.run {
+
                     sendIntentService(context, this)
                 }
             }

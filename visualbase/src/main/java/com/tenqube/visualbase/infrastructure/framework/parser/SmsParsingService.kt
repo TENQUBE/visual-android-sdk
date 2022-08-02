@@ -4,6 +4,7 @@ import android.app.IntentService
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import com.tenqube.visualbase.domain.parser.SMS
 import com.tenqube.visualbase.infrastructure.framework.di.ServiceLocator
 import kotlinx.coroutines.*
@@ -16,6 +17,7 @@ class SmsParsingService : IntentService("SmsParsingService"), CoroutineScope {
         get() = Dispatchers.IO + coroutineJob
 
     override fun onHandleIntent(intent: Intent?) = runBlocking {
+        Log.i("RCS", "SmsParsingService $intent")
         try {
             if (intent != null) {
                 val sms = intent.getSerializableExtra(ARG_SMS) as SMS?
@@ -34,15 +36,19 @@ class SmsParsingService : IntentService("SmsParsingService"), CoroutineScope {
     companion object {
         const val ARG_SMS = "ARG_SMS"
 
-        fun sendIntentService(context: Context, sms: SMS) {
+        fun sendIntentService(context: Context, sms: SMS) = runBlocking {
             try {
-                val startIntent = Intent(context, SmsParsingService::class.java)
-                startIntent.putExtra(ARG_SMS, sms)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    context.startService(startIntent)
-                } else {
-                    context.startService(startIntent)
-                }
+
+                ServiceLocator.provideParserAppService(context = context)
+                    .parse(sms).getOrThrow()
+
+//                val startIntent = Intent(context, SmsParsingService::class.java)
+//                startIntent.putExtra(ARG_SMS, sms)
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                    context.startService(startIntent)
+//                } else {
+//                    context.startService(startIntent)
+//                }
             } catch (e: Exception) {
             }
         }

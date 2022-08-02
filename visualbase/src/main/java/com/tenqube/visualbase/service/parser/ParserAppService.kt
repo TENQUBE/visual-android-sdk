@@ -87,6 +87,7 @@ class ParserAppService(
     }
 
     private fun showPopup(command: NotificationDto) {
+        Log.i("RCS", "showPopup $command")
         val receipt = VisualIBKReceiptDto.from(command)
         val intent = Intent(
             Intent.ACTION_VIEW,
