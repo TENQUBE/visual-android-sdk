@@ -12,6 +12,7 @@ import com.tenqube.visual_third.Constants
 import com.tenqube.visual_third.VisualServiceImpl
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
