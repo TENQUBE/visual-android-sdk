@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.tenqube.visualbase.infrastructure.adapter.parser.rcs.RcsService
-import com.tenqube.visualbase.infrastructure.framework.parser.SmsMmsService.Companion.sendIntentService
+import com.tenqube.visualbase.infrastructure.framework.parser.SmsParsingService.Companion.sendIntentService
 
 class RcsCatchReceiver() : BroadcastReceiver() {
     var rcsService: RcsService? = null

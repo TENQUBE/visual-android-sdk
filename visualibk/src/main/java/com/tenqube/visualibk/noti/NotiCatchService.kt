@@ -1,11 +1,14 @@
-package com.tenqube.visualbase.infrastructure.framework.parser.noti
+package com.tenqube.visualibk.noti
 
 import android.annotation.TargetApi
 import android.content.Intent
 import android.os.Build
+import android.os.Handler
 import android.os.IBinder
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
+import com.tenqube.ibkreceipt.ParseNotiService
+import com.tenqube.visual_third.parser.catcher.noti.SmsManager
 
 class NotiCatchService : NotificationListenerService() {
 
@@ -19,23 +22,20 @@ class NotiCatchService : NotificationListenerService() {
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
     override fun onNotificationPosted(sbn: StatusBarNotification) {
-//        Log.i("RCS", "onNotificationPosted start")
-//        SmsMmsService.sendIntentService(
-//            applicationContext,
-//            NotiParser.parseSbn(applicationContext, sbn)
-//        )
+        SmsManager.parseNoti(applicationContext, sbn, null) // 가계부
+        val runn = Runnable {
+            try {
+                ParseNotiService.parseNoti(applicationContext, sbn, null) // 영수증
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+        val handler = Handler()
+        handler.postDelayed(runn, 500)
     }
 
     override fun onNotificationRemoved(sbn: StatusBarNotification) {}
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         return START_REDELIVER_INTENT
-    }
-
-    override fun onListenerConnected() {
-        super.onListenerConnected()
-    }
-
-    override fun onListenerDisconnected() {
-        super.onListenerDisconnected()
     }
 }

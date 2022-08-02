@@ -6,21 +6,6 @@
         <activity
             android:name="com.tenqube.ibkreceipt.VisualActivity"
             android:exported="true"
-            android:label="@string/title_activity_visual_receipt" >
-
-            <intent-filter android:label="ibk-receipt">
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <!-- Accepts URIs that begin with "example://gizmos” -->
-                <data android:scheme="visual"
-                    android:host="ibk-receipt-popup" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name="com.tenqube.ibkreceipt.VisualReceiptActivity"
-            android:exported="true"
             android:label="@string/title_activity_visual" >
 
             <intent-filter android:label="ibk-receipt">
@@ -31,7 +16,24 @@
                 <data android:scheme="visual"
                     android:host="ibk-receipt" />
             </intent-filter>
+        </activity>
 
+        <activity
+            android:configChanges="orientation"
+            android:excludeFromRecents="true"
+            android:screenOrientation="unspecified"
+            android:theme="@style/Theme.AppCompat.Translucent"
+            android:name="com.tenqube.ibkreceipt.VisualReceiptActivity"
+            android:exported="true"
+            android:label="@string/title_activity_visual_receipt" >
+            <intent-filter android:label="ibk-receipt-popup">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "example://gizmos” -->
+                <data android:scheme="visual"
+                    android:host="ibk-receipt-popup" />
+            </intent-filter>
         </activity>
     </application>
 

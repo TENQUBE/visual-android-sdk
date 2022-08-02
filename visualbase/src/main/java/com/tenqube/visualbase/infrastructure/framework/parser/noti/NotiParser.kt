@@ -9,8 +9,8 @@ import tenqube.transmsparser.model.NotiRequest
 
 object NotiParser {
 
-    fun parseSbn(context: Context, sbn: StatusBarNotification): SMS {
-        val packageName = sbn.packageName
+    fun parseSbn(context: Context, sbn: StatusBarNotification, testPkgName: String?): SMS {
+        val packageName = testPkgName ?: sbn.packageName
         val notification = sbn.notification
         val titleCS = notification.extras.getCharSequence(Notification.EXTRA_TITLE)
         val contentCS = notification.extras.getCharSequence(Notification.EXTRA_TEXT)

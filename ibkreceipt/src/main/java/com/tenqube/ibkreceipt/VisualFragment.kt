@@ -62,11 +62,13 @@ class VisualFragment : Fragment() {
         parseArg()?.let {
             it.url?.let { url ->
                 startReceipt(url)
-            } ?: viewModel.start(URL, it.user!!)
+            } ?: viewModel.start(URL, it.user)
         } ?: viewModel.start(URL)
     }
 
     private fun startReceipt(url: String) {
+        viewDataBinding.webView.setBackgroundColor(Color.TRANSPARENT)
+        viewDataBinding.container.setBackgroundColor(Color.TRANSPARENT)
         viewModel.start("${BASE_URL}receipt?$url")
     }
 

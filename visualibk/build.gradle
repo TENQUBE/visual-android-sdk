@@ -1,24 +1,22 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'kotlin-android'
-    id 'kotlin-kapt'
+    id 'com.vanniktech.maven.publish'
 }
 
 android {
-
-    compileSdk 30
+    compileSdk rootProject.compileSdkVersion
 
     defaultConfig {
-        applicationId "com.tenqube.visual_android_sdk"
-        minSdk 21
-        targetSdk 30
+        minSdk rootProject.minSdkVersion
+        targetSdk rootProject.targetSdkVersion
         versionCode 1
-        versionName "1.0"
+        versionName VERSION_NAME
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-
-
+        consumerProguardFiles "consumer-rules.pro"
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -32,21 +30,14 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    buildFeatures {
-        dataBinding true
-    }
 }
 
 dependencies {
+    implementation fileTree(include: ['*.aar'], dir: 'libs')
     implementation project(':ibkreceipt')
-//    implementation 'com.tenqube:ibkreceipt:0.0.1-alpha02'
     implementation 'com.tenqube:ibk:1.6.7'
-
     implementation "tenqube.parser:sms-parser:2.5.0"
     implementation "com.tenqube:notiparser:0.0.7"
-//    implementation project(":webui")
-//    implementation project(":jb")
-    implementation fileTree(include: ['*.aar'], dir: 'libs')
     implementation 'androidx.core:core-ktx:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'

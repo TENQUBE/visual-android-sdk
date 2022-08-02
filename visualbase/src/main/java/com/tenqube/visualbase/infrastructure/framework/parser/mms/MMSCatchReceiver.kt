@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Handler
-import com.tenqube.visualbase.infrastructure.framework.parser.SmsMmsService
+import com.tenqube.visualbase.infrastructure.framework.parser.SmsParsingService
 
 class MMSCatchReceiver() : BroadcastReceiver() {
 
@@ -16,7 +16,7 @@ class MMSCatchReceiver() : BroadcastReceiver() {
                     if (action != null) {
                         if (MMS_ACTION == action) {
                             MMSParser.parse(context)?.let {
-                                SmsMmsService.sendIntentService(context, it)
+                                SmsParsingService.sendIntentService(context, it)
                             }
                         }
                     }

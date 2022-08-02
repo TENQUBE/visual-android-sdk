@@ -1,7 +1,9 @@
 package com.tenqube.ibkreceipt
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentTransaction
 import com.tenqube.ibkreceipt.VisualFragment.Companion.VISUAL_IBK_ARG
 import com.tenqube.shared.util.inTransaction
@@ -11,9 +13,9 @@ import timber.log.Timber
 class VisualReceiptActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setTheme(R.style.Theme_AppCompat_Transparent_NoActionBar)
         setContentView(R.layout.activity_visual_ibk)
         Timber.DebugTree()
+        findViewById<ConstraintLayout>(R.id.container).setBackgroundColor(Color.TRANSPARENT)
         if (savedInstanceState == null) {
             start()
         }
@@ -36,5 +38,15 @@ class VisualReceiptActivity : AppCompatActivity() {
         val arg = (intent.getSerializableExtra(VISUAL_IBK_ARG) as VisualIBKArg?) ?: VisualIBKArg(null, null)
         fragmentTransaction.replace(R.id.container, VisualFragment.newInstance(arg))
         return fragmentTransaction
+    }
+
+    override fun onResume() {
+        super.onResume()
+        overridePendingTransition(0, 0)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        overridePendingTransition(0, 0)
     }
 }

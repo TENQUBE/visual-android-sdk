@@ -7,7 +7,6 @@ import com.tenqube.ibkreceipt.bridge.dto.response.*
 import com.tenqube.ibkreceipt.progress.ProgressCount
 import com.tenqube.shared.error.UserAlreadyExistException
 import com.tenqube.visualbase.domain.user.command.CreateUser
-import com.tenqube.visualbase.service.card.CardAppService
 import com.tenqube.visualbase.service.parser.BulkCallback
 import com.tenqube.visualbase.service.parser.BulkParserAppService
 import com.tenqube.visualbase.service.parser.BulkSmsAdapterImpl
@@ -54,13 +53,15 @@ class VisualViewModel(
         _url.value = url
     }
 
-    fun start(url: String, user: CreateUser) {
+    fun start(url: String, user: CreateUser?) {
         viewModelScope.launch {
             try {
-                userAppService.signUp(user).getOrThrow()
-                ibkSharedPreference.disableTranPopup()
-                _url.value = VisualFragment.PROGRESS_URL
-                startBulk()
+                user?.let {
+                    userAppService.signUp(user).getOrThrow()
+                    ibkSharedPreference.disableTranPopup()
+                    _url.value = VisualFragment.PROGRESS_URL
+                    startBulk()
+                } ?: start(url)
             } catch (e: UserAlreadyExistException) {
                 _url.value = url
             } catch (e: Exception) {

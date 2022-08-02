@@ -12,7 +12,6 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.tenqube.shared.prefs.PrefStorage
-import com.tenqube.shared.util.encodeToBase64
 import com.tenqube.visualbase.domain.notification.NotificationApp
 import com.tenqube.visualbase.domain.notification.NotificationService
 import com.tenqube.visualbase.domain.notification.dto.NotificationDto
@@ -41,8 +40,10 @@ class NotificationServiceImpl(
                 .setContentIntent(createIntent(context))
                 .setColor(prefStorage.notiColor)
                 .setDefaults(Notification.DEFAULT_LIGHTS or Notification.DEFAULT_SOUND)
-                .setStyle(NotificationCompat.BigTextStyle()
-                    .bigText(command.getMsg()));
+                .setStyle(
+                    NotificationCompat.BigTextStyle()
+                        .bigText(command.getMsg())
+                )
 
             with(NotificationManagerCompat.from(context)) {
                 notify(NOTI_ID, builder.build())
@@ -60,7 +61,8 @@ class NotificationServiceImpl(
 
     private fun createIntent(context: Context): PendingIntent {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(prefStorage.visualReceiptDeepLink)).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or
+                Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
         return PendingIntent.getActivity(
             context,

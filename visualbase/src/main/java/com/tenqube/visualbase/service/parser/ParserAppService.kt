@@ -4,8 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import com.tenqube.shared.prefs.PrefStorage
-import com.tenqube.shared.util.encodeToBase64
-import com.tenqube.shared.util.toJson
 import com.tenqube.visualbase.domain.currency.CurrencyRequest
 import com.tenqube.visualbase.domain.currency.CurrencyService
 import com.tenqube.visualbase.domain.notification.NotificationService
@@ -22,6 +20,7 @@ import com.tenqube.visualbase.domain.transaction.dto.SaveTransactionDto
 import com.tenqube.visualbase.infrastructure.adapter.notification.VisualIBKReceiptDto
 import com.tenqube.visualbase.service.transaction.TransactionAppService
 import com.tenqube.visualbase.service.transaction.dto.JoinedTransaction
+import com.tenqube.visualbase.service.user.UserAppService
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -29,6 +28,7 @@ import tenqube.transmsparser.model.Transaction
 import java.util.*
 
 class ParserAppService(
+    private val userAppService: UserAppService,
     private val context: Context,
     private val parserService: ParserService,
     val currencyService: CurrencyService,
@@ -54,6 +54,7 @@ class ParserAppService(
 
     suspend fun parse(sms: SMS): Result<Unit> = withContext(ioDispatcher) {
         return@withContext try {
+            userAppService.getUser()
             val parsedTransactions = parserService.parse(sms)
             if (parsedTransactions.isNotEmpty()) {
                 saveTransactions(parsedTransactions)
@@ -82,8 +83,15 @@ class ParserAppService(
 
     private fun showPopup(command: NotificationDto) {
         val receipt = VisualIBKReceiptDto.from(command)
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("visual://ibk-receipt?${receipt.toLink()})")).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        val intent = Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse("${prefStorage.visualReceiptPopupDeepLink}?${receipt.toLink()})")
+        ).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or
+                Intent.FLAG_ACTIVITY_CLEAR_TASK or
+                Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                Intent.FLAG_ACTIVITY_NO_HISTORY or
+                Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
         }
         context.startActivity(intent)
     }

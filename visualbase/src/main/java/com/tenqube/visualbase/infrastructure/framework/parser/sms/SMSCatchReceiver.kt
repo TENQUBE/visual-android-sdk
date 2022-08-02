@@ -7,7 +7,7 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import com.tenqube.visualbase.infrastructure.adapter.parser.rcs.RcsService
-import com.tenqube.visualbase.infrastructure.framework.parser.SmsMmsService.Companion.sendIntentService
+import com.tenqube.visualbase.infrastructure.framework.parser.SmsParsingService.Companion.sendIntentService
 import com.tenqube.visualbase.infrastructure.framework.parser.rcs.RcsCatchReceiver
 
 class SMSCatchReceiver() : BroadcastReceiver() {

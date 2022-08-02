@@ -43,6 +43,7 @@ import com.tenqube.visualbase.infrastructure.data.transaction.TransactionReposit
 import com.tenqube.visualbase.infrastructure.data.transaction.local.TransactionDao
 import com.tenqube.visualbase.infrastructure.data.transaction.remote.TransactionApiService
 import com.tenqube.visualbase.infrastructure.data.transaction.remote.TransactionRemoteDataSource
+import com.tenqube.visualbase.infrastructure.data.user.UserRepositoryImpl
 import com.tenqube.visualbase.infrastructure.data.user.local.UserDao
 import com.tenqube.visualbase.infrastructure.data.usercategoryconfig.UserCategoryConfigRepositoryImpl
 import com.tenqube.visualbase.infrastructure.data.usercategoryconfig.local.UserCategoryConfigDao
@@ -123,6 +124,32 @@ object ServiceLocator {
         val cardDao = provideCardDao(db)
         val categoryDao = provideCategoryDao(db)
         val userCategoryDao = provideUserCategoryConfigDao(db)
+        val cardRepository = CardRepositoryImpl(cardDao)
+        val categoryRepository = CategoryRepositoryImpl(categoryDao)
+        val userCategoryRepository = UserCategoryConfigRepositoryImpl(userCategoryDao)
+
+        val authApi = retrofit.create(AuthApi::class.java)
+        val currencyApi = retrofit.create(CurrencyApiService::class.java)
+
+        val userAppService = UserAppService(
+            context,
+            authService = AuthServiceImpl(AuthRemoteDataSource(authApi, prefStorage)),
+            userRepository = UserRepositoryImpl(db.userDao()),
+            categoryRepository = categoryRepository,
+            cardRepository = cardRepository,
+            userCategoryConfigRepository = userCategoryRepository,
+            prefStorage = prefStorage,
+            currencyService = CurrencyServiceImpl(
+                context,
+                CurrencyRemoteDataSource(currencyApi, prefStorage),
+                db.currencyDao()
+            ),
+            notificationService = NotificationServiceImpl(
+                context,
+                prefStorage,
+                NotificationAppLocalDataSource(context)
+            )
+        )
 
         val transactionApi = retrofit.create(TransactionApiService::class.java)
         val transactionRemoteDataSource = TransactionRemoteDataSource(
@@ -134,9 +161,6 @@ object ServiceLocator {
             transactionDao,
             transactionRemoteDataSource
         )
-        val cardRepository = CardRepositoryImpl(cardDao)
-        val categoryRepository = CategoryRepositoryImpl(categoryDao)
-        val userCategoryRepository = UserCategoryConfigRepositoryImpl(userCategoryDao)
         val transactionAppService = TransactionAppService(
             transactionRepository,
             cardRepository,
@@ -146,6 +170,7 @@ object ServiceLocator {
         )
         return provideParserAppService(
             context,
+            userAppService,
             transactionAppService,
             prefStorage,
             retrofit
@@ -154,6 +179,7 @@ object ServiceLocator {
 
     fun provideParserAppService(
         context: Context,
+        userAppService: UserAppService,
         transactionAppService: TransactionAppService,
         prefStorage: PrefStorage,
         retrofit: Retrofit
@@ -194,6 +220,7 @@ object ServiceLocator {
         )
 
         return ParserAppService(
+            userAppService = userAppService,
             context = context,
             parserService = parserService,
             currencyService = currencyService,
@@ -234,7 +261,6 @@ object ServiceLocator {
         categoryRepository: CategoryRepository,
         userCategoryConfigRepository: UserCategoryConfigRepository,
         packageManager: PackageManager
-
     ): TransactionAppService {
         return TransactionAppService(
             transactionRepository,
@@ -269,7 +295,7 @@ object ServiceLocator {
         return db.userDao()
     }
 
-    private fun provideCurrencyDao(db: VisualDatabase): CurrencyDao {
+    fun provideCurrencyDao(db: VisualDatabase): CurrencyDao {
         return db.currencyDao()
     }
 

@@ -113,6 +113,12 @@ class SharedPreferenceStorage constructor(
         ""
     )
 
+    override var visualReceiptPopupDeepLink by StringPreference(
+        prefs,
+        PREF_VISUAL_RECEIPT_POPUP_DEEP_LINK,
+        ""
+    )
+
     companion object {
         const val PREFS_NAME = "visual"
         const val PREF_ACCESS_TOKEN = "PREF_ACCESS_TOKEN"
@@ -132,6 +138,6 @@ class SharedPreferenceStorage constructor(
         const val PREF_NOTI_COLOR = "PREF_NOTI_COLOR"
         const val PREF_IS_NOTI_ENABLED = "PREF_IS_NOTI_ENABLED"
         const val PREF_VISUAL_RECEIPT_DEEP_LINK = "PREF_VISUAL_RECEIPT_DEEP_LINK"
-
+        const val PREF_VISUAL_RECEIPT_POPUP_DEEP_LINK = "PREF_VISUAL_RECEIPT_POPUP_DEEP_LINK"
     }
 }
