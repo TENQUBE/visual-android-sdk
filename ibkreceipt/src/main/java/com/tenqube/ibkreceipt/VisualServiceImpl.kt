@@ -24,6 +24,7 @@ class VisualServiceImpl(
         prefStorage.notiChannelId = arg.notification.channelId
         prefStorage.notiIcon = arg.notification.smallIcon
         prefStorage.notiColor = arg.notification.color
+        prefStorage.webUrl = arg.layer.webUrl
     }
 
     override fun start(command: UserArg) {

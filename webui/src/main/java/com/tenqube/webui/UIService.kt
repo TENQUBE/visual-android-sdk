@@ -3,6 +3,7 @@ package com.tenqube.webui
 import com.tenqube.webui.dto.*
 
 interface UIService {
+
     fun finish()
 
     fun onClickSound()
@@ -26,4 +27,6 @@ interface UIService {
     fun showAd(request: ShowAd)
 
     fun hideAd()
+
+    fun openOverlayPermission(requestCode: Int)
 }

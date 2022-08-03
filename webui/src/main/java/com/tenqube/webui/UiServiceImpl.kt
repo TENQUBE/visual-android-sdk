@@ -5,7 +5,10 @@ import android.content.Intent
 import android.graphics.Color
 import android.media.AudioManager
 import android.net.Uri
+import android.os.Build
+import android.provider.Settings
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentActivity
 import com.tenqube.webui.component.ad.AdService
 import com.tenqube.webui.component.bottomsheet.ItemListDialogFragment
@@ -124,15 +127,6 @@ class UiServiceImpl(
     override fun openNotiSettings() {
         val i = Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS")
         activity.startActivity(i)
-//        val notiCatchDialogFragment = NotiCatchDialogFragment.newInstance(NotiCatchArg(listOf()))
-//        notiCatchDialogFragment.setCallback(
-//            callback = object : NotiCatchDialogFragment.Callback {
-//                override fun onClickNext() {
-//
-//                }
-//            }
-//        )
-//        notiCatchDialogFragment.show(activity.supportFragmentManager, "notiCatch")
     }
 
     override fun setRefreshEnabled(enabled: Boolean) {
@@ -145,5 +139,12 @@ class UiServiceImpl(
 
     override fun hideAd() {
         adService.hideAd()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    override fun openOverlayPermission(requestCode: Int) {
+        val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION)
+        activity.startActivityForResult(intent, requestCode)
     }
 }

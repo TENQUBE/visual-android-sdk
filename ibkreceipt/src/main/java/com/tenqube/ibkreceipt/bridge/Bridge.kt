@@ -32,6 +32,9 @@ interface Bridge {
         fun openNotiSettings()
 
         @JavascriptInterface
+        fun openOverlayPermission()
+
+        @JavascriptInterface
         fun openDeepLink(params: String?)
 
         @JavascriptInterface

@@ -2,6 +2,7 @@ package com.tenqube.ibkreceipt
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.FragmentTransaction
@@ -13,12 +14,11 @@ import timber.log.Timber
 class VisualReceiptActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.i("RCS", "VisualReceiptActivity")
         setContentView(R.layout.activity_visual_ibk)
         Timber.DebugTree()
         findViewById<ConstraintLayout>(R.id.container).setBackgroundColor(Color.TRANSPARENT)
-        if (savedInstanceState == null) {
-            start()
-        }
+        start()
     }
 
     private fun start() {
@@ -26,6 +26,7 @@ class VisualReceiptActivity : AppCompatActivity() {
             try {
                 intent.data?.let {
                     val receipt = VisualIBKReceiptDto.from(it)
+                    Log.i("RCS", "start $receipt")
                     replace(R.id.container, VisualFragment.newInstance(VisualIBKArg(url = receipt.toLink())))
                 } ?: start(this)
             } catch (e: Exception) {

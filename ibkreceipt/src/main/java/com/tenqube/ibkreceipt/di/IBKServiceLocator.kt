@@ -108,7 +108,8 @@ object IBKServiceLocator {
             transactionAppService = transactionAppService,
             uiService = uiService,
             bulkParserAppService = ServiceLocator.provideBulkParserAppService(parserAppService),
-            IBKSharedPreference(context)
+            IBKSharedPreference(context),
+            prefStorage
         )
     }
 }

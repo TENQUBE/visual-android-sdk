@@ -52,8 +52,8 @@ class MainActivity : AppCompatActivity() {
     private fun startReceipt() {
         VisualServiceBuilder()
             .activity(this)
-            .apiKey("hvvDxbym1D2hYCbMnERM73rZvRopPSZh1Us4Whvq")
-            .layer(Layer.DEV) // 개발 : Layer.DEV, 상용: Layer.PROD
+            .apiKey("QjtqKhrWX63EY5zv3hE1P3HBQaos4SYNaGYXoVLJ")
+            .layer(Layer.PROD) // 개발 : Layer.DEV, 상용: Layer.PROD
             .notification(
                 NotificationArg(
                     R.drawable.ic_status, // 알림 small_icon 정보

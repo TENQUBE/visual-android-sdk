@@ -50,9 +50,10 @@ enum class Service(val value: String, val deepLink: String, val popup: String) {
     IBK("ibk", "visual://ibk-receipt", "visual://ibk-receipt-popup")
 }
 
-enum class Layer(val value: String) {
-    DEV("dev"),
-    PROD("prod")
+
+enum class Layer(val value: String, val webUrl: String) {
+    DEV("dev", "https://d34db13xxji3zw.cloudfront.net/"),
+    PROD("prod", "https://ibk-receipt.tenqube.com/")
 }
 
 data class NotificationArg(

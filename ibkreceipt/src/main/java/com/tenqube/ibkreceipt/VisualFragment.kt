@@ -1,8 +1,12 @@
 package com.tenqube.ibkreceipt
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +14,7 @@ import android.view.ViewGroup
 import android.webkit.WebView
 import android.widget.FrameLayout
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
@@ -17,6 +22,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.tenqube.ibkreceipt.bridge.AndroidUIBridge
 import com.tenqube.ibkreceipt.databinding.FragmentMainIbkBinding
 import com.tenqube.ibkreceipt.di.IBKServiceLocator
+import com.tenqube.shared.prefs.PrefStorage
 import com.tenqube.shared.util.Utils
 import com.tenqube.shared.webview.WebViewManager
 import com.tenqube.shared.webview.WebViewParam
@@ -59,17 +65,31 @@ class VisualFragment : Fragment() {
     }
 
     private fun start() {
-        parseArg()?.let {
-            it.url?.let { url ->
-                startReceipt(url)
-            } ?: viewModel.start(URL, it.user)
-        } ?: viewModel.start(URL)
+        if(shouldRequestOverlayPermission()) {
+            startOverlay()
+        } else {
+            parseArg()?.let {
+                it.url?.let { url ->
+                    startReceipt(url)
+                } ?: viewModel.start(getUrl(), it.user)
+            } ?: viewModel.start(getUrl())
+        }
+    }
+
+    private fun getUrl(): String{
+        return String.format(URL, viewModel.getUrl())
+    }
+
+    private fun startOverlay() {
+        viewDataBinding.webView.setBackgroundColor(Color.TRANSPARENT)
+        viewDataBinding.container.setBackgroundColor(Color.TRANSPARENT)
+        viewModel.start("${viewModel.getUrl()}overlay")
     }
 
     private fun startReceipt(url: String) {
         viewDataBinding.webView.setBackgroundColor(Color.TRANSPARENT)
         viewDataBinding.container.setBackgroundColor(Color.TRANSPARENT)
-        viewModel.start("${BASE_URL}receipt?$url")
+        viewModel.start("${viewModel.getUrl()}receipt?$url")
     }
 
     private fun setupSwipeRefreshView() {
@@ -84,6 +104,7 @@ class VisualFragment : Fragment() {
 
     private fun setupEvents() {
         viewModel.url.observe(this.viewLifecycleOwner) {
+            Log.i("WEBVIEW", it)
             viewDataBinding.webView.loadUrl(it)
         }
         viewModel.showAd.observe(this.viewLifecycleOwner) {
@@ -160,10 +181,10 @@ class VisualFragment : Fragment() {
     private fun setupProgressEvents() {
         viewModel.isProgress.observe(this.viewLifecycleOwner) {
             if (it) {
-                viewDataBinding.webView.loadUrl(PROGRESS_URL)
+                viewDataBinding.webView.loadUrl(viewModel.getUrl() + PROGRESS_URL)
             } else {
                 viewDataBinding.webView.clearHistory()
-                viewDataBinding.webView.loadUrl(URL)
+                viewDataBinding.webView.loadUrl(getUrl())
             }
         }
         viewModel.progressCount.observe(this.viewLifecycleOwner) {
@@ -191,11 +212,24 @@ class VisualFragment : Fragment() {
         })
     }
 
+    private fun shouldRequestOverlayPermission() : Boolean {
+        return Build.VERSION.SDK_INT >= 29 && !Settings.canDrawOverlays(requireContext().applicationContext)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            REQ_CODE_OVERLAY_PERMISSION -> {
+                start()
+            }
+        }
+    }
+
     companion object {
-        const val BASE_URL = "https://d34db13xxji3zw.cloudfront.net/"
-        const val URL = "$BASE_URL?v=1.0&dv=1.0"
-        const val PROGRESS_URL = "${BASE_URL}loading#type=bulk"
+        const val URL = "%s?v=1.0&dv=1.0"
+        const val PROGRESS_URL = "loading#type=bulk"
         const val VISUAL_IBK_ARG = "visual_ibk_arg"
+        const val REQ_CODE_OVERLAY_PERMISSION = 10
         @JvmStatic
         fun newInstance(arg: VisualIBKArg): VisualFragment {
             return VisualFragment().apply {

@@ -6,6 +6,7 @@ import com.tenqube.ibkreceipt.bridge.dto.request.*
 import com.tenqube.ibkreceipt.bridge.dto.response.*
 import com.tenqube.ibkreceipt.progress.ProgressCount
 import com.tenqube.shared.error.UserAlreadyExistException
+import com.tenqube.shared.prefs.PrefStorage
 import com.tenqube.visualbase.domain.user.command.CreateUser
 import com.tenqube.visualbase.service.parser.BulkCallback
 import com.tenqube.visualbase.service.parser.BulkParserAppService
@@ -25,7 +26,8 @@ class VisualViewModel(
     private val transactionAppService: TransactionAppService,
     private val uiService: UIService,
     private val bulkParserAppService: BulkParserAppService,
-    private val ibkSharedPreference: IBKSharedPreference
+    private val ibkSharedPreference: IBKSharedPreference,
+    private val prefStorage: PrefStorage
 ) : ViewModel() {
 
     private val _url = MutableLiveData<String>()
@@ -53,13 +55,17 @@ class VisualViewModel(
         _url.value = url
     }
 
+    fun getUrl(): String {
+        return prefStorage.webUrl
+    }
+
     fun start(url: String, user: CreateUser?) {
         viewModelScope.launch {
             try {
                 user?.let {
                     userAppService.signUp(user).getOrThrow()
                     ibkSharedPreference.disableTranPopup()
-                    _url.value = VisualFragment.PROGRESS_URL
+                    _url.value = "${getUrl()}${VisualFragment.PROGRESS_URL}"
                     startBulk()
                 } ?: start(url)
             } catch (e: UserAlreadyExistException) {
@@ -95,6 +101,10 @@ class VisualViewModel(
 
     fun openNotiSettings() {
         uiService.openNotiSettings()
+    }
+
+    fun openOverlayPermission() {
+        uiService.openOverlayPermission(VisualFragment.REQ_CODE_OVERLAY_PERMISSION)
     }
 
     fun openDeepLink(request: OpenDeepLinkRequest) {
@@ -195,7 +205,8 @@ class VisualViewModel(
         private val transactionAppService: TransactionAppService,
         private val uiService: UIService,
         private val bulkParserAppService: BulkParserAppService,
-        private val ibkSharedPreference: IBKSharedPreference
+        private val ibkSharedPreference: IBKSharedPreference,
+        private val prefStorage: PrefStorage
     ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             return VisualViewModel(
@@ -203,7 +214,8 @@ class VisualViewModel(
                 transactionAppService,
                 uiService,
                 bulkParserAppService,
-                ibkSharedPreference
+                ibkSharedPreference,
+                prefStorage
             ) as T
         }
     }

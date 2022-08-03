@@ -19,8 +19,6 @@
         </activity>
 
         <activity
-            android:configChanges="orientation"
-            android:excludeFromRecents="true"
             android:screenOrientation="unspecified"
             android:theme="@style/Theme.AppCompat.Translucent"
             android:name="com.tenqube.ibkreceipt.VisualReceiptActivity"

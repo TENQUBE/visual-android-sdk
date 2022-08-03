@@ -3,6 +3,7 @@ package com.tenqube.shared.prefs
 import android.content.Context
 import android.content.SharedPreferences
 
+
 class SharedPreferenceStorage constructor(
     context: Context
 ) : PrefStorage {
@@ -119,12 +120,19 @@ class SharedPreferenceStorage constructor(
         ""
     )
 
+    override var webUrl by StringPreference(
+        prefs,
+        PREF_WEB_URL,
+        ""
+    )
+
     companion object {
         const val PREFS_NAME = "visual"
         const val PREF_ACCESS_TOKEN = "PREF_ACCESS_TOKEN"
         const val PREF_REFRESH_TOKEN = "PREF_REFRESH_TOKEN"
         const val PREF_LAYER = "PREF_LAYER"
         const val PREF_API_KEY = "PREF_API_KEY"
+        const val PREF_WEB_URL = "PREF_WEB_URL"
         const val PREF_SEARCH_URL = "PREF_SEARCH_URL"
         const val PREF_SEARCH_API_KEY = "PREF_SEARCH_API_KEY"
         const val PREF_RESOURCE_URL = "PREF_RESOURCE_URL"

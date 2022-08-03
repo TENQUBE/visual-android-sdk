@@ -130,6 +130,18 @@ class AndroidUIBridge(
     }
 
     @JavascriptInterface
+    override fun openOverlayPermission() {
+        execute(
+            funcName = this@AndroidUIBridge::openOverlayPermission.name,
+            params = null,
+            classOfT = Any::class.java,
+            body = {
+                viewModel.openOverlayPermission()
+            }
+        )
+    }
+
+    @JavascriptInterface
     override fun openDeepLink(params: String?) {
         execute(
             funcName = this@AndroidUIBridge::openDeepLink.name,
