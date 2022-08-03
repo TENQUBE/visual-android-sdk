@@ -14,7 +14,6 @@ import android.view.ViewGroup
 import android.webkit.WebView
 import android.widget.FrameLayout
 import androidx.activity.OnBackPressedCallback
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
@@ -22,7 +21,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.tenqube.ibkreceipt.bridge.AndroidUIBridge
 import com.tenqube.ibkreceipt.databinding.FragmentMainIbkBinding
 import com.tenqube.ibkreceipt.di.IBKServiceLocator
-import com.tenqube.shared.prefs.PrefStorage
 import com.tenqube.shared.util.Utils
 import com.tenqube.shared.webview.WebViewManager
 import com.tenqube.shared.webview.WebViewParam
@@ -65,7 +63,7 @@ class VisualFragment : Fragment() {
     }
 
     private fun start() {
-        if(shouldRequestOverlayPermission()) {
+        if (shouldRequestOverlayPermission()) {
             startOverlay()
         } else {
             parseArg()?.let {
@@ -76,14 +74,14 @@ class VisualFragment : Fragment() {
         }
     }
 
-    private fun getUrl(): String{
+    private fun getUrl(): String {
         return String.format(URL, viewModel.getUrl())
     }
 
     private fun startOverlay() {
         viewDataBinding.webView.setBackgroundColor(Color.TRANSPARENT)
         viewDataBinding.container.setBackgroundColor(Color.TRANSPARENT)
-        viewModel.start("${viewModel.getUrl()}overlay")
+        viewModel.start("${viewModel.getUrl()}permission")
     }
 
     private fun startReceipt(url: String) {
@@ -212,7 +210,7 @@ class VisualFragment : Fragment() {
         })
     }
 
-    private fun shouldRequestOverlayPermission() : Boolean {
+    private fun shouldRequestOverlayPermission(): Boolean {
         return Build.VERSION.SDK_INT >= 29 && !Settings.canDrawOverlays(requireContext().applicationContext)
     }
 

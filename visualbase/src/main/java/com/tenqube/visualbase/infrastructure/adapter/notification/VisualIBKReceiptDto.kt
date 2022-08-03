@@ -17,14 +17,14 @@ data class VisualIBKReceiptDto(
     fun toLink(): String {
         return "v=1&" +
             "dv=1.0&" +
-            "keyword=${keyword}&" +
-            "cardName=${cardName}&" +
-            "amount=${amount}&" +
-            "paymentDate=${paymentDate}&" +
-            "largeCategory=${largeCategory}&" +
-            "mediumCategory=${mediumCategory}&" +
-            "smallCategory=${smallCategory}&" +
-            "franchise=${franchise}"
+            "keyword=$keyword&" +
+            "cardName=$cardName&" +
+            "amount=$amount&" +
+            "paymentDate=$paymentDate&" +
+            "largeCategory=$largeCategory&" +
+            "mediumCategory=$mediumCategory&" +
+            "smallCategory=$smallCategory&" +
+            "franchise=$franchise"
     }
 
     companion object {

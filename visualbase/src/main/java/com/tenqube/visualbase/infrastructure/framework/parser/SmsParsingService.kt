@@ -3,7 +3,6 @@ package com.tenqube.visualbase.infrastructure.framework.parser
 import android.app.IntentService
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.util.Log
 import com.tenqube.visualbase.domain.parser.SMS
 import com.tenqube.visualbase.infrastructure.framework.di.ServiceLocator
